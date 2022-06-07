@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SignUpActivity1">
+
+    <LinearLayout
+        android:id="@+id/lo_header"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintHeight_percent="0.1"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintVertical_bias="0"
+        android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/iv_backBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/back_btn"
+            android:layout_gravity="center"
+            android:layout_marginEnd="20dp"/>
+
+        <ImageView
+            android:id="@+id/iv_process"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:src="@drawable/process" />
+    </LinearLayout>
+
+    <ImageView
+        android:id="@+id/iv_logo"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintHeight_percent="0.2"
+        app:layout_constraintTop_toBottomOf="@id/lo_header"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:src="@drawable/logo_noname"
+        app:layout_constraintVertical_bias="0.05" />
+
+    <TextView
+        android:id="@+id/tv_termsConditions_header"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="1111111111111111"
+        android:transitionName="signup"
+        app:layout_constraintTop_toBottomOf="@id/iv_logo"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintVertical_bias="0.05"
+        android:textColor="#1c4992"
+        android:textSize="22sp"
+        android:textStyle="bold"
+        android:gravity="center" />
+
+    <TextView
+        android:id="@+id/tv_termsConditions_body"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/vTermsCondition_message"
+        app:layout_constraintTop_toBottomOf="@id/tv_termsConditions_header"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintVertical_bias="0"
+        android:gravity="center"
+        android:textColor="#7d7d7d"
+        android:textSize="12sp" />
+
+
+    <LinearLayout
+        android:id="@+id/lo_termsConditions"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        app:layout_constraintWidth_percent="0.9"
+
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/lo_next"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintVertical_bias="0.95">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="10dp">
+
+            <ImageView
+                android:id="@+id/cb_agreeAllConditions"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginEnd="5dp"
+                android:src="@drawable/check_off" />
+
+            <TextView
+                android:id="@+id/tv_agreeAllConditions"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:text="@string/vTermsCondition_agree_all_text"
+                android:textSize="14sp"
+                android:textColor="@color/black"
+                android:layout_weight="100"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:orientation="horizontal"
+            android:background="#f4f4f4"
+            android:layout_marginTop="5dp"
+            android:layout_marginBottom="10dp">
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="10dp">
+
+            <ImageView
+                android:id="@+id/cb_agreeUsageCondition"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginEnd="5dp"
+                android:src="@drawable/check_off" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:text="@string/vNeed_keywordText"
+                android:textSize="12sp"
+                android:textColor="@color/red" />
+
+            <TextView
+                android:id="@+id/tv_agreeUsageCondition"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:text="@string/vTermsCondition_phrase_usage"
+                android:textSize="12sp"
+                android:textColor="@color/black"
+                android:layout_weight="100"/>
+
+            <ImageView
+                android:id="@+id/iv_moveUsageCondition"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/more_btn"
+                android:contentDescription="@string/vComponent_text"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginBottom="10dp">
+
+            <ImageView
+                android:id="@+id/cb_agreePrivacyCondition"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_marginEnd="5dp"
+                android:src="@drawable/check_off"
+                android:contentDescription="@string/vComponent_text" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:text="@string/vNeed_keywordText"
+                android:textSize="12sp"
+                android:textColor="@color/red" />
+
+            <TextView
+                android:id="@+id/tv_agreePrivacyCondition"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="5dp"
+                android:text="@string/vTermsCondition_phrase_privacy"
+                android:textSize="12sp"
+                android:textColor="@color/black"
+                android:layout_weight="100"/>
+
+            <ImageView
+                android:id="@+id/iv_movePrivacyCondition"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:src="@drawable/more_btn"
+                android:contentDescription="@string/vComponent_text"
+                />
+
+        </LinearLayout>
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/lo_next"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintHeight_percent="0.1"
+        app:layout_constraintWidth_percent="0.9"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintVertical_bias="0.95"
+        android:background="@drawable/next_btn">
+
+        <TextView
+            android:id="@+id/tb_next"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/vNext_text"
+            android:textColor="#fff"
+            android:textSize="22sp"
+            android:textStyle="bold"
+            android:gravity="center"
+            />
+
+    </LinearLayout>
+
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

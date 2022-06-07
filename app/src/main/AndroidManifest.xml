@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.example.smartbox_dup">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Smartbox_dup"
+        android:usesCleartextTraffic="true">
+
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyD_BFzd1RCyQRfc70qDoq33UQpeMzh0sxM" />
+
+        <meta-data
+            android:name="com.naver.maps.map.CLIENT_ID"
+            android:value="41e2pxem8h" />
+
+        <activity
+            android:name=".LoginActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+
+
+            </intent-filter>
+            <intent-filter>
+                <data
+                    android:host="kakaolink"
+                    android:scheme="kakao683f8b322937adcc3782060cd9229af2"/>
+                <data
+                    android:host="oauth"
+                    android:scheme="kakao683f8b322937adcc3782060cd9229af2"/>
+            </intent-filter>
+        </activity>
+        <activity android:name=".SignUpActivity1" />
+        <activity android:name=".SignUpActivity2" />
+        <activity android:name=".SignUpActivity3" />
+        <activity android:name=".WebViewActivity" />
+        <activity android:name=".MapsActivity" />
+        <activity android:name=".NaverMapActivity" />
+
+        <service android:name=".SampleForegroundService" />
+<!--        <service android:name=".LocationService"-->
+<!--            android:foregroundServiceType="location" />-->
+
+    </application>
+
+    <!-- connect internet -->
+    <uses-permission android:name="android.permission.INTERNET"/>
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <!-- phone number -->
+    <uses-permission android:name="android.permission.READ_PHONE_NUMBERS" />
+
+    <!-- full screen -->
+    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
+
+    <!-- foreground service -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+
+    <!-- location -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+
+
+
+    <queries>
+        <package android:name="com.kakao.talk" />
+    </queries>
+
+
+</manifest>

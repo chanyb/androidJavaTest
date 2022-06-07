@@ -1,0 +1,209 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".LoginActivity">
+
+    <ImageView
+        android:id="@+id/iv_logo"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintHeight_percent="0.3"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        android:src="@drawable/logo"
+        app:layout_constraintVertical_bias="0.05" />
+
+    <EditText
+        android:id="@+id/ev_id"
+        app:layout_constraintWidth_percent="0.9"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        android:paddingLeft="50dp"
+        app:layout_constraintTop_toBottomOf="@id/iv_logo"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintVertical_bias="0.05"
+        android:hint="@string/vId_hint"
+        android:background="@drawable/id" />
+
+    <EditText
+        android:id="@+id/ev_password"
+        app:layout_constraintWidth_percent="0.9"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        app:layout_constraintTop_toBottomOf="@id/ev_id"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintVertical_bias="0.01"
+        android:paddingLeft="50dp"
+
+        android:hint="@string/vPassword_hint"
+        android:background="@drawable/pw" />
+
+    <TextView
+        android:layout_width="0dp"
+        app:layout_constraintWidth_percent="0.9"
+        android:layout_height="wrap_content"
+        android:text="* 존재하지 않는 아이디입니다."
+        android:textColor="@color/red"
+        app:layout_constraintTop_toBottomOf="@id/ev_password"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintVertical_bias="0"
+        android:visibility="invisible"
+        />
+
+    <LinearLayout
+        android:id="@+id/btn_login"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        app:layout_constraintWidth_percent="0.9"
+        app:layout_constraintTop_toBottomOf="@id/ev_password"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintVertical_bias="0.1"
+        android:background="@drawable/login" >
+
+        <TextView
+            android:id="@+id/tb_login"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text="@string/vLogin_text"
+            android:textColor="@color/white"
+            android:textAlignment="center"
+            android:gravity="center" />
+
+
+    </LinearLayout>
+
+    <CheckBox
+        android:id="@+id/cb_autoLogin"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/btn_login"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintVertical_bias="0"
+        android:text="자동 로그인"/>
+
+    <LinearLayout
+        android:id="@+id/lo_textButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/cb_autoLogin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintVertical_bias="0.1">
+
+        <TextView
+            android:id="@+id/tb_signUp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/vSignUp_text"
+            android:transitionName="signup"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/vSeparator_text"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp" />
+
+        <TextView
+            android:id="@+id/tv_findId"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/vFindId_text" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/vSeparator_text"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp" />
+
+        <TextView
+            android:id="@+id/tv_findPassword"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/vFindPassword_text" />
+
+
+
+    </LinearLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/lo_kakaoLogin"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        app:layout_constraintWidth_percent="0.9"
+        app:layout_constraintTop_toBottomOf="@id/lo_textButton"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintVertical_bias="0.1"
+        android:background="@drawable/kakao_bg">
+
+        <TextView
+            android:id="@+id/tv_kakaoLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="카카오 로그인"
+            android:textSize="14sp"
+            android:textColor="@color/black"
+            android:layout_centerInParent="true"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/btn_kakao_icon_small"
+            android:layout_toLeftOf="@id/tv_kakaoLogin"
+            android:layout_centerInParent="true"
+            android:layout_marginRight="10dp"/>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/lo_naverLogin"
+        android:layout_width="0dp"
+        android:layout_height="50dp"
+        app:layout_constraintWidth_percent="0.9"
+        app:layout_constraintTop_toBottomOf="@id/lo_kakaoLogin"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintVertical_bias="0.1"
+        android:background="@drawable/naver_bg">
+
+        <TextView
+            android:id="@+id/tv_naverLogin"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="네이버 로그인"
+            android:textSize="14sp"
+            android:textColor="@color/white"
+            android:layout_centerInParent="true"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/btn_naver_icon_small"
+            android:layout_toLeftOf="@id/tv_naverLogin"
+            android:layout_centerInParent="true"
+            android:layout_marginRight="10dp"/>
+    </RelativeLayout>
+
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

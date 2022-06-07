@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="DesignSurface">
+    <option name="filePathToZoomLevelMap">
+      <map>
+        <entry key="..\:/Users/kworks/.gradle/caches/transforms-3/538299ba87fda0a4190b4cd4307c0309/transformed/oauth-5.1.0/res/layout/nid_progress_dialog.xml" value="0.18802083333333333" />
+        <entry key="..\:/Users/kworks/AndroidStudioProjects/smartbox_dup/app/src/main/res/drawable-v24/btn_kakao_icon_small.xml" value="0.196" />
+        <entry key="..\:/Users/kworks/AndroidStudioProjects/smartbox_dup/app/src/main/res/drawable-v24/btn_naver_icon_small.xml" value="0.196" />
+        <entry key="..\:/Users/kworks/AndroidStudioProjects/smartbox_dup/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1435" />
+        <entry key="..\:/Users/kworks/AndroidStudioProjects/smartbox_dup/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1315" />
+        <entry key="..\:/Users/kworks/AndroidStudioProjects/smartbox_dup/app/src/main/res/layout/activity_login.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/kworks/AndroidStudioProjects/smartbox_dup/app/src/main/res/layout/activity_main.xml" value="0.35208333333333336" />
+        <entry key="..\:/Users/kworks/AndroidStudioProjects/smartbox_dup/app/src/main/res/layout/activity_sigin1.xml" value="0.22" />
+        <entry key="..\:/Users/kworks/AndroidStudioProjects/smartbox_dup/app/src/main/res/layout/activity_sigin2.xml" value="0.3333333333333333" />
+        <entry key="..\:/Users/kworks/AndroidStudioProjects/smartbox_dup/app/src/main/res/layout/activity_sigin3.xml" value="0.3148148148148148" />
+        <entry key="..\:/Users/kworks/AndroidStudioProjects/smartbox_dup/app/src/main/res/layout/activity_signup_webviwe.xml" value="0.22" />
+        <entry key="..\:/Users/kworks/AndroidStudioProjects/smartbox_dup/app/src/main/res/layout/activity_sigup1.xml" value="0.22" />
+        <entry key="..\:/Users/kworks/AndroidStudioProjects/smartbox_dup/app/src/main/res/layout/activity_sigup2.xml" value="0.22" />
+        <entry key="..\:/Users/kworks/AndroidStudioProjects/smartbox_dup/app/src/main/res/layout/activity_sigup3.xml" value="0.18802083333333333" />
+        <entry key="..\:/Users/kworks/Desktop/2022/project/0_dup/smartbox_dup/app/src/main/res/layout/activity_login.xml" value="0.18802083333333333" />
+        <entry key="..\:/Users/kworks/Desktop/2022/project/0_dup/smartbox_dup/app/src/main/res/layout/activity_map.xml" value="0.16666666666666666" />
+        <entry key="..\:/Users/kworks/Desktop/2022/project/0_dup/smartbox_dup/app/src/main/res/layout/activity_sigup1.xml" value="0.18802083333333333" />
+        <entry key="..\:/Users/kworks/Desktop/2022/project/0_dup/smartbox_dup/app/src/main/res/layout/activity_sigup2.xml" value="0.18802083333333333" />
+        <entry key="..\:/Users/kworks/Desktop/2022/project/0_dup/smartbox_dup/app/src/main/res/layout/activty_navermap.xml" value="0.1734375" />
+        <entry key="..\:/Users/kworks/Desktop/2022/project/0_dup/smartbox_dup/app/src/main/res/layout/item.xml" value="0.18802083333333333" />
+      </map>
+    </option>
+  </component>
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_11" default="true" project-jdk-name="Android Studio default JDK" project-jdk-type="JavaSDK">
+    <output url="file://$PROJECT_DIR$/build/classes" />
+  </component>
+  <component name="ProjectType">
+    <option name="id" value="Android" />
+  </component>
+</project>
