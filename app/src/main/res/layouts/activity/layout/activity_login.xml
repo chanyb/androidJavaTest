@@ -80,7 +80,8 @@
             android:text="@string/vLogin_text"
             android:textColor="@color/white"
             android:textAlignment="center"
-            android:gravity="center" />
+            android:gravity="center"
+            android:background="?attr/selectableItemBackground" />
 
 
     </LinearLayout>
@@ -172,6 +173,16 @@
             android:layout_toLeftOf="@id/tv_kakaoLogin"
             android:layout_centerInParent="true"
             android:layout_marginRight="10dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:text=""
+            android:textSize="14sp"
+            android:textColor="@color/black"
+            android:layout_centerInParent="true"
+            android:background="?attr/selectableItemBackground" />
+
     </RelativeLayout>
 
     <RelativeLayout
