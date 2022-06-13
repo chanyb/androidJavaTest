@@ -77,12 +77,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     private FusedLocationProviderClient fusedLocationClient;
 
+    // test for rxjava
+    test rxJavaTest;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         this.createNotificationChannel();
+
+        rxJavaTest = new test();
 
         tb_login = findViewById(R.id.tb_login);
         tb_signup = findViewById(R.id.tb_signUp);
