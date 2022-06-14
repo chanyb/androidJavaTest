@@ -29,6 +29,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import java.util.concurrent.TimeUnit;
 
+import com.example.smartbox_dup.network.RetrofitManager;
 import com.example.smartbox_dup.network.ruokAPI;
 import com.example.smartbox_dup.utils.ActivitySwitchManager;
 import com.example.smartbox_dup.viewmodel.SocialLogin;
@@ -125,7 +126,15 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 break;
             case R.id.tb_login:
 //                ActivitySwitchManager.getInstance().changeActivity(this, NaverMapActivity.class);
-                rxJavaTest = new rxJavaTest(this);
+//                rxJavaTest = new rxJavaTest(this);
+
+
+
+                JsonObject obj = new JsonObject();
+                obj.addProperty("username", "bcyu");
+                obj.addProperty("email", "bcyu@jbcp.kr");
+                obj.addProperty("password", "1234");
+                RetrofitManager.getInstance().signUp(obj);
 
                 break;
             case R.id.tb_signUp:
@@ -313,28 +322,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 Log.i("this", "나에게보내기 성공");
             }
             return null;
-        });
-    }
-
-
-    public void signUp(ruokAPI api) {
-        JsonObject params = new JsonObject();
-        params.addProperty("username","유병찬");
-        params.addProperty("email","android@naver.com");
-        params.addProperty("password","1234");
-
-        Call<JsonObject> test = api.SignUp(params);
-        test.enqueue(new Callback<JsonObject>() {
-            @Override
-            public void onResponse(Call<JsonObject> call, Response<JsonObject> response) {
-
-                Log.i("this", String.valueOf(response.body()));
-            }
-
-            @Override
-            public void onFailure(Call<JsonObject> call, Throwable t) {
-                Log.i("this", "fail", t);
-            }
         });
     }
 
