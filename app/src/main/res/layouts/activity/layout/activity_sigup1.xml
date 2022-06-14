@@ -49,7 +49,7 @@
         android:id="@+id/tv_termsConditions_header"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="1111111111111111"
+        android:text="@string/vSignUp_text"
         android:transitionName="signup"
         app:layout_constraintTop_toBottomOf="@id/iv_logo"
         app:layout_constraintBottom_toBottomOf="parent"
