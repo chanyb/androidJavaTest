@@ -2,7 +2,6 @@ package com.example.smartbox_dup;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
-import androidx.core.app.ActivityOptionsCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
@@ -30,15 +29,12 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import java.util.concurrent.TimeUnit;
 
-import com.example.smartbox_dup.network.RetrofitManager;
-import com.example.smartbox_dup.network.myInterceptor;
 import com.example.smartbox_dup.network.ruokAPI;
 import com.example.smartbox_dup.utils.ActivitySwitchManager;
 import com.example.smartbox_dup.viewmodel.SocialLogin;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.kakao.sdk.auth.model.OAuthToken;
 import com.kakao.sdk.common.KakaoSdk;
@@ -50,18 +46,11 @@ import com.kakao.sdk.common.util.Utility;
 import com.navercorp.nid.NaverIdLoginSDK;
 import com.navercorp.nid.oauth.OAuthLoginCallback;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 import kotlin.Unit;
 import kotlin.jvm.functions.Function2;
-import okhttp3.OkHttpClient;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.converter.gson.GsonConverterFactory;
-import retrofit2.converter.scalars.ScalarsConverterFactory;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
 
@@ -78,7 +67,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private FusedLocationProviderClient fusedLocationClient;
 
     // test for rxjava
-    test rxJavaTest;
+    com.example.smartbox_dup.rxJavaTest rxJavaTest;
 
 
 
@@ -87,8 +76,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
         this.createNotificationChannel();
-
-        rxJavaTest = new test();
 
         tb_login = findViewById(R.id.tb_login);
         tb_signup = findViewById(R.id.tb_signUp);
@@ -137,7 +124,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 receiveBroadcast();
                 break;
             case R.id.tb_login:
-                ActivitySwitchManager.getInstance().changeActivity(this, NaverMapActivity.class);
+//                ActivitySwitchManager.getInstance().changeActivity(this, NaverMapActivity.class);
+                rxJavaTest = new rxJavaTest(this);
 
                 break;
             case R.id.tb_signUp:
