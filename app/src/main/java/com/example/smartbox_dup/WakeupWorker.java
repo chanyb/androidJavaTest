@@ -1,11 +1,8 @@
 package com.example.smartbox_dup;
 
-import android.app.Notification;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
-import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.core.app.NotificationCompat;
@@ -13,11 +10,7 @@ import androidx.core.app.NotificationManagerCompat;
 import androidx.work.Worker;
 import androidx.work.WorkerParameters;
 
-import com.airbnb.lottie.L;
-import com.kakao.sdk.talk.TalkApiClient;
-import com.kakao.sdk.template.model.Link;
-import com.kakao.sdk.template.model.TextTemplate;
-import com.kakao.sdk.user.UserApiClient;
+import com.example.smartbox_dup.screen.login.LoginActivity;
 
 public class WakeupWorker extends Worker {
 

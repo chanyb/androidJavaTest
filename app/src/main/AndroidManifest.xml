@@ -20,7 +20,7 @@
             android:value="41e2pxem8h" />
 
         <activity
-            android:name=".LoginActivity"
+            android:name=".screen.login.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -38,12 +38,12 @@
                     android:scheme="kakao683f8b322937adcc3782060cd9229af2"/>
             </intent-filter>
         </activity>
-        <activity android:name=".SignUpActivity1" />
-        <activity android:name=".SignUpActivity2" />
-        <activity android:name=".SignUpActivity3" />
+        <activity android:name=".screen.signup.SignUpActivity1" />
+        <activity android:name=".screen.signup.SignUpActivity2" />
+        <activity android:name=".screen.signup.SignUpActivity3" />
         <activity android:name=".WebViewActivity" />
         <activity android:name=".MapsActivity" />
-        <activity android:name=".NaverMapActivity" />
+        <activity android:name=".screen.home.NaverMapActivity" />
 
         <service android:name=".SampleForegroundService" />
 <!--        <service android:name=".LocationService"-->

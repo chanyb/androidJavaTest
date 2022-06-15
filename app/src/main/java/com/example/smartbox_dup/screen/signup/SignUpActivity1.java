@@ -1,4 +1,4 @@
-package com.example.smartbox_dup;
+package com.example.smartbox_dup.screen.signup;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.view.ViewCompat;
 
 import com.example.smartbox_dup.R;
+import com.example.smartbox_dup.WebViewActivity;
 
 public class SignUpActivity1 extends AppCompatActivity implements View.OnClickListener {
     private LinearLayout lo_next;

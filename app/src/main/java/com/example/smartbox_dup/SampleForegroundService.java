@@ -9,6 +9,8 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
+import com.example.smartbox_dup.screen.login.LoginActivity;
+
 public class SampleForegroundService extends Service {
 
     @Nullable

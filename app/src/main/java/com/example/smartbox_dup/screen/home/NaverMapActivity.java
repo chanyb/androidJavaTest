@@ -1,4 +1,4 @@
-package com.example.smartbox_dup;
+package com.example.smartbox_dup.screen.home;
 
 import android.os.Bundle;
 import android.util.Log;
@@ -6,6 +6,7 @@ import android.util.Log;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.example.smartbox_dup.R;
 import com.naver.maps.map.MapView;
 
 public class NaverMapActivity extends AppCompatActivity {

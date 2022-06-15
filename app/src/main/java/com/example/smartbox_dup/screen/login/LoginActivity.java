@@ -1,4 +1,4 @@
-package com.example.smartbox_dup;
+package com.example.smartbox_dup.screen.login;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -14,6 +14,7 @@ import android.Manifest;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.content.pm.PackageManager;
@@ -24,14 +25,21 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import java.util.concurrent.TimeUnit;
 
+import com.example.smartbox_dup.MyBroadcastReceiver;
+import com.example.smartbox_dup.screen.home.NaverMapActivity;
+import com.example.smartbox_dup.R;
+import com.example.smartbox_dup.SampleForegroundService;
+import com.example.smartbox_dup.screen.signup.SignUpActivity1;
+import com.example.smartbox_dup.WakeupWorker;
 import com.example.smartbox_dup.network.RetrofitManager;
-import com.example.smartbox_dup.network.ruokAPI;
 import com.example.smartbox_dup.utils.ActivitySwitchManager;
+import com.example.smartbox_dup.utils.ToastManager;
 import com.example.smartbox_dup.viewmodel.SocialLogin;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -43,18 +51,22 @@ import com.kakao.sdk.talk.TalkApiClient;
 import com.kakao.sdk.template.model.Link;
 import com.kakao.sdk.template.model.TextTemplate;
 import com.kakao.sdk.user.UserApiClient;
-import com.kakao.sdk.common.util.Utility;
 import com.navercorp.nid.NaverIdLoginSDK;
 import com.navercorp.nid.oauth.OAuthLoginCallback;
 
+import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.Observer;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
 import kotlin.Unit;
 import kotlin.jvm.functions.Function2;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
 
+    private Context context;
+    private EditText ev_id;
+    private EditText ev_password;
     private TextView tb_login;
     private TextView tb_signup;
     private RelativeLayout lo_naverLogin;
@@ -78,6 +90,30 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         setContentView(R.layout.activity_login);
         this.createNotificationChannel();
 
+        init();
+
+
+
+        String clientId = "OXfEQAJGQjcM2KYgv726";
+        String clientSecret = "M3tnQJOpkE";
+        String applicationName = "smartbox_dup";
+
+        NaverIdLoginSDK.INSTANCE.initialize(context, clientId, clientSecret, applicationName);
+        KakaoSdk.INSTANCE.init(context, "683f8b322937adcc3782060cd9229af2");
+
+        ActivityCompat.requestPermissions(this, new String[] {
+                Manifest.permission.ACCESS_FINE_LOCATION,
+                Manifest.permission.ACCESS_COARSE_LOCATION,
+                Manifest.permission.ACCESS_BACKGROUND_LOCATION
+        }, 0);
+
+        this.checkPermission();
+    }
+
+    public void init() {
+        this.context = this;
+        ev_id = findViewById(R.id.ev_id);
+        ev_password = findViewById(R.id.ev_password);
         tb_login = findViewById(R.id.tb_login);
         tb_signup = findViewById(R.id.tb_signUp);
         lo_naverLogin = findViewById(R.id.lo_naverLogin);
@@ -92,29 +128,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         tv_findId.setOnClickListener(this);
         tv_findPassword.setOnClickListener(this);
         iv_logo.setOnClickListener(this);
-
         intent = new Intent(LoginActivity.this, SignUpActivity1.class);
         mSocialLogin = new ViewModelProvider(this).get(SocialLogin.class);
 
         fusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-
-        String clientId = "OXfEQAJGQjcM2KYgv726";
-        String clientSecret = "M3tnQJOpkE";
-        String applicationName = "smartbox_dup";
-
-        NaverIdLoginSDK.INSTANCE.initialize(this, clientId, clientSecret, applicationName);
-        KakaoSdk.INSTANCE.init(this, "683f8b322937adcc3782060cd9229af2");
-        Log.i("this", Utility.INSTANCE.getKeyHash(this));
-        Log.i("this", mSocialLogin.getToken());
-
-
-        ActivityCompat.requestPermissions(this, new String[] {
-                Manifest.permission.ACCESS_FINE_LOCATION,
-                Manifest.permission.ACCESS_COARSE_LOCATION,
-                Manifest.permission.ACCESS_BACKGROUND_LOCATION
-        }, 0);
-
-        this.checkPermission();
     }
 
     public void onClick(View view) {
@@ -125,12 +142,43 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 receiveBroadcast();
                 break;
             case R.id.tb_login:
-//                ActivitySwitchManager.getInstance().changeActivity(this, NaverMapActivity.class);
-//                rxJavaTest = new rxJavaTest(this);
                 JsonObject obj = new JsonObject();
-                obj.addProperty("username", "1234");
-                obj.addProperty("password", "1234");
-                RetrofitManager.getInstance().signUp(obj);
+
+
+                obj.addProperty("username", ev_id.getText().toString());
+                obj.addProperty("password", ev_password.getText().toString());
+
+
+                Observable<Integer> observable = Observable.just(1)
+                        .subscribeOn(Schedulers.newThread())
+                        .observeOn(Schedulers.newThread());
+
+                observable.subscribe(new Observer<Integer>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(@NonNull Integer integer) {
+                        JsonObject res = RetrofitManager.getInstance().signIn(obj);
+                        if(res.get("back4app").getAsString().equals(String.valueOf(RetrofitManager.BACK4APP.FAIL))) {
+                            ToastManager.getInstance().showToast(context, "입력한 계정 정보를 확인 할 수 없습니다.");
+                        } else {
+                            ActivitySwitchManager.getInstance().changeActivity(context, NaverMapActivity.class);
+                        }
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
 
                 break;
             case R.id.tb_signUp:

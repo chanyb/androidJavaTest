@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".LoginActivity">
+    tools:context=".screen.login.LoginActivity">
 
     <ImageView
         android:id="@+id/iv_logo"
@@ -45,6 +45,7 @@
         android:paddingLeft="50dp"
 
         android:hint="@string/vPassword_hint"
+        android:inputType="textPassword"
         android:background="@drawable/pw" />
 
     <TextView

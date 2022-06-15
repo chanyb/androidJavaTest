@@ -1,13 +1,10 @@
-package com.example.smartbox_dup;
+package com.example.smartbox_dup.screen.signup;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.telephony.TelephonyManager;
-import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
@@ -16,9 +13,9 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.example.smartbox_dup.R;
 import com.example.smartbox_dup.network.RetrofitManager;
 import com.example.smartbox_dup.utils.ActivitySwitchManager;
 import com.example.smartbox_dup.utils.ToastManager;
@@ -27,7 +24,6 @@ import com.google.gson.JsonObject;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Observer;

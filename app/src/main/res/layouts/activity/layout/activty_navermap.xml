@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    tools:context=".NaverMapActivity">
+    tools:context=".screen.home.NaverMapActivity">
 
     <fragment
         android:id="@+id/naver_map"

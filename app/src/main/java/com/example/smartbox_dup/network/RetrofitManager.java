@@ -49,7 +49,26 @@ public class RetrofitManager {
         return res;
     }
 
-    public void signIn(JsonObject params) {
+    public JsonObject signIn(JsonObject params) {
+        Call<JsonObject> call = api.SignIn(params.get("username").getAsString(), params.get("password").getAsString());
+        JsonObject res = new JsonObject();
+        try {
+            res = call.execute().body();
+            Log.i("this", String.valueOf(res));
+            if (res == null) {
+                res = new JsonObject();
+                res.addProperty("back4app", String.valueOf(BACK4APP.FAIL));
+            }
+            else res.addProperty("back4app", String.valueOf(BACK4APP.SUCCESS));
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return res;
+    }
+
+    public void exampleOfasynchronize(JsonObject params) {
         Call<JsonObject> call = api.SignIn(params.get("username").getAsString(), params.get("password").getAsString());
         call.enqueue(new Callback<JsonObject>() {
             @Override
@@ -63,6 +82,5 @@ public class RetrofitManager {
             }
         });
     }
-
 
 }
