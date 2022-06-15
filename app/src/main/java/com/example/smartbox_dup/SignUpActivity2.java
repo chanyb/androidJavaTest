@@ -19,14 +19,24 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.example.smartbox_dup.network.RetrofitManager;
+import com.example.smartbox_dup.utils.ActivitySwitchManager;
 import com.example.smartbox_dup.utils.ToastManager;
+import com.google.gson.JsonObject;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.Observer;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+
 public class SignUpActivity2 extends AppCompatActivity implements View.OnClickListener, View.OnFocusChangeListener {
 
-
+    private EditText ev_id;
     private TextView tb_idDuplicateCheck;
     private TextView tb_phoneCheck;
     private TextView tb_confirm;
@@ -54,6 +64,7 @@ public class SignUpActivity2 extends AppCompatActivity implements View.OnClickLi
     }
 
     public void init() {
+        this.ev_id = findViewById(R.id.ev_id);
         this.tb_idDuplicateCheck = findViewById(R.id.tb_idDuplicateCheck);
         this.tb_phoneCheck = findViewById(R.id.tb_phoneCheck);
         this.tb_confirm = findViewById(R.id.tb_confirm);
@@ -117,8 +128,50 @@ public class SignUpActivity2 extends AppCompatActivity implements View.OnClickLi
                 this.timer().start();
                 break;
             case R.id.tb_confirm:
-                intent = new Intent(this, SignUpActivity3.class);
-                startActivity(intent);
+                JsonObject obj = new JsonObject();
+                obj.addProperty("username", ev_id.getText().toString());
+                obj.addProperty("password", ev_password.getText().toString());
+
+
+
+                Observable<Integer> observable = Observable.just(1)
+                        .subscribeOn(Schedulers.newThread())
+                        .observeOn(Schedulers.newThread());
+
+                Context context = this;
+
+                observable.subscribe(new Observer<Integer>() {
+                    @Override
+                    public void onSubscribe(@NonNull Disposable d) {
+
+                    }
+
+                    @Override
+                    public void onNext(@NonNull Integer integer) {
+                        JsonObject res = RetrofitManager.getInstance().signUp(obj);
+
+                        if(res.get("back4app").getAsString().equals(RetrofitManager.BACK4APP.FAIL.toString())) {
+                            // fail
+                            ToastManager.getInstance().showToast(context, "서버접속이 원활하지 않습니다.");
+                        } else {
+                            // success
+                            ActivitySwitchManager.getInstance().changeActivity(context, SignUpActivity3.class);
+                        }
+                    }
+
+                    @Override
+                    public void onError(@NonNull Throwable e) {
+                        Log.e("smartbox_dup", "error", e);
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+
+//                intent = new Intent(this, SignUpActivity3.class);
+//                startActivity(intent);
                 break;
             case R.id.iv_backBtn:
                 this.onBackPressed();

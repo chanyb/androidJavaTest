@@ -127,12 +127,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             case R.id.tb_login:
 //                ActivitySwitchManager.getInstance().changeActivity(this, NaverMapActivity.class);
 //                rxJavaTest = new rxJavaTest(this);
-
-
-
                 JsonObject obj = new JsonObject();
-                obj.addProperty("username", "bcyu");
-                obj.addProperty("email", "bcyu@jbcp.kr");
+                obj.addProperty("username", "1234");
                 obj.addProperty("password", "1234");
                 RetrofitManager.getInstance().signUp(obj);
 
