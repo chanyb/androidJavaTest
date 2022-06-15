@@ -17,6 +17,8 @@
         <entry key="..\:/Users/kworks/AndroidStudioProjects/smartbox_dup/app/src/main/res/layout/activity_sigup1.xml" value="0.22" />
         <entry key="..\:/Users/kworks/AndroidStudioProjects/smartbox_dup/app/src/main/res/layout/activity_sigup2.xml" value="0.22" />
         <entry key="..\:/Users/kworks/AndroidStudioProjects/smartbox_dup/app/src/main/res/layout/activity_sigup3.xml" value="0.18802083333333333" />
+        <entry key="..\:/Users/kworks/Desktop/2022/project/0_dup/smartbox_dup/app/src/main/res/drawable-v24/map_overlay_stick.xml" value="0.113" />
+        <entry key="..\:/Users/kworks/Desktop/2022/project/0_dup/smartbox_dup/app/src/main/res/drawable-v24/overlay_bg.xml" value="0.113" />
         <entry key="..\:/Users/kworks/Desktop/2022/project/0_dup/smartbox_dup/app/src/main/res/layout/activity_login.xml" value="0.18802083333333333" />
         <entry key="..\:/Users/kworks/Desktop/2022/project/0_dup/smartbox_dup/app/src/main/res/layout/activity_map.xml" value="0.16666666666666666" />
         <entry key="..\:/Users/kworks/Desktop/2022/project/0_dup/smartbox_dup/app/src/main/res/layout/activity_sigup1.xml" value="0.18802083333333333" />
@@ -25,8 +27,11 @@
         <entry key="..\:/Users/kworks/Desktop/2022/project/0_dup/smartbox_dup/app/src/main/res/layout/item.xml" value="0.18802083333333333" />
         <entry key="..\:/Users/kworks/Desktop/2022/project/0_dup/smartbox_dup/app/src/main/res/layouts/activity/layout/activity_login.xml" value="0.18802083333333333" />
         <entry key="..\:/Users/kworks/Desktop/2022/project/0_dup/smartbox_dup/app/src/main/res/layouts/activity/layout/activity_map.xml" value="0.26197916666666665" />
+        <entry key="..\:/Users/kworks/Desktop/2022/project/0_dup/smartbox_dup/app/src/main/res/layouts/activity/layout/activity_signup_webviwe.xml" value="0.18958333333333333" />
         <entry key="..\:/Users/kworks/Desktop/2022/project/0_dup/smartbox_dup/app/src/main/res/layouts/activity/layout/activity_sigup1.xml" value="0.18802083333333333" />
         <entry key="..\:/Users/kworks/Desktop/2022/project/0_dup/smartbox_dup/app/src/main/res/layouts/activity/layout/activity_sigup2.xml" value="0.18541666666666667" />
+        <entry key="..\:/Users/kworks/Desktop/2022/project/0_dup/smartbox_dup/app/src/main/res/layouts/activity/layout/activity_sigup3.xml" value="0.18958333333333333" />
+        <entry key="..\:/Users/kworks/Desktop/2022/project/0_dup/smartbox_dup/app/src/main/res/layouts/activity/layout/activty_navermap.xml" value="0.13333333333333333" />
       </map>
     </option>
   </component>
