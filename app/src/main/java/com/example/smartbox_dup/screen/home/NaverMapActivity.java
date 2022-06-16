@@ -14,8 +14,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.view.GestureDetectorCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.smartbox_dup.R;
+import com.example.smartbox_dup.viewmodel.User;
 import com.naver.maps.map.MapView;
 
 public class NaverMapActivity extends AppCompatActivity {
@@ -24,6 +27,8 @@ public class NaverMapActivity extends AppCompatActivity {
     private ImageView map_overlay_slide_button;
     private ConstraintLayout map_overlay_lo;
     private GestureDetector gestureDetector;
+    private RecyclerView userItemView;
+    private NaverMapOveralyAdapter naverMapOveralyAdapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -31,9 +36,13 @@ public class NaverMapActivity extends AppCompatActivity {
         setContentView(R.layout.activty_navermap);
         init();
 
+        User user = new User();
+        user.setUsername("병찬");
+        user.setLocation("도안북로 54-53");
+        user.setLocatedtime("15:44");
 
-
-
+        naverMapOveralyAdapter.addItem(user);
+        userItemView.setAdapter(naverMapOveralyAdapter);
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -42,6 +51,10 @@ public class NaverMapActivity extends AppCompatActivity {
         mapView = findViewById(R.id.naver_map);
         map_overlay_lo = findViewById(R.id.map_overlay_lo);
         map_overlay_slide_button = findViewById(R.id.map_overlay_slide_button);
+        userItemView = findViewById(R.id.userItemView);
+        naverMapOveralyAdapter = new NaverMapOveralyAdapter();
+        userItemView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
+
         gestureDetector = new GestureDetector(context, new GestureDetector.OnGestureListener() {
             float preY;
             @Override
@@ -75,7 +88,7 @@ public class NaverMapActivity extends AppCompatActivity {
                 Log.i("this", String.valueOf(v1));
                 if(preY > motionEvent1.getRawY()) {
                     for(float i = v1; i>0; i--) {
-                        if(params.verticalBias > 0.6) {
+                        if(params.verticalBias > 0.5) {
                             params.verticalBias -= 0.0003f;
                             runOnUiThread(new Runnable() {
                                 @Override
