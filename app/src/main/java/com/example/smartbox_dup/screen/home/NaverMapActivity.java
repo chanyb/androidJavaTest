@@ -85,7 +85,6 @@ public class NaverMapActivity extends AppCompatActivity {
                 v1 = v1 < 40 ? v1*3:v1;
                 v1 = Math.abs(Math.abs(v1) > 10 ? v1:v1+10);
                 v1 = v1 > 60 ? 60: v1;
-                Log.i("this", String.valueOf(v1));
                 if(preY > motionEvent1.getRawY()) {
                     for(float i = v1; i>0; i--) {
                         if(params.verticalBias > 0.5) {
