@@ -10,13 +10,12 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.smartbox_dup.R;
-import com.example.smartbox_dup.viewHolder;
 import com.example.smartbox_dup.viewmodel.User;
 
 import java.util.ArrayList;
 
 public class NaverMapOveralyAdapter extends RecyclerView.Adapter<NaverMapOverlayViewHolder> {
-    private ArrayList<User> arrayList = new ArrayList<User>();
+    private ArrayList<User> arrayList = new ArrayList<>();
 
     @NonNull
     @Override
