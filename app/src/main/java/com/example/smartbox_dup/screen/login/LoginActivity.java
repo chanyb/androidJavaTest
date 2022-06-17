@@ -20,6 +20,7 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.net.ConnectivityManager;
+import android.net.InetAddresses;
 import android.os.BatteryManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -29,9 +30,18 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.PrintWriter;
+import java.net.InetSocketAddress;
+import java.net.Socket;
+import java.net.SocketAddress;
 import java.util.concurrent.TimeUnit;
 
 import com.example.smartbox_dup.MyBroadcastReceiver;
+import com.example.smartbox_dup.network.SocketServerManager;
 import com.example.smartbox_dup.screen.home.NaverMapActivity;
 import com.example.smartbox_dup.R;
 import com.example.smartbox_dup.SampleForegroundService;
@@ -139,7 +149,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             case R.id.iv_logo:
                 Log.i("this","clicked");
 //                getBatteryStatus();
-                receiveBroadcast();
+//                receiveBroadcast();
+                connectSocketServer();
+
+
                 break;
             case R.id.tb_login:
                 JsonObject obj = new JsonObject();
@@ -366,6 +379,35 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 Log.i("this", "나에게보내기 성공");
             }
             return null;
+        });
+    }
+
+
+    public void connectSocketServer() {
+        Observable<Integer> observable = Observable.just(1,2,3,4,5)
+                .subscribeOn(Schedulers.newThread())
+                .observeOn(Schedulers.newThread());
+
+        observable.subscribe(new Observer<Integer>() {
+            @Override
+            public void onSubscribe(@NonNull Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(@NonNull Integer integer) {
+                SocketServerManager.getInstance().sendMessage("hello, world!");
+            }
+
+            @Override
+            public void onError(@NonNull Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
         });
     }
 
