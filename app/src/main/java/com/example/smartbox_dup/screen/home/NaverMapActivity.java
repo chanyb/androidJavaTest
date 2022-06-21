@@ -15,6 +15,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 import androidx.core.view.GestureDetectorCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.smartbox_dup.R;
@@ -40,9 +41,17 @@ public class NaverMapActivity extends AppCompatActivity {
         user.setUsername("병찬");
         user.setLocation("도안북로 54-53");
         user.setLocatedtime("15:44");
+        naverMapOveralyAdapter.addItem(user);
+
+        user.setUsername("병찬");
+        user.setLocation("도안북로 54-53");
+        user.setLocatedtime("15:44");
 
         naverMapOveralyAdapter.addItem(user);
         userItemView.setAdapter(naverMapOveralyAdapter);
+
+        PagerSnapHelper pagerSnapHelper = new PagerSnapHelper();
+        pagerSnapHelper.attachToRecyclerView(userItemView);
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -53,7 +62,7 @@ public class NaverMapActivity extends AppCompatActivity {
         map_overlay_slide_button = findViewById(R.id.map_overlay_slide_button);
         userItemView = findViewById(R.id.userItemView);
         naverMapOveralyAdapter = new NaverMapOveralyAdapter();
-        userItemView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
+        userItemView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
 
         gestureDetector = new GestureDetector(context, new GestureDetector.OnGestureListener() {
             float preY;
