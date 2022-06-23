@@ -13,8 +13,10 @@ import androidx.core.view.ViewCompat;
 
 import com.example.smartbox_dup.R;
 import com.example.smartbox_dup.WebViewActivity;
+import com.example.smartbox_dup.location.GoogleLocationManger;
 
 public class SignUpActivity1 extends AppCompatActivity implements View.OnClickListener {
+    private ImageView iv_logo;
     private LinearLayout lo_next;
     private ImageView iv_backBtn;
     private Intent intent;
@@ -39,6 +41,7 @@ public class SignUpActivity1 extends AppCompatActivity implements View.OnClickLi
     }
 
     public void init() {
+        this.iv_logo = findViewById(R.id.iv_logo);
         this.lo_next = findViewById(R.id.lo_next);
         this.iv_backBtn = findViewById(R.id.iv_backBtn);
         this.cb_agreeAllConditions = findViewById(R.id.cb_agreeAllConditions);
@@ -54,6 +57,7 @@ public class SignUpActivity1 extends AppCompatActivity implements View.OnClickLi
     }
 
     public void setOnClickListener() {
+        this.iv_logo.setOnClickListener(this);
         this.iv_backBtn.setOnClickListener(this);
         this.cb_agreeAllConditions.setOnClickListener(this);
         this.tv_agreeAllConditions.setOnClickListener(this);
@@ -109,6 +113,10 @@ public class SignUpActivity1 extends AppCompatActivity implements View.OnClickLi
     @Override
     public void onClick(View view) {
         switch(view.getId()) {
+            case R.id.iv_logo:
+                Log.i("this", "click in signup1");
+                GoogleLocationManger.getInstance().getUserLocation();
+                break;
             case R.id.lo_next:
                 intent = new Intent(this, SignUpActivity2.class);
                 startActivity(intent);

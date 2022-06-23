@@ -41,6 +41,7 @@ import java.net.SocketAddress;
 import java.util.concurrent.TimeUnit;
 
 import com.example.smartbox_dup.MyBroadcastReceiver;
+import com.example.smartbox_dup.location.GoogleLocationManger;
 import com.example.smartbox_dup.network.SocketServerManager;
 import com.example.smartbox_dup.screen.home.NaverMapActivity;
 import com.example.smartbox_dup.R;
@@ -150,8 +151,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 Log.i("this","clicked");
 //                getBatteryStatus();
 //                receiveBroadcast();
-                connectSocketServer();
-
+//                connectSocketServer();
+                GoogleLocationManger.getInstance().setActivity(this);
+                GoogleLocationManger.getInstance().getUserLocation();
 
                 break;
             case R.id.tb_login:
@@ -197,6 +199,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             case R.id.tb_signUp:
                 View tb_signUp = findViewById(R.id.tb_signUp);
                 ActivitySwitchManager.getInstance().changeActivity(this, SignUpActivity1.class, this, tb_signUp,"signup");
+                finish();
+
                 //ActivityOptionsCompat activityOptions = ActivityOptionsCompat.makeSceneTransitionAnimation(this, tb_signUp,"signup");
                 //startActivity(intent, activityOptions.toBundle());
                 //startActivity(intent);

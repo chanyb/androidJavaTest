@@ -105,12 +105,6 @@ public class NaverMapActivity extends AppCompatActivity {
                     return false;
                 }
 
-//                if(Math.abs(preY - motionEvent1.getRawY()) > 60 || Math.abs(v1) < 2) {
-//                    // 오동작 방지
-//                    preY = motionEvent1.getRawY();
-//                    return false;
-//                }
-
                 // bias 계산
                 float new_bias = motionEvent1.getRawY() / size.y;
 
@@ -150,15 +144,10 @@ public class NaverMapActivity extends AppCompatActivity {
             }
 
             @Override
-            public void onLongPress(MotionEvent motionEvent) {
-
-            }
+            public void onLongPress(MotionEvent motionEvent) { }
 
             @Override
-            public boolean onFling(MotionEvent motionEvent, MotionEvent motionEvent1, float v, float v1) {
-                Log.i("this", "onFling");
-                return false;
-            }
+            public boolean onFling(MotionEvent motionEvent, MotionEvent motionEvent1, float v, float v1) { return false; }
         });
 
         map_overlay_lo.setOnTouchListener((view, motionEvent) -> {
