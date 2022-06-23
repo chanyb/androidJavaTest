@@ -2,8 +2,10 @@ package com.example.smartbox_dup.screen.home;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Point;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Display;
 import android.view.GestureDetector;
 import android.view.MotionEvent;
 import android.view.View;
@@ -30,7 +32,10 @@ public class NaverMapActivity extends AppCompatActivity {
     private GestureDetector gestureDetector;
     private RecyclerView userItemView;
     private NaverMapOveralyAdapter naverMapOveralyAdapter;
-
+    Display display;
+    Point size;
+    double limit_max_y;
+    double limit_min_y;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,6 +57,16 @@ public class NaverMapActivity extends AppCompatActivity {
 
         PagerSnapHelper pagerSnapHelper = new PagerSnapHelper();
         pagerSnapHelper.attachToRecyclerView(userItemView);
+
+        display = getWindowManager().getDefaultDisplay();  // in
+        size = new Point();
+        display.getRealSize(size); // or getSize(size)
+
+        limit_max_y = size.y*0.9;
+        limit_min_y = size.y*0.5;
+
+
+
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -64,12 +79,14 @@ public class NaverMapActivity extends AppCompatActivity {
         naverMapOveralyAdapter = new NaverMapOveralyAdapter();
         userItemView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
 
+
+        /* getActivity().getWindowManager().getDefaultDisplay() */ // in Fragment
+
+
         gestureDetector = new GestureDetector(context, new GestureDetector.OnGestureListener() {
             float preY;
             @Override
-            public boolean onDown(MotionEvent motionEvent) {
-                return false;
-            }
+            public boolean onDown(MotionEvent motionEvent) { return false; }
 
             @Override
             public void onShowPress(MotionEvent motionEvent) {
@@ -83,46 +100,51 @@ public class NaverMapActivity extends AppCompatActivity {
 
             @Override
             public boolean onScroll(MotionEvent motionEvent, MotionEvent motionEvent1, float v, float v1) {
-                if(Math.abs(preY - motionEvent1.getRawY()) > 60 || Math.abs(v1) < 2) {
-                    // 오동작 방지
-                    preY = motionEvent1.getRawY();
+                if(motionEvent1.getRawY() > limit_max_y || motionEvent1.getRawY() < limit_min_y) {
+                    // 범위 밖
                     return false;
                 }
 
+//                if(Math.abs(preY - motionEvent1.getRawY()) > 60 || Math.abs(v1) < 2) {
+//                    // 오동작 방지
+//                    preY = motionEvent1.getRawY();
+//                    return false;
+//                }
+
+                // bias 계산
+                float new_bias = motionEvent1.getRawY() / size.y;
+
+
                 ConstraintLayout.LayoutParams params = (ConstraintLayout.LayoutParams) map_overlay_lo.getLayoutParams();
+                float current_bias = params.verticalBias;
 
-                v1 = v1 < 40 ? v1*3:v1;
-                v1 = Math.abs(Math.abs(v1) > 10 ? v1:v1+10);
-                v1 = v1 > 60 ? 60: v1;
-                if(preY > motionEvent1.getRawY()) {
-                    for(float i = v1; i>0; i--) {
-                        if(params.verticalBias > 0.5) {
-                            params.verticalBias -= 0.0003f;
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    map_overlay_lo.setLayoutParams(params);
-                                }
-                            });
-                        }
+                // bias 조정
+                while(true) {
+                    if (new_bias > current_bias) {
+                        current_bias += 0.0001;
+
+                        // 종료조건
+                        if (current_bias > new_bias) break;
                     }
-                }
-                else {
-                    for(float i = v1; i>0; i--) {
-                        if(params.verticalBias < 0.9) {
-                            params.verticalBias += 0.0003f;
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    map_overlay_lo.setLayoutParams(params);
-                                }
-                            });
-                        }
+                    else {
+                        current_bias -= 0.0001;
+
+                        // 종료조건
+                        if (current_bias < new_bias) break;
                     }
 
+                    if(current_bias > 0.9) current_bias = (float) 0.9;
+                    if(current_bias < 0.5) current_bias = (float) 0.5;
+
+                    params.verticalBias = current_bias;
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            map_overlay_lo.setLayoutParams(params);
+                        }
+                    });
                 }
 
-                preY = motionEvent1.getRawY();
 
                 return false;
             }
