@@ -153,7 +153,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 //                receiveBroadcast();
 //                connectSocketServer();
                 GoogleLocationManger.getInstance().setActivity(this);
-                GoogleLocationManger.getInstance().getUserLocation();
+                Log.i("this", String.valueOf(GoogleLocationManger.getInstance().getUserLocation()));
 
                 break;
             case R.id.tb_login:

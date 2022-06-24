@@ -12,12 +12,29 @@ import androidx.core.content.ContextCompat;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
+import io.reactivex.rxjava3.annotations.NonNull;
+import io.reactivex.rxjava3.core.Observable;
+import io.reactivex.rxjava3.core.Observer;
+import io.reactivex.rxjava3.disposables.CompositeDisposable;
+import io.reactivex.rxjava3.disposables.Disposable;
+import io.reactivex.rxjava3.schedulers.Schedulers;
+import kotlin.jvm.Synchronized;
 
 public class GoogleLocationManger {
 
     private static FusedLocationProviderClient fusedLocationClient;
     private static GoogleLocationManger instance = new GoogleLocationManger();
+    private CompositeDisposable compositeDisposable = new CompositeDisposable();
     private Activity activity;
+    private Task<Location> task;
+    private volatile String thislocation="";
 
     private GoogleLocationManger() {
     }
@@ -40,27 +57,22 @@ public class GoogleLocationManger {
         return instance;
     }
 
-    public void getUserLocation() {
-        Log.i("this", "getUserLocation...");
-
-
+    public Location getUserLocation() {
         if(!wasSetActivity()) {
-            return ;
+            return null;
         }
-        this.checkPermission();
 
-        fusedLocationClient.getLastLocation()
-                .addOnSuccessListener(activity, new OnSuccessListener<Location>() {
-                    @Override
-                    public void onSuccess(Location location) {
-                        // Got last known location. In some rare situations this can be null.
-                        if (location != null) {
-                            // Logic to handle location object
-                            Log.i("this", String.valueOf(location));
-                        }
-                    }
-                });
+        checkPermission();
+        if(task == null) task = fusedLocationClient.getLastLocation();
+        while(true) {
+            try{
+                if(task.isComplete()) break;
+            } catch (Exception e) {
 
+            }
+        }
+
+        return task.getResult();
     }
 
     public void checkPermission() {
