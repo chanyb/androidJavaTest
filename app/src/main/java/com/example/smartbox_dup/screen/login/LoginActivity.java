@@ -31,13 +31,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import java.io.BufferedWriter;
-import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.net.InetSocketAddress;
-import java.net.Socket;
-import java.net.SocketAddress;
+
 import java.util.concurrent.TimeUnit;
 
 import com.example.smartbox_dup.MyBroadcastReceiver;
@@ -50,7 +44,6 @@ import com.example.smartbox_dup.screen.signup.SignUpActivity1;
 import com.example.smartbox_dup.WakeupWorker;
 import com.example.smartbox_dup.network.RetrofitManager;
 import com.example.smartbox_dup.utils.ActivitySwitchManager;
-import com.example.smartbox_dup.utils.DatetimeManager;
 import com.example.smartbox_dup.utils.ToastManager;
 import com.example.smartbox_dup.viewmodel.SocialLogin;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -65,9 +58,6 @@ import com.kakao.sdk.template.model.TextTemplate;
 import com.kakao.sdk.user.UserApiClient;
 import com.navercorp.nid.NaverIdLoginSDK;
 import com.navercorp.nid.oauth.OAuthLoginCallback;
-
-import org.json.JSONException;
-import org.json.JSONObject;
 
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
@@ -123,21 +113,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }, 0);
 
         this.checkPermission();
-
-        JSONObject res = DatetimeManager.getInstance().getSystemDateTime();
-        try {
-            Log.i("DatetimeManager", String.valueOf(res.get("Date")));
-            Log.i("DatetimeManager", String.valueOf(res.get("Time")));
-            Log.i("DatetimeManager", String.valueOf(res.get("Year")));
-            Log.i("DatetimeManager", String.valueOf(res.get("Month")));
-            Log.i("DatetimeManager", String.valueOf(res.get("Day")));
-            Log.i("DatetimeManager", String.valueOf(res.get("Hour")));
-            Log.i("DatetimeManager", String.valueOf(res.get("Minute")));
-            Log.i("DatetimeManager", String.valueOf(res.get("Second")));
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
     }
 
     public void init() {
