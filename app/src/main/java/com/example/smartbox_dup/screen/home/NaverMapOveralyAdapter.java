@@ -44,8 +44,6 @@ public class NaverMapOveralyAdapter extends RecyclerView.Adapter<NaverMapOverlay
     }
 
     public void addItem(User user) {
-        Log.i("this", "getTO");
-        Log.i("this", user.getUsername());
         arrayList.add(user);
     }
 }

@@ -54,7 +54,6 @@ public class RetrofitManager {
         JsonObject res = new JsonObject();
         try {
             res = call.execute().body();
-            Log.i("this", String.valueOf(res));
             if (res == null) {
                 res = new JsonObject();
                 res.addProperty("back4app", String.valueOf(BACK4APP.FAIL));

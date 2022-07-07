@@ -16,13 +16,11 @@ public class LocationService extends Service {
 
     @Override
     public void onCreate() {
-        Log.i("this", "hello, this is LocationService");
         super.onCreate();
     }
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        Log.i("this", "hello, this is LocationService");
         return super.onStartCommand(intent, flags, startId);
     }
 }

@@ -21,8 +21,15 @@ import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.smartbox_dup.R;
+import com.example.smartbox_dup.location.GoogleLocationManger;
 import com.example.smartbox_dup.viewmodel.User;
 import com.naver.maps.map.MapView;
+
+import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.util.Calendar;
+import java.util.Date;
 
 public class NaverMapActivity extends AppCompatActivity {
     private Context context;
@@ -43,14 +50,13 @@ public class NaverMapActivity extends AppCompatActivity {
         init();
 
         User user = new User();
-        user.setUsername("병찬");
-        user.setLocation("도안북로 54-53");
-        user.setLocatedtime("15:44");
-        naverMapOveralyAdapter.addItem(user);
+        user.setUsername("나");
+        if(GoogleLocationManger.getInstance().getUserLocation() == null) GoogleLocationManger.getInstance().setActivity(this);
+        user.setLocation(GoogleLocationManger.getInstance().getUserLocation().getLatitude() + ", " + GoogleLocationManger.getInstance().getUserLocation().getLongitude());
 
-        user.setUsername("병찬");
-        user.setLocation("도안북로 54-53");
-        user.setLocatedtime("15:44");
+        LocalTime time = LocalTime.now();
+        user.setLocatedtime(time.getHour() + "시 " + time.getMinute() + "분");
+
 
         naverMapOveralyAdapter.addItem(user);
         userItemView.setAdapter(naverMapOveralyAdapter);
@@ -77,7 +83,7 @@ public class NaverMapActivity extends AppCompatActivity {
         map_overlay_slide_button = findViewById(R.id.map_overlay_slide_button);
         userItemView = findViewById(R.id.userItemView);
         naverMapOveralyAdapter = new NaverMapOveralyAdapter();
-        userItemView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.HORIZONTAL, false));
+        userItemView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
 
 
         /* getActivity().getWindowManager().getDefaultDisplay() */ // in Fragment
@@ -90,7 +96,6 @@ public class NaverMapActivity extends AppCompatActivity {
 
             @Override
             public void onShowPress(MotionEvent motionEvent) {
-                Log.i("this", "onShowPress");
             }
 
             @Override

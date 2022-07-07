@@ -36,11 +36,9 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
         mapFragment.getMapAsync(this);
 
 
-        Log.i("this","1");
         textView = findViewById(R.id.ev_id);
         button = (TextView) findViewById(R.id.btn_confirm);
         // click listener
-        Log.i("this","2");
         button.setOnClickListener(new Button.OnClickListener() {
 
             @Override
@@ -55,7 +53,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
                 textView.setText("");
             }
         });
-        Log.i("this","3");
 
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, RecyclerView.VERTICAL, false));
@@ -72,8 +69,6 @@ public class MapsActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public void onMapReady(@NonNull GoogleMap googleMap) {
-        Log.i("this","2222222");
         mMap = googleMap;
-        Log.i("this","3333333333");
     }
 }

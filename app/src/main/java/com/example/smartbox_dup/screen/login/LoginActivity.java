@@ -50,6 +50,7 @@ import com.example.smartbox_dup.screen.signup.SignUpActivity1;
 import com.example.smartbox_dup.WakeupWorker;
 import com.example.smartbox_dup.network.RetrofitManager;
 import com.example.smartbox_dup.utils.ActivitySwitchManager;
+import com.example.smartbox_dup.utils.DatetimeManager;
 import com.example.smartbox_dup.utils.ToastManager;
 import com.example.smartbox_dup.viewmodel.SocialLogin;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -64,6 +65,9 @@ import com.kakao.sdk.template.model.TextTemplate;
 import com.kakao.sdk.user.UserApiClient;
 import com.navercorp.nid.NaverIdLoginSDK;
 import com.navercorp.nid.oauth.OAuthLoginCallback;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
@@ -119,6 +123,21 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }, 0);
 
         this.checkPermission();
+
+        JSONObject res = DatetimeManager.getInstance().getSystemDateTime();
+        try {
+            Log.i("DatetimeManager", String.valueOf(res.get("Date")));
+            Log.i("DatetimeManager", String.valueOf(res.get("Time")));
+            Log.i("DatetimeManager", String.valueOf(res.get("Year")));
+            Log.i("DatetimeManager", String.valueOf(res.get("Month")));
+            Log.i("DatetimeManager", String.valueOf(res.get("Day")));
+            Log.i("DatetimeManager", String.valueOf(res.get("Hour")));
+            Log.i("DatetimeManager", String.valueOf(res.get("Minute")));
+            Log.i("DatetimeManager", String.valueOf(res.get("Second")));
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     public void init() {
@@ -207,7 +226,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 //overridePendingTransition(0,0);
                 break;
             case R.id.tv_findId:
-                Log.i("this","click!");
                 NotificationCompat.Builder builder = new NotificationCompat.Builder(this, getString(R.string.channel_name))
                         .setSmallIcon(R.drawable.logo)
                         .setContentTitle("smartbox_dup")
@@ -221,10 +239,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             case R.id.tv_findPassword:
                 WorkRequest workRequest = new OneTimeWorkRequest.Builder(WakeupWorker.class).setInitialDelay(10, TimeUnit.SECONDS).build();
                 WorkManager.getInstance(this).enqueue(workRequest);
-                Log.i("this", "Hello");
                 break;
             case R.id.lo_naverLogin:
-                Log.i("this", "clicked");
                 NaverIdLoginSDK.INSTANCE.authenticate(this, naverLoginCallback);
                 break;
             case R.id.lo_kakaoLogin:
@@ -234,7 +250,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         @Override
                         public Unit invoke(OAuthToken oAuthToken, Throwable throwable) {
                             if (throwable != null) {
-                                Log.i("this", throwable.toString());
+                                Log.i("kakako", throwable.toString());
                             } else {
                                 mSocialLogin.setSocialType("kakaoTalk");
                                 mSocialLogin.setToken(oAuthToken.getAccessToken());
@@ -252,17 +268,17 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     private OAuthLoginCallback naverLoginCallback = new OAuthLoginCallback() {
         @Override
         public void onSuccess() {
-            Log.i("this", "success");
+            Log.i("naverLogin", "success");
         }
 
         @Override
         public void onFailure(int i, String s) {
-            Log.i("this", "fail");
+            Log.i("naverLogin", "fail");
         }
 
         @Override
         public void onError(int i, String s) {
-            Log.i("this", "error");
+            Log.i("naverLogin", "error");
         }
     };
 
@@ -283,7 +299,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     public void getUserLocation() {
-        Log.i("this", "getUserLocation...");
 
         this.checkPermission();
         fusedLocationClient.getLastLocation()
@@ -293,7 +308,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         // Got last known location. In some rare situations this can be null.
                         if (location != null) {
                             // Logic to handle location object
-                            Log.i("this", String.valueOf(location));
                         }
                     }
                 });
@@ -308,19 +322,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         };
         int ACCESS_FINE_LOCATION  = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION);
         if(ACCESS_FINE_LOCATION == PackageManager.PERMISSION_DENIED) {
-            Log.i("this", "ACCESS_FINE_LOCATION 권한없음");
+            Log.i("kakao", "ACCESS_FINE_LOCATION 권한없음");
             ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, 3);
         }
 
         int ACCESS_COARSE_LOCATION  = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION);
         if(ACCESS_COARSE_LOCATION == PackageManager.PERMISSION_DENIED) {
-            Log.i("this", "ACCESS_COARSE_LOCATION 권한없음");
+            Log.i("kakao", "ACCESS_COARSE_LOCATION 권한없음");
             ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, 3);
         }
 
         int ACCESS_BACKGROUND_LOCATION  = ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_BACKGROUND_LOCATION);
         if(ACCESS_BACKGROUND_LOCATION == PackageManager.PERMISSION_DENIED) {
-            Log.i("this", "ACCESS_BACKGROUND_LOCATION 권한없음");
+            Log.i("kakao", "ACCESS_BACKGROUND_LOCATION 권한없음");
             ActivityCompat.requestPermissions(this, new String[] {Manifest.permission.ACCESS_BACKGROUND_LOCATION}, 3);
         }
 
@@ -347,10 +361,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         int level = batteryStatus.getIntExtra(BatteryManager.EXTRA_LEVEL, -1);
         int scale = batteryStatus.getIntExtra(BatteryManager.EXTRA_SCALE, -1);
 
-        Log.i("this", String.valueOf(isCharging));
-        Log.i("this", String.valueOf(acCharge));
-        Log.i("this", String.valueOf(level));
-        Log.i("this", String.valueOf(scale));
+        Log.i("kakao", String.valueOf(isCharging));
+        Log.i("kakao", String.valueOf(acCharge));
+        Log.i("kakao", String.valueOf(level));
+        Log.i("kakao", String.valueOf(scale));
     }
 
     public void receiveBroadcast() {
@@ -366,9 +380,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     public void kakaotalkToMe() {
         UserApiClient.getInstance().me((user, error) -> {
             if(error != null) {
-                Log.e("smartbox_dup", error.toString());
+                Log.e("kakao", error.toString());
             } else {
-                Log.i("this", user.getKakaoAccount().getEmail());
+                Log.i("kakao", user.getKakaoAccount().getEmail());
             }
             return null;
         });
@@ -378,9 +392,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         TalkApiClient.getInstance().sendCustomMemo(77282, error -> {
             if(error != null) {
-                Log.i("this", "나에게보내기 실패", error);
+                Log.i("kakao", "나에게보내기 실패", error);
             } else {
-                Log.i("this", "나에게보내기 성공");
+                Log.i("kakao", "나에게보내기 성공");
             }
             return null;
         });

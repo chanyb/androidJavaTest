@@ -37,7 +37,6 @@ public class rxJavaTest {
         observable.subscribe(new Observer<Long>() {
             @Override
             public void onSubscribe(@NonNull Disposable d) {
-                Log.i("this", "onSubscribe called.");
             }
 
             @Override
@@ -63,12 +62,10 @@ public class rxJavaTest {
 
             @Override
             public void onError(@NonNull Throwable e) {
-                Log.i("this", "onError: ", e);
             }
 
             @Override
             public void onComplete() {
-                Log.i("this", "onComplete called.");
             }
         });
     }
