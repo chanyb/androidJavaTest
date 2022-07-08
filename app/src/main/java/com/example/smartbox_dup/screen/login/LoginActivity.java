@@ -1,6 +1,7 @@
 package com.example.smartbox_dup.screen.login;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
@@ -20,12 +21,12 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.net.ConnectivityManager;
-import android.net.InetAddresses;
 import android.os.BatteryManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -44,7 +45,9 @@ import com.example.smartbox_dup.screen.signup.SignUpActivity1;
 import com.example.smartbox_dup.WakeupWorker;
 import com.example.smartbox_dup.network.RetrofitManager;
 import com.example.smartbox_dup.utils.ActivitySwitchManager;
+import com.example.smartbox_dup.utils.FCMManager;
 import com.example.smartbox_dup.utils.ToastManager;
+import com.example.smartbox_dup.utils.ViewCreateManager;
 import com.example.smartbox_dup.viewmodel.SocialLogin;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -68,7 +71,7 @@ import kotlin.Unit;
 import kotlin.jvm.functions.Function2;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
-
+    private ConstraintLayout main_layout;
     private Context context;
     private EditText ev_id;
     private EditText ev_password;
@@ -113,10 +116,21 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }, 0);
 
         this.checkPermission();
+
+        ViewGroup.LayoutParams params = (ConstraintLayout.LayoutParams) ev_id.getLayoutParams();
+
+        String id = ViewCreateManager.getInstance().createView(this, ViewCreateManager.ViewType.TextView, main_layout, params);
+        ViewCreateManager.getInstance().getViewById(id);
+
+        FCMManager fcm = new FCMManager(this);
+        fcm.createNotificationChannel();
+        fcm.getToken();
     }
+
 
     public void init() {
         this.context = this;
+        main_layout = findViewById(R.id.main_layout);
         ev_id = findViewById(R.id.ev_id);
         ev_password = findViewById(R.id.ev_password);
         tb_login = findViewById(R.id.tb_login);

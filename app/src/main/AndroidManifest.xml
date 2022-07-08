@@ -11,6 +11,17 @@
         android:theme="@style/Theme.Smartbox_dup"
         android:usesCleartextTraffic="true">
 
+        <!-- Set custom default icon. This is used when no icon is set for incoming notification messages.
+     See README(https://goo.gl/l4GJaQ) for more. -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/logo" />
+        <!-- Set color used with incoming notification messages. This is used when no color is set for the incoming
+             notification message. See README(https://goo.gl/6BKBk7) for more. -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/purple_200" />
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyD_BFzd1RCyQRfc70qDoq33UQpeMzh0sxM" />
@@ -38,14 +49,30 @@
                     android:scheme="kakao683f8b322937adcc3782060cd9229af2"/>
             </intent-filter>
         </activity>
-        <activity android:name=".screen.signup.SignUpActivity1" />
-        <activity android:name=".screen.signup.SignUpActivity2" />
-        <activity android:name=".screen.signup.SignUpActivity3" />
-        <activity android:name=".WebViewActivity" />
-        <activity android:name=".MapsActivity" />
-        <activity android:name=".screen.home.NaverMapActivity" />
+        <activity android:name=".screen.signup.SignUpActivity1"
+            android:exported="true" />
+        <activity android:name=".screen.signup.SignUpActivity2"
+            android:exported="true" />
+        <activity android:name=".screen.signup.SignUpActivity3"
+            android:exported="true" />
+        <activity android:name=".WebViewActivity"
+            android:exported="true" />
+        <activity android:name=".MapsActivity"
+            android:exported="true" />
+        <activity android:name=".screen.home.NaverMapActivity"
+            android:exported="true" />
 
         <service android:name=".SampleForegroundService" />
+        <service
+            android:name=".utils.FCMManager"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT"/>
+            </intent-filter>
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT"/>
+            </intent-filter>
+        </service>
 <!--        <service android:name=".LocationService"-->
 <!--            android:foregroundServiceType="location" />-->
 
