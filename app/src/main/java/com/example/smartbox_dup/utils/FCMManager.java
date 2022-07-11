@@ -96,12 +96,11 @@ public class FCMManager extends FirebaseMessagingService {
 
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_ONE_SHOT | PendingIntent.FLAG_IMMUTABLE);
 
-        String channelId  = "smartbox_dup";
-        String channelName = "smartbox_dup_name";
+        String channelId  = "sb_findid";
         Uri defaultSoundUri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder notificationBuilder =
                 new NotificationCompat.Builder(this, channelId)
-                        .setSmallIcon(R.id.iv_logo)
+                        .setSmallIcon(R.drawable.logo)
                         .setContentTitle(title)
                         .setContentText(body)
                         .setAutoCancel(true)
@@ -109,12 +108,6 @@ public class FCMManager extends FirebaseMessagingService {
                         .setContentIntent(pendingIntent);
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel channel = new NotificationChannel(channelId, channelName, NotificationManager.IMPORTANCE_DEFAULT);
-            notificationManager.createNotificationChannel(channel);
-        }
-
         notificationManager.notify(0, notificationBuilder.build());
     }
 }

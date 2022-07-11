@@ -106,8 +106,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         String clientSecret = "M3tnQJOpkE";
         String applicationName = "smartbox_dup";
 
-        NaverIdLoginSDK.INSTANCE.initialize(context, clientId, clientSecret, applicationName);
-        KakaoSdk.INSTANCE.init(context, "683f8b322937adcc3782060cd9229af2");
+//        NaverIdLoginSDK.INSTANCE.initialize(context, clientId, clientSecret, applicationName);
+//        KakaoSdk.INSTANCE.init(context, "683f8b322937adcc3782060cd9229af2");
 
         ActivityCompat.requestPermissions(this, new String[] {
                 Manifest.permission.ACCESS_FINE_LOCATION,
@@ -215,7 +215,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 //overridePendingTransition(0,0);
                 break;
             case R.id.tv_findId:
-                NotificationCompat.Builder builder = new NotificationCompat.Builder(this, getString(R.string.channel_name))
+                NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "sb_findid")
                         .setSmallIcon(R.drawable.logo)
                         .setContentTitle("smartbox_dup")
                         .setContentText("Much longer text that cannot fit one line..")
@@ -278,7 +278,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             CharSequence name = getString(R.string.channel_name);
             String description = getString(R.string.channel_description);
             int importance = NotificationManager.IMPORTANCE_HIGH;
-            NotificationChannel channel = new NotificationChannel(getString(R.string.channel_name), name, importance);
+            NotificationChannel channel = new NotificationChannel("sb_findid", name, importance);
             channel.setDescription(description);
             // Register the channel with the system; you can't change the importance
             // or other notification behaviors after this
