@@ -21,6 +21,10 @@ public class ActivitySwitchManager {
         context.startActivity(intent);
     }
 
+    public void changeActivity(Context context, Class after, Intent _intent) {
+        context.startActivity(_intent);
+    }
+
     public void changeActivity(Context context, Class after, Activity activity, View view, String _sharedElementName) {
         Intent intent = new Intent(context, after);
 
