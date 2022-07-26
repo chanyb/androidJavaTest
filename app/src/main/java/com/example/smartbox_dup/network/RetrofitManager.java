@@ -43,7 +43,7 @@ public class RetrofitManager {
             else res.addProperty("back4app", String.valueOf(BACK4APP.SUCCESS));
 
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e("RetrofitManager", "error", e);
         }
 
         return res;
@@ -61,11 +61,33 @@ public class RetrofitManager {
             else res.addProperty("back4app", String.valueOf(BACK4APP.SUCCESS));
 
         } catch (IOException e) {
-            e.printStackTrace();
+            Log.e("RetrofitManager", "error", e);
         }
 
         return res;
     }
+
+    public JsonObject getMenuItems(String sessionToken) {
+        Call<JsonObject> call = api.getMenuItems(sessionToken);
+        JsonObject res = new JsonObject();
+
+        try{
+            // 실행 결과 res에 저장
+            Response<JsonObject> response = call.execute();
+            res = response.body();
+            if (res == null) {
+                // res값이 비어있으면 FAIL
+                res = new JsonObject();
+                res.addProperty("back4app", String.valueOf(BACK4APP.FAIL));
+            }
+            else res.addProperty("back4app", String.valueOf(BACK4APP.SUCCESS));
+        } catch (IOException e) {
+            Log.e("RetrofitManager", "error", e);
+        }
+
+        return res;
+    }
+
 
     public void exampleOfasynchronize(JsonObject params) {
         Call<JsonObject> call = api.SignIn(params.get("username").getAsString(), params.get("password").getAsString());
