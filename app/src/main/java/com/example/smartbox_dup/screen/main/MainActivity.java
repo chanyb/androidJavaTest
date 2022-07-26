@@ -1,0 +1,102 @@
+package com.example.smartbox_dup.screen.main;
+
+import android.content.Context;
+import android.os.Bundle;
+import android.util.Log;
+import android.util.Pair;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
+
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.constraintlayout.widget.ConstraintSet;
+
+import com.example.smartbox_dup.R;
+import com.example.smartbox_dup.network.RetrofitManager;
+import com.example.smartbox_dup.utils.ToastManager;
+import com.example.smartbox_dup.utils.ViewCreateManager;
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+
+public class MainActivity extends AppCompatActivity {
+
+    // components
+    private Context context;
+    private TextView txt_for_params;
+    private TextView txt_title;
+    private JsonArray menu_items;
+    private ConstraintLayout lo_main;
+
+    // variable
+    Pair<ViewGroup, String> changedLayout;
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_main);
+        this.context = this;
+
+        // components
+        lo_main = findViewById(R.id.lo_main);
+        txt_title = findViewById(R.id.txt_title);
+        txt_for_params = findViewById(R.id.txt_for_params);
+
+        // variable
+        changedLayout = Pair.create(lo_main,"");
+
+
+        try{
+            getIntent().getStringExtra("sessionToken");
+        } catch(Exception e) {
+            ToastManager.getInstance().showToast(this, "sessionToken is empty");
+            return ;
+        }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+    }
+
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+        getMenuItems();
+    }
+
+    private void getMenuItems() {
+        new Thread(() ->{
+            JsonObject res = RetrofitManager.getInstance().getMenuItems(getIntent().getStringExtra("sessionToken"));
+            if(res.get("back4app").getAsString().equals(String.valueOf(RetrofitManager.BACK4APP.FAIL))) {
+                ToastManager.getInstance().showToast(context, "요청 실패.");
+            } else {
+                menu_items = res.get("results").getAsJsonArray();
+
+
+                for(int i=0; i<menu_items.size();i++) {
+                    ConstraintLayout.LayoutParams customConstraintLayoutParams = new ConstraintLayout.LayoutParams(txt_for_params.getLayoutParams());
+                    customConstraintLayoutParams.width = 0;
+                    customConstraintLayoutParams.matchConstraintPercentWidth = 0.9f;
+                    customConstraintLayoutParams.topToBottom = R.id.txt_title;
+                    customConstraintLayoutParams.bottomToBottom = R.id.lo_main;
+                    customConstraintLayoutParams.startToStart = R.id.lo_main;
+                    customConstraintLayoutParams.endToEnd = R.id.lo_main;
+                    customConstraintLayoutParams.verticalBias = i*0.1f;
+
+
+                    int finalI = i;
+                    runOnUiThread(() -> {
+                        String id = ViewCreateManager.getInstance().createView(context, ViewCreateManager.ViewType.Button, lo_main, customConstraintLayoutParams);
+                        ((Button)ViewCreateManager.getInstance().getViewById(id)).setText(menu_items.get(finalI).getAsJsonObject().get("title").getAsString());
+                    });
+                }
+            }
+        }).start();
+    }
+}
