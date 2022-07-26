@@ -41,6 +41,7 @@ import com.example.smartbox_dup.network.SocketServerManager;
 import com.example.smartbox_dup.screen.home.NaverMapActivity;
 import com.example.smartbox_dup.R;
 import com.example.smartbox_dup.SampleForegroundService;
+import com.example.smartbox_dup.screen.main.MainActivity;
 import com.example.smartbox_dup.screen.signup.SignUpActivity1;
 import com.example.smartbox_dup.WakeupWorker;
 import com.example.smartbox_dup.network.RetrofitManager;
@@ -117,10 +118,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
         this.checkPermission();
 
-        ViewGroup.LayoutParams params = (ConstraintLayout.LayoutParams) ev_id.getLayoutParams();
+//        ViewGroup.LayoutParams params = (ConstraintLayout.LayoutParams) ev_id.getLayoutParams();
 
-        String id = ViewCreateManager.getInstance().createView(this, ViewCreateManager.ViewType.TextView, main_layout, params);
-        ViewCreateManager.getInstance().getViewById(id);
+//        String id = ViewCreateManager.getInstance().createView(this, ViewCreateManager.ViewType.TextView, main_layout, params);
+//        ViewCreateManager.getInstance().getViewById(id);
 
         FCMManager fcm = new FCMManager(this);
         fcm.createNotificationChannel();
@@ -188,7 +189,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         if(res.get("back4app").getAsString().equals(String.valueOf(RetrofitManager.BACK4APP.FAIL))) {
                             ToastManager.getInstance().showToast(context, "입력한 계정 정보를 확인 할 수 없습니다.");
                         } else {
-                            ActivitySwitchManager.getInstance().changeActivity(context, NaverMapActivity.class);
+                            Intent i = new Intent(context, MainActivity.class);
+                            i.putExtra("sessionToken", res.get("sessionToken").getAsString());
+                            ActivitySwitchManager.getInstance().changeActivity(context, i);
                         }
                     }
 

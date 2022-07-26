@@ -25,7 +25,7 @@ public class ViewCreateManager {
     }
 
 
-    public String  createView(Context context, ViewType viewType, ViewGroup layout, ViewGroup.LayoutParams layoutParams) {
+    public String createView(Context context, ViewType viewType, ViewGroup layout, ViewGroup.LayoutParams layoutParams) {
         View view;
 
         switch (viewType) {
