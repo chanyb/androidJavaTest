@@ -4,6 +4,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
@@ -80,22 +81,24 @@ public class MainActivity extends AppCompatActivity {
 
 
                 for(int i=0; i<menu_items.size();i++) {
-                    ConstraintLayout.LayoutParams customConstraintLayoutParams = new ConstraintLayout.LayoutParams(txt_for_params.getLayoutParams());
-                    customConstraintLayoutParams.width = 0;
-                    customConstraintLayoutParams.matchConstraintPercentWidth = 0.9f;
-                    customConstraintLayoutParams.topToBottom = R.id.txt_title;
-                    customConstraintLayoutParams.bottomToBottom = R.id.lo_main;
-                    customConstraintLayoutParams.startToStart = R.id.lo_main;
-                    customConstraintLayoutParams.endToEnd = R.id.lo_main;
-                    customConstraintLayoutParams.verticalBias = i*0.1f;
-
-
                     int finalI = i;
                     runOnUiThread(() -> {
-                        String id = ViewCreateManager.getInstance().createView(context, ViewCreateManager.ViewType.Button, lo_main, customConstraintLayoutParams);
+                        String id = ViewCreateManager.getInstance().createView(context, ViewCreateManager.ViewType.BUTTON, lo_main, ViewCreateManager.LayoutType.CONSTRAINTLAYOUT);
                         ((Button)ViewCreateManager.getInstance().getViewById(id)).setText(menu_items.get(finalI).getAsJsonObject().get("title").getAsString());
+                        ((Button)ViewCreateManager.getInstance().getViewById(id)).setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Log.i("this", "click");
+                            }
+                        });
                     });
                 }
+
+
+                runOnUiThread(() -> {
+                    String id = ViewCreateManager.getInstance().createView(context, ViewCreateManager.ViewType.IMAGEVIEW, lo_main, ViewCreateManager.LayoutType.CONSTRAINTLAYOUT);
+                    ((ConstraintLayout.LayoutParams) ViewCreateManager.getInstance().getViewById(id).getLayoutParams()).verticalBias = 0.1f;
+                });
             }
         }).start();
     }

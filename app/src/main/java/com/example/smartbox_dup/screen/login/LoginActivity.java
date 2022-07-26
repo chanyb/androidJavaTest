@@ -7,6 +7,7 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
+import androidx.room.Room;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 import androidx.work.WorkRequest;
@@ -33,11 +34,15 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 
+import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import com.example.smartbox_dup.MyBroadcastReceiver;
 import com.example.smartbox_dup.location.GoogleLocationManger;
 import com.example.smartbox_dup.network.SocketServerManager;
+import com.example.smartbox_dup.room.AppDatabase;
+import com.example.smartbox_dup.room.User;
+import com.example.smartbox_dup.room.UserDao;
 import com.example.smartbox_dup.screen.home.NaverMapActivity;
 import com.example.smartbox_dup.R;
 import com.example.smartbox_dup.SampleForegroundService;
@@ -91,6 +96,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     // test for rxjava
     com.example.smartbox_dup.rxJavaTest rxJavaTest;
 
+    // Room
+    AppDatabase db;
+    UserDao userDao;
+    List<User> users;
 
 
     @Override
@@ -100,8 +109,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         this.createNotificationChannel();
 
         init();
-
-
+        initRoom();
 
         String clientId = "OXfEQAJGQjcM2KYgv726";
         String clientSecret = "M3tnQJOpkE";
@@ -128,6 +136,20 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         fcm.getToken();
     }
 
+    public void initRoom() {
+        db = AppDatabase.getInstance(this);
+        userDao = db.userDao();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                users = userDao.getAll();
+                for(User user : users) {
+                    Log.i("this", user.username + " / " + user.sessionToken);
+                }
+            }
+        }).start();
+
+    }
 
     public void init() {
         this.context = this;
@@ -191,6 +213,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         } else {
                             Intent i = new Intent(context, MainActivity.class);
                             i.putExtra("sessionToken", res.get("sessionToken").getAsString());
+                            userDao.insert(new User(ev_id.getText().toString(), res.get("sessionToken").getAsString()));
                             ActivitySwitchManager.getInstance().changeActivity(context, i);
                         }
                     }
