@@ -3,6 +3,8 @@ package com.example.smartbox_dup.utils;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 
 import androidx.core.app.ActivityOptionsCompat;
@@ -21,8 +23,8 @@ public class ActivitySwitchManager {
         context.startActivity(intent);
     }
 
-    public void changeActivity(Context context, Class after, Intent _intent) {
-        context.startActivity(_intent);
+    public void changeActivity(Context context, Intent intent) {
+        context.startActivity(intent);
     }
 
     public void changeActivity(Context context, Class after, Activity activity, View view, String _sharedElementName) {
