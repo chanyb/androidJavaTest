@@ -1,4 +1,4 @@
-package com.example.smartbox_dup;
+package com.example.smartbox_dup.broadcastreceiver;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;

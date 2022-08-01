@@ -1,4 +1,4 @@
-package com.example.smartbox_dup;
+package com.example.smartbox_dup.recyclerview;
 
 import android.content.Context;
 import android.view.View;
@@ -7,6 +7,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.example.smartbox_dup.R;
 
 public class viewHolder extends RecyclerView.ViewHolder{
     public TextView textView;

@@ -15,6 +15,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
 
 import com.example.smartbox_dup.R;
+import com.example.smartbox_dup.SerializableObject;
 import com.example.smartbox_dup.network.RetrofitManager;
 import com.example.smartbox_dup.utils.ToastManager;
 import com.example.smartbox_dup.utils.ViewCreateManager;
@@ -24,6 +25,11 @@ import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.util.Base64;
+
 public class MainActivity extends AppCompatActivity {
 
     // components
@@ -32,6 +38,7 @@ public class MainActivity extends AppCompatActivity {
     private TextView txt_title;
     private JsonArray menu_items;
     private ConstraintLayout lo_main;
+    private byte[] serializedObj;
 
     // variable
     Pair<ViewGroup, String> changedLayout;
@@ -57,6 +64,23 @@ public class MainActivity extends AppCompatActivity {
             ToastManager.getInstance().showToast(this, "sessionToken is empty");
             return ;
         }
+
+        serializedObj = getIntent().getByteArrayExtra("object");
+        Log.i("this", "Main: " + String.valueOf(serializedObj));
+
+        ByteArrayInputStream bais = new ByteArrayInputStream(serializedObj);
+        try {
+            ObjectInputStream ois = new ObjectInputStream(bais);
+            Object object = ois.readObject();
+            SerializableObject obj = (SerializableObject) object;
+            Log.i("this", obj.getField1());
+            Log.i("this", String.valueOf(obj.getField2()));
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+
     }
 
     @Override

@@ -7,7 +7,6 @@ import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ViewModelProvider;
-import androidx.room.Room;
 import androidx.work.OneTimeWorkRequest;
 import androidx.work.WorkManager;
 import androidx.work.WorkRequest;
@@ -27,23 +26,25 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import com.example.smartbox_dup.MyBroadcastReceiver;
+import com.example.smartbox_dup.SerializableObject;
+import com.example.smartbox_dup.broadcastreceiver.MyBroadcastReceiver;
 import com.example.smartbox_dup.location.GoogleLocationManger;
 import com.example.smartbox_dup.network.SocketServerManager;
 import com.example.smartbox_dup.room.AppDatabase;
 import com.example.smartbox_dup.room.User;
 import com.example.smartbox_dup.room.UserDao;
-import com.example.smartbox_dup.screen.home.NaverMapActivity;
 import com.example.smartbox_dup.R;
 import com.example.smartbox_dup.SampleForegroundService;
 import com.example.smartbox_dup.screen.main.MainActivity;
@@ -53,14 +54,12 @@ import com.example.smartbox_dup.network.RetrofitManager;
 import com.example.smartbox_dup.utils.ActivitySwitchManager;
 import com.example.smartbox_dup.utils.FCMManager;
 import com.example.smartbox_dup.utils.ToastManager;
-import com.example.smartbox_dup.utils.ViewCreateManager;
 import com.example.smartbox_dup.viewmodel.SocialLogin;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.gson.JsonObject;
 import com.kakao.sdk.auth.model.OAuthToken;
-import com.kakao.sdk.common.KakaoSdk;
 import com.kakao.sdk.talk.TalkApiClient;
 import com.kakao.sdk.template.model.Link;
 import com.kakao.sdk.template.model.TextTemplate;
@@ -101,6 +100,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     UserDao userDao;
     List<User> users;
 
+    // Serialize
+    byte[] serializedObj;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -134,6 +136,22 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         FCMManager fcm = new FCMManager(this);
         fcm.createNotificationChannel();
         fcm.getToken();
+
+
+        SerializableObject obj = new SerializableObject();
+        obj.setField1("a");
+        obj.setField2(1);
+
+        ByteArrayOutputStream baos = new ByteArrayOutputStream();
+        try {
+            ObjectOutputStream oos = new ObjectOutputStream(baos);
+            oos.writeObject(obj);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        serializedObj = baos.toByteArray();
+
+
     }
 
     public void initRoom() {
@@ -202,17 +220,19 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                 observable.subscribe(new Observer<Integer>() {
                     @Override
                     public void onSubscribe(@NonNull Disposable d) {
-
+                        Log.i("this", "onSubscribe");
                     }
 
                     @Override
                     public void onNext(@NonNull Integer integer) {
+                        Log.i("this", "onNext");
                         JsonObject res = RetrofitManager.getInstance().signIn(obj);
                         if(res.get("back4app").getAsString().equals(String.valueOf(RetrofitManager.BACK4APP.FAIL))) {
                             ToastManager.getInstance().showToast(context, "입력한 계정 정보를 확인 할 수 없습니다.");
                         } else {
                             Intent i = new Intent(context, MainActivity.class);
                             i.putExtra("sessionToken", res.get("sessionToken").getAsString());
+                            i.putExtra("object", serializedObj);
                             userDao.insert(new User(ev_id.getText().toString(), res.get("sessionToken").getAsString()));
                             ActivitySwitchManager.getInstance().changeActivity(context, i);
                         }
