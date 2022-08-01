@@ -230,11 +230,14 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         if(res.get("back4app").getAsString().equals(String.valueOf(RetrofitManager.BACK4APP.FAIL))) {
                             ToastManager.getInstance().showToast(context, "입력한 계정 정보를 확인 할 수 없습니다.");
                         } else {
-                            Intent i = new Intent(context, MainActivity.class);
-                            i.putExtra("sessionToken", res.get("sessionToken").getAsString());
-                            i.putExtra("object", serializedObj);
-                            userDao.insert(new User(ev_id.getText().toString(), res.get("sessionToken").getAsString()));
-                            ActivitySwitchManager.getInstance().changeActivity(context, i);
+//                            Intent i = new Intent(context, MainActivity.class);
+//                            i.putExtra("sessionToken", res.get("sessionToken").getAsString());
+//                            i.putExtra("object", serializedObj);
+//                            userDao.insert(new User(ev_id.getText().toString(), res.get("sessionToken").getAsString()));
+//                            ActivitySwitchManager.getInstance().changeActivity(context, i);
+
+                            Intent intent = getPackageManager().getLaunchIntentForPackage("com.nhn.android.search");
+                            startActivity(intent);
                         }
                     }
 
