@@ -24,6 +24,7 @@ import android.net.ConnectivityManager;
 import android.os.BatteryManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -53,6 +54,7 @@ import com.example.smartbox_dup.WakeupWorker;
 import com.example.smartbox_dup.network.RetrofitManager;
 import com.example.smartbox_dup.utils.ActivitySwitchManager;
 import com.example.smartbox_dup.utils.FCMManager;
+import com.example.smartbox_dup.utils.IntentManager;
 import com.example.smartbox_dup.utils.ToastManager;
 import com.example.smartbox_dup.viewmodel.SocialLogin;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -235,9 +237,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 //                            i.putExtra("object", serializedObj);
 //                            userDao.insert(new User(ev_id.getText().toString(), res.get("sessionToken").getAsString()));
 //                            ActivitySwitchManager.getInstance().changeActivity(context, i);
-
-                            Intent intent = getPackageManager().getLaunchIntentForPackage("com.nhn.android.search");
-                            startActivity(intent);
                         }
                     }
 
