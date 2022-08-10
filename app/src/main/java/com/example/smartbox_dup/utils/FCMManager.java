@@ -49,23 +49,6 @@ public class FCMManager extends FirebaseMessagingService {
                 });
     }
 
-    public void createNotificationChannel() {
-        // Create the NotificationChannel, but only on API 26+ because
-        // the NotificationChannel class is new and not in the support library
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            String name = "smartbox_dup_name";
-            String description = "smartbox_dup_desc";
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel = new NotificationChannel("smartbox_dup", name, importance);
-            channel.setDescription(description);
-            // Register the channel with the system; you can't change the importance
-            // or other notification behaviors after this
-            NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
-        }
-    }
-
-
     @Override
     public void onMessageReceived(@NonNull RemoteMessage remoteMessage) {
         Log.i("this", "From: " + remoteMessage.getFrom());
@@ -87,6 +70,23 @@ public class FCMManager extends FirebaseMessagingService {
 
         super.onMessageReceived(remoteMessage);
     }
+
+    public void createNotificationChannel(Context _context) {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "fcm_channel_test";
+            String description = "fcm_channel_test_desc";
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel channel = new NotificationChannel("sb_findid", name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = _context.getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
     private void sendNotification(String title, String body, String linkUrl) {
         Log.d("Firebase", title);
 
