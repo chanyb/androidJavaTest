@@ -1,8 +1,12 @@
 package com.example.smartbox_dup;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
+import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -36,17 +40,37 @@ public class SampleForegroundService extends Service {
     }
 
     public void generateForegroundNotification() {
-        Intent fullScreenIntent = new Intent(this, LoginActivity.class);
-        PendingIntent fullScreenPendingIntent = PendingIntent.getActivity(this, 0, fullScreenIntent, PendingIntent.FLAG_IMMUTABLE);
+        createNotificationChannel(this);
+        Intent intent = new Intent(this, LoginActivity.class);
+        intent.setAction(Intent.ACTION_MAIN);
+        intent.addCategory(Intent.CATEGORY_LAUNCHER);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, PendingIntent.FLAG_IMMUTABLE);
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, this.getString(R.string.channel_name))
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "service_channel")
                 .setSmallIcon(R.drawable.logo)
-                .setContentTitle("smartbox_dup")
+                .setPriority(NotificationCompat.PRIORITY_LOW)
+                .setCategory(NotificationCompat.CATEGORY_SERVICE)
                 .setContentText("Much longer text that cannot fit one line..")
-                .setPriority(NotificationCompat.PRIORITY_HIGH)
-                .setCategory(NotificationCompat.CATEGORY_ALARM)
-                .setFullScreenIntent(fullScreenPendingIntent, true);
+                .setContentIntent(pendingIntent);
+//                .setFullScreenIntent(fullScreenPendingIntent, true);
 
         startForeground(1, builder.build());
+    }
+
+    public void createNotificationChannel(Context _context) {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "service_channel";
+            String description = "service_channel_desc";
+            int importance = NotificationManager.IMPORTANCE_LOW;
+            NotificationChannel channel = new NotificationChannel("service_channel", name, importance);
+            channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = _context.getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
     }
 }
