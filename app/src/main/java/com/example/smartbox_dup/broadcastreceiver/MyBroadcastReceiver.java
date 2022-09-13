@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
+import com.example.smartbox_dup.SampleForegroundService;
 import com.example.smartbox_dup.utils.ToastManager;
 
 public class MyBroadcastReceiver extends BroadcastReceiver {
@@ -21,5 +22,11 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
         ToastManager.getInstance().showToast(context, log);
         Log.i("this",log);
 
+
+        switch (intent.getAction()) {
+            case Intent.ACTION_BOOT_COMPLETED:
+                context.startService(new Intent(context, SampleForegroundService.class));
+                break;
+        }
     }
 }
