@@ -36,6 +36,7 @@ import android.widget.TextView;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -55,6 +56,7 @@ import com.example.smartbox_dup.network.RetrofitManager;
 import com.example.smartbox_dup.utils.ActivitySwitchManager;
 import com.example.smartbox_dup.utils.FCMManager;
 import com.example.smartbox_dup.utils.IntentManager;
+import com.example.smartbox_dup.utils.KeystoreManager;
 import com.example.smartbox_dup.utils.ToastManager;
 import com.example.smartbox_dup.viewmodel.SocialLogin;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -110,7 +112,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
-        this.createNotificationChannel();
+//        this.createNotificationChannel();
 
         init();
         initRoom();
@@ -136,8 +138,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 //        ViewCreateManager.getInstance().getViewById(id);
 
         FCMManager fcm = new FCMManager(this);
-        fcm.createNotificationChannel();
         fcm.getToken();
+        fcm.createNotificationChannel(context);
 
 
         SerializableObject obj = new SerializableObject();
@@ -153,7 +155,12 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
         serializedObj = baos.toByteArray();
 
+        Log.i("this", String.valueOf(getIntent().getStringExtra("test"))); // push에서 꺼내오는 extra
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
     }
 
     public void initRoom() {
@@ -232,11 +239,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         if(res.get("back4app").getAsString().equals(String.valueOf(RetrofitManager.BACK4APP.FAIL))) {
                             ToastManager.getInstance().showToast(context, "입력한 계정 정보를 확인 할 수 없습니다.");
                         } else {
-//                            Intent i = new Intent(context, MainActivity.class);
-//                            i.putExtra("sessionToken", res.get("sessionToken").getAsString());
-//                            i.putExtra("object", serializedObj);
-//                            userDao.insert(new User(ev_id.getText().toString(), res.get("sessionToken").getAsString()));
-//                            ActivitySwitchManager.getInstance().changeActivity(context, i);
+                            Intent i = new Intent(context, MainActivity.class);
+                            i.putExtra("sessionToken", res.get("sessionToken").getAsString());
+                            i.putExtra("object", serializedObj);
+                            userDao.insert(new User(ev_id.getText().toString(), res.get("sessionToken").getAsString()));
+                            ActivitySwitchManager.getInstance().changeActivity(context, i);
                         }
                     }
 
@@ -253,9 +260,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                 break;
             case R.id.tb_signUp:
-                View tb_signUp = findViewById(R.id.tb_signUp);
-                ActivitySwitchManager.getInstance().changeActivity(this, SignUpActivity1.class, this, tb_signUp,"signup");
-                finish();
+                startForegroundService();
+//                View tb_signUp = findViewById(R.id.tb_signUp);
+//                ActivitySwitchManager.getInstance().changeActivity(this, SignUpActivity1.class, this, tb_signUp,"signup");
+//                finish();
 
                 //ActivityOptionsCompat activityOptions = ActivityOptionsCompat.makeSceneTransitionAnimation(this, tb_signUp,"signup");
                 //startActivity(intent, activityOptions.toBundle());
@@ -319,21 +327,21 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         }
     };
 
-    private void createNotificationChannel() {
-        // Create the NotificationChannel, but only on API 26+ because
-        // the NotificationChannel class is new and not in the support library
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            CharSequence name = getString(R.string.channel_name);
-            String description = getString(R.string.channel_description);
-            int importance = NotificationManager.IMPORTANCE_HIGH;
-            NotificationChannel channel = new NotificationChannel("sb_findid", name, importance);
-            channel.setDescription(description);
-            // Register the channel with the system; you can't change the importance
-            // or other notification behaviors after this
-            NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
-        }
-    }
+//    private void createNotificationChannel() {
+//        // Create the NotificationChannel, but only on API 26+ because
+//        // the NotificationChannel class is new and not in the support library
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            CharSequence name = getString(R.string.channel_name);
+//            String description = getString(R.string.channel_description);
+//            int importance = NotificationManager.IMPORTANCE_HIGH;
+//            NotificationChannel channel = new NotificationChannel("sb_findid", name, importance);
+//            channel.setDescription(description);
+//            // Register the channel with the system; you can't change the importance
+//            // or other notification behaviors after this
+//            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+//            notificationManager.createNotificationChannel(channel);
+//        }
+//    }
 
     public void getUserLocation() {
 
@@ -378,7 +386,11 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
     }
 
     public void startForegroundService() {
-        startService(new Intent(this, SampleForegroundService.class));
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundService(new Intent(this, SampleForegroundService.class));
+        } else {
+            startService(new Intent(this, SampleForegroundService.class));
+        }
     }
 
     public void getBatteryStatus() {
