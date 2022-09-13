@@ -42,19 +42,20 @@
             android:name=".screen.login.LoginActivity"
             android:exported="true">
             <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-
-
-            </intent-filter>
-            <intent-filter>
                 <data
                     android:host="kakaolink"
                     android:scheme="kakao683f8b322937adcc3782060cd9229af2"/>
                 <data
                     android:host="oauth"
                     android:scheme="kakao683f8b322937adcc3782060cd9229af2"/>
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".screen.intro.IntroActivity"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
         <activity android:name=".screen.signup.SignUpActivity1"
