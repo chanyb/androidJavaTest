@@ -113,6 +113,12 @@
     <!-- system boot -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
 
+    <!-- Vibrate -->
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+    <!-- Notification Policy -->
+    <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
+
     <queries>
         <package android:name="com.kakao.talk" />
     </queries>
