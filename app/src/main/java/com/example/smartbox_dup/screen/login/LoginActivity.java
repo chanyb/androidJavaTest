@@ -260,10 +260,10 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                 break;
             case R.id.tb_signUp:
-                startForegroundService();
-//                View tb_signUp = findViewById(R.id.tb_signUp);
-//                ActivitySwitchManager.getInstance().changeActivity(this, SignUpActivity1.class, this, tb_signUp,"signup");
-//                finish();
+//                startForegroundService();
+                View tb_signUp = findViewById(R.id.tb_signUp);
+                ActivitySwitchManager.getInstance().changeActivity(this, SignUpActivity1.class, this, tb_signUp,"signup");
+                finish();
 
                 //ActivityOptionsCompat activityOptions = ActivityOptionsCompat.makeSceneTransitionAnimation(this, tb_signUp,"signup");
                 //startActivity(intent, activityOptions.toBundle());
