@@ -1,7 +1,9 @@
 package com.example.smartbox_dup.utils;
+import android.app.Dialog;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.view.View;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,7 +25,7 @@ public class AudioManager {
         return instance;
     }
 
-    public void setRingerMode(AppCompatActivity activity, State state) {
+    public void setRingerMode(State state) {
         switch (state) {
             case NORMAL:
                 systemAudioManager.setRingerMode(android.media.AudioManager.RINGER_MODE_NORMAL);
@@ -36,10 +38,16 @@ public class AudioManager {
                 notificationManager = (NotificationManager) GlobalApplcation.getContext().getSystemService(Context.NOTIFICATION_SERVICE);
 
                 if (!notificationManager.isNotificationPolicyAccessGranted()) {
-                    Intent intent = new Intent(android.provider.Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // Activity가 아닌 곳에서 startActivity를 할 때 필요한 Flag
-                    GlobalApplcation.getContext().startActivity(intent);
+                    DialogManager.getInstance().showConfirmDialog("허용해야 함", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent intent = new Intent(android.provider.Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // Activity가 아닌 곳에서 startActivity를 할 때 필요한 Flag
+                            GlobalApplcation.getContext().startActivity(intent);
+                        }
+                    });
                 } else {
+                    DialogManager.getInstance().dismissConfirmDialog();
                     systemAudioManager.setRingerMode(android.media.AudioManager.RINGER_MODE_SILENT);
                 }
                 break;
