@@ -20,6 +20,7 @@
     <string name="vPhoneCheck_not_permitted_helperText">일치하지 않는 인증번호 입니다.</string>
     <string name="vTimeout">03:00</string>
     <string name="vConfirm_text">확 인</string>
+    <string name="vCancel_text">확 인</string>
     <string name="vNext_text">다 음</string>
     <string name="vTermsCondition_message">이용약관을 동의하신 후 회원가입이 진행됩니다.</string>
     <string name="vTermsCondition_phrase_usage">스마트약통 이용약관 동의</string>
