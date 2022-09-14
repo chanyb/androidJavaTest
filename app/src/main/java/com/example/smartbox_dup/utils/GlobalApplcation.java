@@ -26,6 +26,7 @@ public class GlobalApplcation extends Application {
     }
 
     private Listener stateListener;
+    public static Activity currentActivity;
 
     @Override
     public void onCreate() {
@@ -54,6 +55,7 @@ public class GlobalApplcation extends Application {
         @Override
         public void onActivityResumed(@NonNull Activity activity) {
             Log.i(TAG, "onActivityResumed: " + activity);
+            GlobalApplcation.currentActivity = activity;
         }
 
         @Override
@@ -68,6 +70,7 @@ public class GlobalApplcation extends Application {
                 state = State.Background;
                 if (stateListener != null) stateListener.onBecameBackground();
             }
+            GlobalApplcation.currentActivity = null;
         }
 
         @Override
