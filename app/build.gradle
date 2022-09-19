@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId "com.example.smartbox_dup"
-        minSdk 29
+        minSdk 23
         targetSdk 32
         versionCode 1
         versionName "1.0"
@@ -21,6 +21,7 @@ android {
             res.srcDirs =[
                     '/src/main/res/layouts/item',
                     '/src/main/res/layouts/activity',
+                    '/src/main/res/layouts/dialog',
                     '/src/main/res/layouts',
                     '/src/main/res'
             ]
