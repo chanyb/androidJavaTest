@@ -41,4 +41,18 @@ public class BroadcastManager {
         intent.setAction("com.example.smartbox_dup.firstBroadcast");
         sendBroadcast(intent);
     }
+
+    public void unregister(BroadcastReceiver receiver) {
+        if(receiver == null) throw new NullPointerException("The receiver parameter is null value");
+        Context context = GlobalApplcation.getContext();
+        if(context != null) context.unregisterReceiver(receiver);
+        else throw new NullPointerException("GlobalApplication.getContext() is null value");
+    }
+
+    public void unregister(Context context, BroadcastReceiver receiver) {
+        if(receiver == null) throw new NullPointerException("The receiver parameter is null value");
+        if(context != null) context.unregisterReceiver(receiver);
+        else throw new NullPointerException("The context parameter is null value");
+    }
+
 }
