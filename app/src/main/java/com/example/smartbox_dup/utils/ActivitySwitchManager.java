@@ -3,8 +3,6 @@ package com.example.smartbox_dup.utils;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 
 import androidx.core.app.ActivityOptionsCompat;
@@ -12,19 +10,19 @@ import androidx.core.app.ActivityOptionsCompat;
 public class ActivitySwitchManager {
     private static ActivitySwitchManager instance = new ActivitySwitchManager();
 
-    private ActivitySwitchManager () {}
-
     public static ActivitySwitchManager getInstance() {
         return instance;
     }
 
-    public void changeActivity(Context context, Class after) {
+    public void changeActivity(Context context, Class after, boolean finish) {
         Intent intent = new Intent(context, after);
         context.startActivity(intent);
+        if(finish) ((Activity) context).finish();
     }
 
-    public void changeActivity(Context context, Intent intent) {
+    public void changeActivity(Context context, Intent intent, boolean finish) {
         context.startActivity(intent);
+        if(finish) ((Activity) context).finish();
     }
 
     public void changeActivity(Context context, Class after, Activity activity, View view, String _sharedElementName) {
