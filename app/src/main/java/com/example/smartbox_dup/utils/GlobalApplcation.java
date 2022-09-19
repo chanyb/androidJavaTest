@@ -1,6 +1,7 @@
 package com.example.smartbox_dup.utils;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.Application;
 import android.os.Bundle;
 import android.util.Log;
@@ -104,4 +105,14 @@ public class GlobalApplcation extends Application {
         stateListener = null;
     }
 
+
+    public boolean isServiceRunningCheck(Class serviceClass) {
+        android.app.ActivityManager manager = (android.app.ActivityManager) GlobalApplcation.getContext().getSystemService(Activity.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
+    }
 }
