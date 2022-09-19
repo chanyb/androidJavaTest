@@ -55,6 +55,7 @@ import com.example.smartbox_dup.WakeupWorker;
 import com.example.smartbox_dup.network.RetrofitManager;
 import com.example.smartbox_dup.utils.ActivitySwitchManager;
 import com.example.smartbox_dup.utils.FCMManager;
+import com.example.smartbox_dup.utils.GlobalApplcation;
 import com.example.smartbox_dup.utils.IntentManager;
 import com.example.smartbox_dup.utils.KeystoreManager;
 import com.example.smartbox_dup.utils.ToastManager;
@@ -243,7 +244,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                             i.putExtra("sessionToken", res.get("sessionToken").getAsString());
                             i.putExtra("object", serializedObj);
                             userDao.insert(new User(ev_id.getText().toString(), res.get("sessionToken").getAsString()));
-                            ActivitySwitchManager.getInstance().changeActivity(context, i);
+                            ActivitySwitchManager.getInstance().changeActivity(context, i, false);
                         }
                     }
 
@@ -260,10 +261,16 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                 break;
             case R.id.tb_signUp:
-//                startForegroundService();
-                View tb_signUp = findViewById(R.id.tb_signUp);
-                ActivitySwitchManager.getInstance().changeActivity(this, SignUpActivity1.class, this, tb_signUp,"signup");
-                finish();
+                if(GlobalApplcation.getContext().isServiceRunningCheck(SampleForegroundService.class)) {
+                    Log.i("this", "서비스가 실행중입니다.");
+                    GlobalApplcation.getContext().stopService(new Intent(this, SampleForegroundService.class));
+                } else {
+                    Log.i("this", "서비스가 실행되고 있지 않습니다.");
+                    startForegroundService();
+                }
+//                View tb_signUp = findViewById(R.id.tb_signUp);
+//                ActivitySwitchManager.getInstance().changeActivity(this, SignUpActivity1.class, this, tb_signUp,"signup");
+//                finish();
 
                 //ActivityOptionsCompat activityOptions = ActivityOptionsCompat.makeSceneTransitionAnimation(this, tb_signUp,"signup");
                 //startActivity(intent, activityOptions.toBundle());

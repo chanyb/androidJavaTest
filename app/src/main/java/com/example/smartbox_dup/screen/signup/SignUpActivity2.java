@@ -151,7 +151,7 @@ public class SignUpActivity2 extends AppCompatActivity implements View.OnClickLi
                             ToastManager.getInstance().showToast(context, "서버접속이 원활하지 않습니다.");
                         } else {
                             // success
-                            ActivitySwitchManager.getInstance().changeActivity(context, SignUpActivity3.class);
+                            ActivitySwitchManager.getInstance().changeActivity(context, SignUpActivity3.class,false);
                         }
                     }
 

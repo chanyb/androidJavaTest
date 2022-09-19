@@ -1,5 +1,7 @@
 package com.example.smartbox_dup.screen.intro;
 
+import android.app.NotificationManager;
+import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.net.ConnectivityManager;
@@ -13,10 +15,18 @@ import com.example.smartbox_dup.R;
 import com.example.smartbox_dup.broadcastreceiver.BroadcastManager;
 import com.example.smartbox_dup.broadcastreceiver.NetworkBroadcastReceiver;
 import com.example.smartbox_dup.screen.login.LoginActivity;
+import com.example.smartbox_dup.utils.ActivitySwitchManager;
 import com.example.smartbox_dup.utils.AudioManager;
+import com.example.smartbox_dup.utils.FutureTaskRunner;
 import com.example.smartbox_dup.utils.GlobalApplcation;
 
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.FutureTask;
+
 public class IntroActivity extends AppCompatActivity {
+    NetworkBroadcastReceiver networkBroadcastReceiver;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,11 +46,21 @@ public class IntroActivity extends AppCompatActivity {
         finish();
     }
 
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+    }
+
+    @Override
+    protected void onPause() {
+        BroadcastManager.getInstance().unregister(networkBroadcastReceiver);
+        super.onPause();
+    }
+
     private void checkpoints() {
         // 브로드캐스트 등록
-        NetworkBroadcastReceiver networkBroadcastReceiver = new NetworkBroadcastReceiver();
+        networkBroadcastReceiver = new NetworkBroadcastReceiver();
         IntentFilter intentFilter = new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION);
-        intentFilter.addAction("com.example.smartbox_dup.firstBroadcast");
         BroadcastManager.getInstance().register(networkBroadcastReceiver, intentFilter);
 
         // foreground/background 상태 리스너 등록
@@ -52,6 +72,8 @@ public class IntroActivity extends AppCompatActivity {
         // Ringermode 테스트
         setRingerMode(AudioManager.State.SILENT);
 
+        // futureTask 테스트
+        futureTaskManager_test();
     }
 
     private void setGroundStateListener() {
@@ -68,6 +90,52 @@ public class IntroActivity extends AppCompatActivity {
     }
 
     private void setRingerMode(AudioManager.State state) {
-        AudioManager.getInstance().setRingerMode(this, state);
+        AudioManager.getInstance().setRingerMode(state);
+    }
+
+    private void futureTask_test() {
+        new Thread(() -> {
+            FutureTask<String> futureTask = new FutureTask<>(new Callable<String>() {
+                @Override
+                public String call() throws Exception {
+                    Log.i("this", "작업 시작");
+                    Thread.sleep(10000);
+                    return "Alicd";
+                }
+            });
+
+            futureTask.run();
+
+            // 리턴 값이 와야 아래로 진행됨
+            try {
+                Log.i("this", futureTask.get());
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+        }).start();
+
+    }
+
+    private void futureTaskManager_test() {
+        FutureTaskRunner futureTaskRunner = new FutureTaskRunner();
+        futureTaskRunner.nextTask(() -> {
+            NotificationManager notificationManager;
+            notificationManager = (NotificationManager) GlobalApplcation.getContext().getSystemService(Context.NOTIFICATION_SERVICE);
+
+            while(true) {
+                if(notificationManager.isNotificationPolicyAccessGranted()) break;
+            }
+
+            return true;
+        });
+
+        futureTaskRunner.nextTask(() -> {
+            ActivitySwitchManager.getInstance().changeActivity(GlobalApplcation.currentActivity, LoginActivity.class, true);
+            return true;
+        });
+
+        futureTaskRunner.start();
     }
 }
