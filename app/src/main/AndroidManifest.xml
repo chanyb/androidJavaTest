@@ -72,6 +72,8 @@
             android:exported="true" />
         <activity android:name=".screen.main.MainActivity"
             android:exported="true" />
+        <activity android:name=".screen.function.FunctionListActivity"
+            android:exported="false" />
 
         <service android:name=".SampleForegroundService" />
         <service

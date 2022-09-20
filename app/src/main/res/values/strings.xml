@@ -44,4 +44,6 @@
 
     <string name="BASE_URL">http://parseapi.back4app.com/</string>
 
+    <string name="function_1">알람</string>
+
 </resources>
