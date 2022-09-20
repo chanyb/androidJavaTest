@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.smartbox_dup">
 
+
     <application
         android:name=".utils.GlobalApplcation"
         android:allowBackup="true"
@@ -15,6 +16,17 @@
         <receiver android:name=".broadcastreceiver.MyBroadcastReceiver"
             android:exported="true">
             <intent-filter>
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name=".screen.function.alarm.AlarmBroadcastReceiver"
+            android:enabled="true"
+            android:exported="true"
+            >
+            <intent-filter>
+                <action android:name="android.app.action.SCHEDULE_EXACT_ALARM_PERMISSION_STATE_CHANGED" />
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
@@ -74,6 +86,14 @@
             android:exported="true" />
         <activity android:name=".screen.function.FunctionListActivity"
             android:exported="false" />
+        <activity android:name=".screen.function.alarm.AlarmCreateActivity"
+            android:exported="false" />
+        <activity android:name=".screen.function.alarm.FullScreenAlarmActivity"
+            android:exported="false"
+            android:excludeFromRecents="true"
+            android:screenOrientation="portrait"
+            android:showOnLockScreen="true"
+            android:showWhenLocked="true" />
 
         <service android:name=".SampleForegroundService" />
         <service
@@ -86,8 +106,8 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT"/>
             </intent-filter>
         </service>
-<!--        <service android:name=".LocationService"-->
-<!--            android:foregroundServiceType="location" />-->
+        <service android:name=".screen.function.alarm.AlarmService" />
+
 
     </application>
 
@@ -120,6 +140,21 @@
 
     <!-- Notification Policy -->
     <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
+
+    <!-- Exact Alarm -->
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
+
+    <!-- full screen intent -->
+    <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
+
+    <!-- foreground service -->
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
+    <!-- overlay -->
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW"/>
+
+    <!-- wake lock -->
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
 
     <queries>
         <package android:name="com.kakao.talk" />

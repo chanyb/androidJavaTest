@@ -14,11 +14,14 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.smartbox_dup.R;
 import com.example.smartbox_dup.broadcastreceiver.BroadcastManager;
 import com.example.smartbox_dup.broadcastreceiver.NetworkBroadcastReceiver;
+import com.example.smartbox_dup.screen.function.FunctionListActivity;
 import com.example.smartbox_dup.screen.login.LoginActivity;
 import com.example.smartbox_dup.utils.ActivitySwitchManager;
 import com.example.smartbox_dup.utils.AudioManager;
+import com.example.smartbox_dup.utils.DialogManager;
 import com.example.smartbox_dup.utils.FutureTaskRunner;
 import com.example.smartbox_dup.utils.GlobalApplcation;
+import com.example.smartbox_dup.utils.PermissionManager;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
@@ -37,7 +40,6 @@ public class IntroActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         checkpoints();
-//        nextPage();
     }
 
     private void nextPage() {
@@ -70,7 +72,9 @@ public class IntroActivity extends AppCompatActivity {
         BroadcastManager.getInstance().sendBroadcast_test();
 
         // Ringermode 테스트
-        setRingerMode(AudioManager.State.SILENT);
+
+
+        // drawOverlay
 
         // futureTask 테스트
         futureTaskManager_test();
@@ -120,7 +124,22 @@ public class IntroActivity extends AppCompatActivity {
 
     private void futureTaskManager_test() {
         FutureTaskRunner futureTaskRunner = new FutureTaskRunner();
+
         futureTaskRunner.nextTask(() -> {
+            runOnUiThread(() -> {
+                PermissionManager.getInstance().overlayPermissionCheck();
+            });
+            while(true) {
+                if(!PermissionManager.getInstance().drawOverlaysRequiredButNotGranted()) break;
+            }
+            return true;
+        });
+
+        futureTaskRunner.nextTask(() -> {
+            runOnUiThread(() -> {
+                setRingerMode(AudioManager.State.SILENT);
+            });
+
             NotificationManager notificationManager;
             notificationManager = (NotificationManager) GlobalApplcation.getContext().getSystemService(Context.NOTIFICATION_SERVICE);
 
@@ -132,7 +151,7 @@ public class IntroActivity extends AppCompatActivity {
         });
 
         futureTaskRunner.nextTask(() -> {
-            ActivitySwitchManager.getInstance().changeActivity(GlobalApplcation.currentActivity, LoginActivity.class, true);
+            ActivitySwitchManager.getInstance().changeActivity(GlobalApplcation.currentActivity, FunctionListActivity.class, true);
             return true;
         });
 

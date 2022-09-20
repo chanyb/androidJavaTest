@@ -3,11 +3,17 @@ package com.example.smartbox_dup.utils;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.Application;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.Context;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 
 public class GlobalApplcation extends Application {
     private static volatile GlobalApplcation instance;
@@ -114,5 +120,36 @@ public class GlobalApplcation extends Application {
             }
         }
         return false;
+    }
+
+    public void createNotificationChannel(String channelId, int importance) {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationChannel channel = new NotificationChannel(channelId, channelId, importance); // id, name, importance
+            channel.enableLights(true);
+            channel.setLightColor(Color.GREEN);
+            channel.enableVibration(true);
+            channel.setVibrationPattern(new long[]{1000, 2000, 1000, 2000});
+            channel.setSound(null, null);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = GlobalApplcation.getContext().getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
+    public boolean isNotificationChannelEnabled(String channelId) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            NotificationManager notificationManager = GlobalApplcation.getContext().getSystemService(NotificationManager.class);
+            NotificationChannel channel = notificationManager.getNotificationChannel(channelId);
+
+            if(channel != null) {
+                return true;
+            }
+            return false;
+        }
+
+        return true;
     }
 }

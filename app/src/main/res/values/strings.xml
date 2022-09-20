@@ -11,6 +11,7 @@
     <string name="vLogin_text">로그인</string>
     <string name="vSignUp_text">회원가입</string>
     <string name="vSignUp_message">가입 정보를 바르게 입력해주세요.</string>
+    <string name="vCreate_text">생성</string>
     <string name="vFindId_text">아이디 찾기</string>
     <string name="vFindPassword_text">비밀번호 찾기</string>
     <string name="vSeparator_text">|</string>
@@ -46,4 +47,6 @@
 
     <string name="function_1">알람</string>
 
+    <string name="alarm_service_channel">alarm_service_channel</string>
+    <string name="permission_text">알람 표시를 위해 \n\"다른 앱 위에 표시\"\n권한을 설정 해주세요."</string>
 </resources>
