@@ -5,7 +5,9 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
+import android.os.SystemClock;
 
+import com.example.smartbox_dup.utils.ByteArrayManager;
 import com.example.smartbox_dup.utils.GlobalApplcation;
 
 import java.io.ByteArrayOutputStream;
@@ -44,26 +46,9 @@ public class Alarm implements Serializable {
 
     public void schedule(int id) {
         AlarmManager alarmManager = (AlarmManager) GlobalApplcation.getContext().getSystemService(Context.ALARM_SERVICE);
-
+        ByteArrayManager<Alarm> bcTransformer = new ByteArrayManager<>();
         Intent myIntent = new Intent(GlobalApplcation.getContext(), AlarmBroadcastReceiver.class);
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        ObjectOutputStream out = null;
-        byte[] bytes = null;
-        try {
-            out = new ObjectOutputStream(bos);
-            out.writeObject(this);
-            out.flush();
-            bytes = bos.toByteArray();
-            myIntent.putExtra("alarm", bytes);
-        } catch (IOException e) {
-            e.printStackTrace();
-        } finally {
-            try {
-                bos.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
+        myIntent.putExtra("alarm", bcTransformer.getByteArrayFromClassObject(this));
 
         PendingIntent alarmPendingIntent = null;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
@@ -84,6 +69,7 @@ public class Alarm implements Serializable {
             calendar.set(Calendar.DAY_OF_MONTH, calendar.get(Calendar.DAY_OF_MONTH) + 1);
         }
 
+//        alarmManager.setRepeating(AlarmManager.ELAPSED_REALTIME_WAKEUP, SystemClock.elapsedRealtime(), 60000, alarmPendingIntent);
         alarmManager.setAlarmClock(new AlarmManager.AlarmClockInfo(calendar.getTimeInMillis(), alarmPendingIntent), alarmPendingIntent);
 
     }
