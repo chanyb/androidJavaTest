@@ -1,5 +1,6 @@
 package com.example.smartbox_dup.screen.function.alarm;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.media.Ringtone;
@@ -21,6 +22,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.smartbox_dup.R;
 import com.example.smartbox_dup.utils.ByteArrayManager;
+import com.example.smartbox_dup.utils.GlobalApplcation;
 
 import org.json.JSONException;
 
@@ -64,6 +66,15 @@ public class FullScreenAlarmActivity extends AppCompatActivity {
         activityRingDismiss.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(getIntent().getStringExtra("activity") != null) {
+                    try {
+                        Class<?> someClass = Class.forName(getIntent().getStringExtra("activity"));
+                        Intent myIntent = new Intent(GlobalApplcation.getContext(), someClass);
+                        startActivity(myIntent);
+                    } catch (ClassNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                }
                 vibrator.cancel();
                 ringtone.stop();
                 finish();

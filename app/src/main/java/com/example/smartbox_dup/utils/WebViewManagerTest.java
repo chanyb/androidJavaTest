@@ -18,6 +18,8 @@ import android.webkit.WebViewClient;
 
 import java.net.URLDecoder;
 
+import chanyb.android.java.ToastManager;
+
 public class WebViewManagerTest {
     private static WebViewManagerTest instance = new WebViewManagerTest();
     private WebViewManagerTest () {}

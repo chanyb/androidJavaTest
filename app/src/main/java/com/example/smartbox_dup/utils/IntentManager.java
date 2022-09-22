@@ -2,7 +2,11 @@ package com.example.smartbox_dup.utils;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.provider.Settings;
+
+import java.util.Iterator;
+import java.util.Set;
 
 public class IntentManager {
     private IntentManager() {}
@@ -33,5 +37,19 @@ public class IntentManager {
 
     public Intent getOtherApplicationRunIntent(Context mContext, String packageName) {
         return mContext.getPackageManager().getLaunchIntentForPackage(packageName);
+    }
+
+    public void copyExtras(Intent original, Intent duplicated) {
+        Bundle bundle = original.getExtras();
+
+        Set<String> keys = bundle.keySet();
+        for (Iterator<String> iterator = keys.iterator(); iterator.hasNext();) {
+            String key = iterator.next();
+            if(original.getStringExtra(key) != null) duplicated.putExtra(key, original.getStringExtra(key));
+            else if(original.getByteArrayExtra(key) != null) duplicated.putExtra(key, original.getStringExtra(key));
+            else if(original.getIntExtra(key, -95958) != -95958) duplicated.putExtra(key, original.getStringExtra(key));
+            else duplicated.putExtra(key, "error");
+        }
+
     }
 }

@@ -6,7 +6,9 @@ import android.content.Intent;
 import android.util.Log;
 
 import com.example.smartbox_dup.SampleForegroundService;
-import com.example.smartbox_dup.utils.ToastManager;
+
+import chanyb.android.java.ToastManager;
+
 
 public class MyBroadcastReceiver extends BroadcastReceiver {
 

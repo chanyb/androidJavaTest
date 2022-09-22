@@ -12,8 +12,6 @@ import androidx.work.WorkManager;
 import androidx.work.WorkRequest;
 
 import android.Manifest;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -24,7 +22,6 @@ import android.net.ConnectivityManager;
 import android.os.BatteryManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.provider.Settings;
 import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
@@ -36,7 +33,6 @@ import android.widget.TextView;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -56,9 +52,6 @@ import com.example.smartbox_dup.network.RetrofitManager;
 import com.example.smartbox_dup.utils.ActivitySwitchManager;
 import com.example.smartbox_dup.utils.FCMManager;
 import com.example.smartbox_dup.utils.GlobalApplcation;
-import com.example.smartbox_dup.utils.IntentManager;
-import com.example.smartbox_dup.utils.KeystoreManager;
-import com.example.smartbox_dup.utils.ToastManager;
 import com.example.smartbox_dup.viewmodel.SocialLogin;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -72,13 +65,12 @@ import com.kakao.sdk.user.UserApiClient;
 import com.navercorp.nid.NaverIdLoginSDK;
 import com.navercorp.nid.oauth.OAuthLoginCallback;
 
+import chanyb.android.java.ToastManager;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Observer;
 import io.reactivex.rxjava3.disposables.Disposable;
 import io.reactivex.rxjava3.schedulers.Schedulers;
-import kotlin.Unit;
-import kotlin.jvm.functions.Function2;
 
 public class LoginActivity extends AppCompatActivity implements View.OnClickListener{
     private ConstraintLayout main_layout;
@@ -298,18 +290,18 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
             case R.id.lo_kakaoLogin:
                 if(UserApiClient.getInstance().isKakaoTalkLoginAvailable(this)) {
                     // 카카오톡을 실행 가능 할 때,
-                    UserApiClient.getInstance().loginWithKakaoTalk(this, new Function2<OAuthToken, Throwable, Unit>() {
-                        @Override
-                        public Unit invoke(OAuthToken oAuthToken, Throwable throwable) {
-                            if (throwable != null) {
-                                Log.i("kakako", throwable.toString());
-                            } else {
-                                mSocialLogin.setSocialType("kakaoTalk");
-                                mSocialLogin.setToken(oAuthToken.getAccessToken());
-                            }
-                            return null;
-                        }
-                    });
+//                    UserApiClient.getInstance().loginWithKakaoTalk(this, new Function2<OAuthToken, Throwable, Unit>() {
+//                        @Override
+//                        public Unit invoke(OAuthToken oAuthToken, Throwable throwable) {
+//                            if (throwable != null) {
+//                                Log.i("kakako", throwable.toString());
+//                            } else {
+//                                mSocialLogin.setSocialType("kakaoTalk");
+//                                mSocialLogin.setToken(oAuthToken.getAccessToken());
+//                            }
+//                            return null;
+//                        }
+//                    });
 
 
                 }
@@ -431,29 +423,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
         intentFilter.addAction(Intent.ACTION_SCREEN_OFF);
 
         this.registerReceiver(br, intentFilter);
-    }
-
-    public void kakaotalkToMe() {
-        UserApiClient.getInstance().me((user, error) -> {
-            if(error != null) {
-                Log.e("kakao", error.toString());
-            } else {
-                Log.i("kakao", user.getKakaoAccount().getEmail());
-            }
-            return null;
-        });
-
-        Link link = new Link("https://m.naver.com","https://m.naver.com", null, null);
-        TextTemplate textTemplate = new TextTemplate("테스트메시지", link, null, "테스트");
-
-        TalkApiClient.getInstance().sendCustomMemo(77282, error -> {
-            if(error != null) {
-                Log.i("kakao", "나에게보내기 실패", error);
-            } else {
-                Log.i("kakao", "나에게보내기 성공");
-            }
-            return null;
-        });
     }
 
 

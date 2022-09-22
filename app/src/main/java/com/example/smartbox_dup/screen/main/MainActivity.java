@@ -12,23 +12,19 @@ import android.widget.TextView;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.constraintlayout.widget.ConstraintSet;
 
 import com.example.smartbox_dup.R;
 import com.example.smartbox_dup.SerializableObject;
 import com.example.smartbox_dup.network.RetrofitManager;
-import com.example.smartbox_dup.utils.ToastManager;
 import com.example.smartbox_dup.utils.ViewCreateManager;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.google.gson.JsonArray;
-import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.util.Base64;
+
+import chanyb.android.java.ToastManager;
 
 public class MainActivity extends AppCompatActivity {
 

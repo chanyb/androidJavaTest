@@ -60,6 +60,11 @@ public class AlarmService extends Service {
             notificationIntent.putExtra("isScreenOn", isScreenOn);
             notificationIntent.putExtra("alarm", bytes);
 
+            if(GlobalApplcation.getContext().isForeground()) { // foreground면, 현재 Activity 기억하기
+                if (GlobalApplcation.currentActivity != null)
+                    notificationIntent.putExtra("activity", GlobalApplcation.currentActivity.getClass().getName());
+            }
+
             PendingIntent pendingIntent = null;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                 pendingIntent = PendingIntent.getActivity(this, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE);

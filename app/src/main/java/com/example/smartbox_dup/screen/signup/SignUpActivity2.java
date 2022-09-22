@@ -18,12 +18,12 @@ import androidx.core.content.ContextCompat;
 import com.example.smartbox_dup.R;
 import com.example.smartbox_dup.network.RetrofitManager;
 import com.example.smartbox_dup.utils.ActivitySwitchManager;
-import com.example.smartbox_dup.utils.ToastManager;
 import com.google.gson.JsonObject;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import chanyb.android.java.ToastManager;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Observer;

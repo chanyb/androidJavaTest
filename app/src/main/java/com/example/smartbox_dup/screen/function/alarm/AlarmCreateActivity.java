@@ -1,7 +1,7 @@
 package com.example.smartbox_dup.screen.function.alarm;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 
@@ -11,7 +11,9 @@ import androidx.core.app.NotificationCompat;
 
 import com.example.smartbox_dup.R;
 import com.example.smartbox_dup.utils.GlobalApplcation;
-import com.example.smartbox_dup.utils.ToastManager;
+import com.example.smartbox_dup.utils.IntentManager;
+
+import chanyb.android.java.ToastManager;
 
 public class AlarmCreateActivity extends AppCompatActivity {
 
@@ -24,6 +26,8 @@ public class AlarmCreateActivity extends AppCompatActivity {
         setContentView(R.layout.activity_function_alarm);
         init();
         createAlarmServiceChannel();
+
+        Intent duplicated = new Intent();
     }
 
     private void init() {
