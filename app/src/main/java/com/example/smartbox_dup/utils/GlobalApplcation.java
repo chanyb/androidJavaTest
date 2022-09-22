@@ -77,7 +77,7 @@ public class GlobalApplcation extends Application {
                 state = State.Background;
                 if (stateListener != null) stateListener.onBecameBackground();
             }
-            GlobalApplcation.currentActivity = null;
+            if(activity.getClass() == GlobalApplcation.currentActivity.getClass()) GlobalApplcation.currentActivity = null;
         }
 
         @Override
