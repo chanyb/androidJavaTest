@@ -8,6 +8,8 @@ import android.view.View;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.appcompat.app.AppCompatActivity;
 
+import chanyb.android.java.GlobalApplcation;
+
 public class AudioManager {
     public enum State {
         VIBRATE, NORMAL, SILENT

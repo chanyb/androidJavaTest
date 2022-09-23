@@ -5,16 +5,13 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.os.SystemClock;
 
 import com.example.smartbox_dup.utils.ByteArrayManager;
-import com.example.smartbox_dup.utils.GlobalApplcation;
 
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.Calendar;
+
+import chanyb.android.java.GlobalApplcation;
 
 public class Alarm implements Serializable {
     private String title;

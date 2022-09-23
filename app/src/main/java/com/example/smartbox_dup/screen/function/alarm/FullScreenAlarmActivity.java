@@ -1,36 +1,25 @@
 package com.example.smartbox_dup.screen.function.alarm;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.PowerManager;
 import android.os.Vibrator;
-import android.util.Log;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.smartbox_dup.R;
 import com.example.smartbox_dup.utils.ByteArrayManager;
-import com.example.smartbox_dup.utils.GlobalApplcation;
 
-import org.json.JSONException;
-
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
-import java.io.ObjectInput;
-import java.io.ObjectInputStream;
-import java.util.UUID;
+import chanyb.android.java.GlobalApplcation;
 
 public class FullScreenAlarmActivity extends AppCompatActivity {
     Context mContext;

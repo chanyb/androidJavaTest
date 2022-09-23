@@ -8,6 +8,8 @@ import android.provider.Settings;
 
 import com.example.smartbox_dup.R;
 
+import chanyb.android.java.GlobalApplcation;
+
 public class PermissionManager {
     private static PermissionManager instance;
     private PermissionManager () {}

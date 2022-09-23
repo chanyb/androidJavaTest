@@ -3,18 +3,9 @@ package com.example.smartbox_dup.screen.function.alarm;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.os.Build;
 import android.util.Log;
 
 import com.example.smartbox_dup.utils.ByteArrayManager;
-import com.example.smartbox_dup.utils.GlobalApplcation;
-
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectInput;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 
 public class AlarmBroadcastReceiver extends BroadcastReceiver {
     Alarm alarm;

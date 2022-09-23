@@ -92,5 +92,5 @@ dependencies {
     implementation 'commons-codec:commons-codec:1.10'
 
     // my module..!
-    implementation 'com.github.chanyb:android-development-support-tool-kit-java:0.0.1'
+    implementation 'com.github.chanyb:android-development-support-tool-kit-java:master-SNAPSHOT'
 }

@@ -18,14 +18,15 @@ import com.example.smartbox_dup.screen.function.FunctionListActivity;
 import com.example.smartbox_dup.screen.login.LoginActivity;
 import com.example.smartbox_dup.utils.ActivitySwitchManager;
 import com.example.smartbox_dup.utils.AudioManager;
-import com.example.smartbox_dup.utils.DialogManager;
 import com.example.smartbox_dup.utils.FutureTaskRunner;
-import com.example.smartbox_dup.utils.GlobalApplcation;
 import com.example.smartbox_dup.utils.PermissionManager;
 
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
+
+import chanyb.android.java.GlobalApplcation;
+import chanyb.android.java.ToastManager;
 
 public class IntroActivity extends AppCompatActivity {
     NetworkBroadcastReceiver networkBroadcastReceiver;
@@ -156,5 +157,6 @@ public class IntroActivity extends AppCompatActivity {
         });
 
         futureTaskRunner.start();
+        ToastManager.getInstance().showToast("hello, world!!~");
     }
 }

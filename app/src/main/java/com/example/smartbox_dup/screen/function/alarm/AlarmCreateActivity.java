@@ -10,9 +10,8 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 
 import com.example.smartbox_dup.R;
-import com.example.smartbox_dup.utils.GlobalApplcation;
-import com.example.smartbox_dup.utils.IntentManager;
 
+import chanyb.android.java.GlobalApplcation;
 import chanyb.android.java.ToastManager;
 
 public class AlarmCreateActivity extends AppCompatActivity {

@@ -7,7 +7,8 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.util.Log;
 
-import com.example.smartbox_dup.utils.GlobalApplcation;
+import chanyb.android.java.GlobalApplcation;
+
 
 public class BroadcastManager {
     private static volatile BroadcastManager instance = new BroadcastManager();

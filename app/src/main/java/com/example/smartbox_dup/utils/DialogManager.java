@@ -5,6 +5,8 @@ import android.view.View;
 
 import com.example.smartbox_dup.R;
 
+import chanyb.android.java.GlobalApplcation;
+
 public class DialogManager {
     private static DialogManager instance;
     private DialogManager() {}

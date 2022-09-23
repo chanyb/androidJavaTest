@@ -1,11 +1,9 @@
 package com.example.smartbox_dup.screen.function.alarm;
 
-import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.bluetooth.BluetoothAdapter;
-import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.Intent;
 import android.media.RingtoneManager;
@@ -13,22 +11,14 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.IBinder;
 import android.os.PowerManager;
-import android.util.Log;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
 import com.example.smartbox_dup.R;
 import com.example.smartbox_dup.utils.ByteArrayManager;
-import com.example.smartbox_dup.utils.GlobalApplcation;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectInput;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.util.Set;
+import chanyb.android.java.GlobalApplcation;
 
 public class AlarmService extends Service {
     Alarm alarm;
