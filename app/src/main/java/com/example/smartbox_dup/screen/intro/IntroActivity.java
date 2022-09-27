@@ -152,6 +152,7 @@ public class IntroActivity extends AppCompatActivity {
         });
 
         futureTaskRunner.nextTask(() -> {
+//            ActivitySwitchManager.getInstance().changeActivity(GlobalApplcation.currentActivity, LoginActivity.class, true);
             ActivitySwitchManager.getInstance().changeActivity(GlobalApplcation.currentActivity, FunctionListActivity.class, true);
             return true;
         });

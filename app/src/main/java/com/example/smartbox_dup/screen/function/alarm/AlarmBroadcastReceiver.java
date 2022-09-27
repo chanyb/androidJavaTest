@@ -17,6 +17,8 @@ public class AlarmBroadcastReceiver extends BroadcastReceiver {
             return ;
         }
 
+        Log.i("this", String.valueOf(intent.getAction()));
+
         getAlarm(intent.getByteArrayExtra("alarm"));
         if(alarm == null) return ;
 

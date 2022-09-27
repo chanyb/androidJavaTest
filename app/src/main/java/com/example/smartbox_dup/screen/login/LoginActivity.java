@@ -37,6 +37,7 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import com.example.smartbox_dup.SerializableObject;
+import com.example.smartbox_dup.ServiceChecker;
 import com.example.smartbox_dup.broadcastreceiver.MyBroadcastReceiver;
 import com.example.smartbox_dup.location.GoogleLocationManger;
 import com.example.smartbox_dup.network.SocketServerManager;
@@ -382,7 +383,8 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
     public void startForegroundService() {
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            startForegroundService(new Intent(this, SampleForegroundService.class));
+//            startForegroundService(new Intent(this, SampleForegroundService.class));
+            startForegroundService(new Intent(this, ServiceChecker.class));
         } else {
             startService(new Intent(this, SampleForegroundService.class));
         }

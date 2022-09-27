@@ -107,6 +107,7 @@
             </intent-filter>
         </service>
         <service android:name=".screen.function.alarm.AlarmService" />
+        <service android:name=".ServiceChecker" />
 
 
     </application>

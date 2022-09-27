@@ -21,7 +21,7 @@
     <string name="vPhoneCheck_not_permitted_helperText">일치하지 않는 인증번호 입니다.</string>
     <string name="vTimeout">03:00</string>
     <string name="vConfirm_text">확 인</string>
-    <string name="vCancel_text">확 인</string>
+    <string name="vCancel_text">취 소</string>
     <string name="vNext_text">다 음</string>
     <string name="vTermsCondition_message">이용약관을 동의하신 후 회원가입이 진행됩니다.</string>
     <string name="vTermsCondition_phrase_usage">스마트약통 이용약관 동의</string>
@@ -46,6 +46,7 @@
     <string name="BASE_URL">http://parseapi.back4app.com/</string>
 
     <string name="function_1">알람</string>
+    <string name="function_2">foreground서비스</string>
 
     <string name="alarm_service_channel">alarm_service_channel</string>
     <string name="permission_text">알람 표시를 위해 \n\"다른 앱 위에 표시\"\n권한을 설정 해주세요."</string>
