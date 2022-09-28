@@ -3,6 +3,8 @@ import android.app.Dialog;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
+import android.provider.Settings;
 import android.view.View;
 
 import androidx.activity.result.ActivityResultLauncher;
@@ -43,9 +45,9 @@ public class AudioManager {
                     DialogManager.getInstance().showConfirmDialog("허용해야 함", new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
-                            Intent intent = new Intent(android.provider.Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS);
+                            Intent intent = new Intent(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS);
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // Activity가 아닌 곳에서 startActivity를 할 때 필요한 Flag
-                            GlobalApplcation.getContext().startActivity(intent);
+                            GlobalApplcation.currentActivity.startActivity(intent);
                         }
                     });
                 } else {

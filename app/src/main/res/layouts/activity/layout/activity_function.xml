@@ -34,6 +34,46 @@
             app:layout_constraintEnd_toEndOf="@id/btn_1"
             />
 
+        <Button
+            android:id="@+id/btn_3"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:text="@string/function_3"
+            app:layout_constraintTop_toBottomOf="@id/btn_2"
+            app:layout_constraintStart_toStartOf="@id/btn_2"
+            app:layout_constraintEnd_toEndOf="@id/btn_2"
+            />
+
+        <Button
+            android:id="@+id/btn_4"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:text="@string/function_4"
+            app:layout_constraintTop_toBottomOf="@id/btn_3"
+            app:layout_constraintStart_toStartOf="@id/btn_3"
+            app:layout_constraintEnd_toEndOf="@id/btn_3"
+            />
+
+        <Button
+            android:id="@+id/btn_5"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:text="@string/function_5"
+            app:layout_constraintTop_toBottomOf="@id/btn_4"
+            app:layout_constraintStart_toStartOf="@id/btn_4"
+            app:layout_constraintEnd_toEndOf="@id/btn_4"
+            />
+
+        <Button
+            android:id="@+id/btn_6"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:text="@string/function_6"
+            app:layout_constraintTop_toBottomOf="@id/btn_5"
+            app:layout_constraintStart_toStartOf="@id/btn_5"
+            app:layout_constraintEnd_toEndOf="@id/btn_5"
+            />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>

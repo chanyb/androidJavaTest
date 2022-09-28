@@ -200,9 +200,6 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 //                getBatteryStatus();
 //                receiveBroadcast();
 //                connectSocketServer();
-                GoogleLocationManger.getInstance().setActivity(this);
-                Log.i("this", String.valueOf(GoogleLocationManger.getInstance().getUserLocation()));
-
                 break;
             case R.id.tb_login:
                 JsonObject obj = new JsonObject();

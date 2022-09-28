@@ -51,12 +51,12 @@ public class NaverMapActivity extends AppCompatActivity {
 
         User user = new User();
         user.setUsername("나");
-        if(GoogleLocationManger.getInstance().getUserLocation() == null) GoogleLocationManger.getInstance().setActivity(this);
-        user.setLocation(GoogleLocationManger.getInstance().getUserLocation().getLatitude() + ", " + GoogleLocationManger.getInstance().getUserLocation().getLongitude());
 
-        LocalTime time = LocalTime.now();
-        user.setLocatedtime(time.getHour() + "시 " + time.getMinute() + "분");
-
+        LocalTime time = null;
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            time = LocalTime.now();
+            user.setLocatedtime(time.getHour() + "시 " + time.getMinute() + "분");
+        }
 
         naverMapOveralyAdapter.addItem(user);
         userItemView.setAdapter(naverMapOveralyAdapter);

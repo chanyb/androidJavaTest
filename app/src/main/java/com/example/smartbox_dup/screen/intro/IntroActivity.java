@@ -100,7 +100,7 @@ public class IntroActivity extends AppCompatActivity {
 
     private void futureTask_test() {
         new Thread(() -> {
-            FutureTask<String> futureTask = new FutureTask<>(new Callable<String>() {
+            FutureTask<String> futureTask = new FutureTask<>(new Callable() {
                 @Override
                 public String call() throws Exception {
                     Log.i("this", "작업 시작");
@@ -124,7 +124,7 @@ public class IntroActivity extends AppCompatActivity {
     }
 
     private void futureTaskManager_test() {
-        FutureTaskRunner futureTaskRunner = new FutureTaskRunner();
+        FutureTaskRunner<Boolean> futureTaskRunner = new FutureTaskRunner<>();
 
         futureTaskRunner.nextTask(() -> {
             runOnUiThread(() -> {
@@ -145,19 +145,18 @@ public class IntroActivity extends AppCompatActivity {
             notificationManager = (NotificationManager) GlobalApplcation.getContext().getSystemService(Context.NOTIFICATION_SERVICE);
 
             while(true) {
-                if(notificationManager.isNotificationPolicyAccessGranted()) break;
+                if(notificationManager.isNotificationPolicyAccessGranted() && GlobalApplcation.getContext().isForeground()) break;
             }
 
             return true;
         });
 
-        futureTaskRunner.nextTask(() -> {
-//            ActivitySwitchManager.getInstance().changeActivity(GlobalApplcation.currentActivity, LoginActivity.class, true);
-            ActivitySwitchManager.getInstance().changeActivity(GlobalApplcation.currentActivity, FunctionListActivity.class, true);
+        futureTaskRunner.setCallback(res -> {
+            startActivity(new Intent(this, FunctionListActivity.class));
+            finish();
             return true;
         });
 
         futureTaskRunner.start();
-        ToastManager.getInstance().showToast("hello, world!!~");
     }
 }

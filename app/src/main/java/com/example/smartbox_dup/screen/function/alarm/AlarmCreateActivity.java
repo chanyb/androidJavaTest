@@ -4,6 +4,7 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.widget.Button;
@@ -57,7 +58,13 @@ public class AlarmCreateActivity extends AppCompatActivity {
 
             Intent target = new Intent(GlobalApplcation.getContext(), AlarmBroadcastReceiver.class);
             target.setAction("com.smartbox_dup.actionTest");
-            PendingIntent targetPending = PendingIntent.getBroadcast(GlobalApplcation.getContext(), 13, target, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE);
+            PendingIntent targetPending;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                targetPending = PendingIntent.getBroadcast(GlobalApplcation.getContext(), 13, target, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE);
+            } else {
+                targetPending = PendingIntent.getBroadcast(GlobalApplcation.getContext(), 13, target, PendingIntent.FLAG_UPDATE_CURRENT);
+            }
+
             alarmManager.cancel(targetPending);
         });
     }

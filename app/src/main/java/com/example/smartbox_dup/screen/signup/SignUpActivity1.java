@@ -115,7 +115,6 @@ public class SignUpActivity1 extends AppCompatActivity implements View.OnClickLi
         switch(view.getId()) {
             case R.id.iv_logo:
                 Log.i("this", "click in signup1");
-                GoogleLocationManger.getInstance().getUserLocation();
                 break;
             case R.id.lo_next:
                 intent = new Intent(this, SignUpActivity2.class);

@@ -38,7 +38,8 @@ public class PermissionManager {
     public void overlayPermissionCheck() {
         if(drawOverlaysRequiredButNotGranted()) {
             DialogManager.getInstance().showConfirmDialog(GlobalApplcation.getContext().getString(R.string.permission_text), (view) -> {
-                Intent gotoSettingForStartActivity = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse("package:" + GlobalApplcation.getContext().getPackageName()));
+                Intent gotoSettingForStartActivity = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION);
+                gotoSettingForStartActivity.setData(Uri.parse("package:" + GlobalApplcation.getContext().getPackageName()));
                 gotoSettingForStartActivity.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 GlobalApplcation.getContext().startActivity(gotoSettingForStartActivity);
             });

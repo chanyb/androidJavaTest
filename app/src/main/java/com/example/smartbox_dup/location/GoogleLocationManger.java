@@ -1,103 +1,97 @@
 package com.example.smartbox_dup.location;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.pm.PackageManager;
 import android.location.Location;
+import android.os.SystemClock;
 import android.util.Log;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import com.example.smartbox_dup.utils.FutureTaskRunner;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Function;
 
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers;
-import io.reactivex.rxjava3.annotations.NonNull;
-import io.reactivex.rxjava3.core.Observable;
-import io.reactivex.rxjava3.core.Observer;
+import chanyb.android.java.GlobalApplcation;
+import chanyb.android.java.ToastManager;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
-import io.reactivex.rxjava3.disposables.Disposable;
-import io.reactivex.rxjava3.schedulers.Schedulers;
-import kotlin.jvm.Synchronized;
+
 
 public class GoogleLocationManger {
 
     private static FusedLocationProviderClient fusedLocationClient;
     private static GoogleLocationManger instance = new GoogleLocationManger();
     private CompositeDisposable compositeDisposable = new CompositeDisposable();
-    private Activity activity;
-    private Task<Location> task;
-    private volatile String thislocation="";
 
     private GoogleLocationManger() {
     }
 
-    public void setActivity(Activity activity) {
-        this.activity = activity;
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(activity);
-    }
-
-    private static boolean wasSetActivity() {
-        if (fusedLocationClient == null) {
-            Log.i("this", "(warning) Please Set Activity in GoogleLocationManager");
-            return false;
-        }
-
-        return true;
-    }
-
     public static GoogleLocationManger getInstance() {
+        if(fusedLocationClient == null) fusedLocationClient = LocationServices.getFusedLocationProviderClient(GlobalApplcation.getContext());
+        if(instance == null) instance = new GoogleLocationManger();
         return instance;
     }
 
-    public Location getUserLocation() {
-        if(!wasSetActivity()) {
-            return null;
-        }
-
-        checkPermission();
-        if(task == null) task = fusedLocationClient.getLastLocation();
-        while(true) {
-            try{
-                if(task.isComplete()) break;
-            } catch (Exception e) {
-
-            }
-        }
-
-        return task.getResult();
-    }
-
-    public void checkPermission() {
+    public void getUserLocation(FutureTaskRunner.Callback callback) {
         String [] permissions = {
                 Manifest.permission.ACCESS_COARSE_LOCATION,
                 Manifest.permission.ACCESS_FINE_LOCATION,
                 Manifest.permission.ACCESS_BACKGROUND_LOCATION
         };
-        int ACCESS_FINE_LOCATION  = ContextCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_FINE_LOCATION);
-        if(ACCESS_FINE_LOCATION == PackageManager.PERMISSION_DENIED) {
-            Log.i("this", "ACCESS_FINE_LOCATION 권한없음");
-            ActivityCompat.requestPermissions(activity, new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, 3);
-        }
+        FutureTaskRunner<Object> futureTaskRunner = new FutureTaskRunner();
 
-        int ACCESS_COARSE_LOCATION  = ContextCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_COARSE_LOCATION);
-        if(ACCESS_COARSE_LOCATION == PackageManager.PERMISSION_DENIED) {
-            Log.i("this", "ACCESS_COARSE_LOCATION 권한없음");
-            ActivityCompat.requestPermissions(activity, new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, 3);
-        }
+        futureTaskRunner.nextTask(() -> {
+            int ACCESS_FINE_LOCATION = ContextCompat.checkSelfPermission(GlobalApplcation.getContext(), permissions[0]);
+            if(ACCESS_FINE_LOCATION == PackageManager.PERMISSION_DENIED) {
+                ActivityCompat.requestPermissions(GlobalApplcation.currentActivity, new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+                while (true) {
+                    ACCESS_FINE_LOCATION = ContextCompat.checkSelfPermission(GlobalApplcation.getContext(), permissions[0]);
+                    if(ACCESS_FINE_LOCATION != PackageManager.PERMISSION_DENIED) break;
+                }
+            }
+            return true;
+        });
 
-        int ACCESS_BACKGROUND_LOCATION  = ContextCompat.checkSelfPermission(activity, Manifest.permission.ACCESS_BACKGROUND_LOCATION);
-        if(ACCESS_BACKGROUND_LOCATION == PackageManager.PERMISSION_DENIED) {
-            Log.i("this", "ACCESS_BACKGROUND_LOCATION 권한없음");
-            ActivityCompat.requestPermissions(activity, new String[] {Manifest.permission.ACCESS_BACKGROUND_LOCATION}, 3);
-        }
+        futureTaskRunner.nextTask(() -> {
+            Thread.sleep(100);
+            int ACCESS_COARSE_LOCATION  = ContextCompat.checkSelfPermission(GlobalApplcation.getContext(),  permissions[1]);
+            if(ACCESS_COARSE_LOCATION == PackageManager.PERMISSION_DENIED) {
+                ActivityCompat.requestPermissions(GlobalApplcation.currentActivity, new String[] {Manifest.permission.ACCESS_COARSE_LOCATION}, 2);
+                do {
+                    ACCESS_COARSE_LOCATION = ContextCompat.checkSelfPermission(GlobalApplcation.getContext(), permissions[1]);
+                } while (ACCESS_COARSE_LOCATION == PackageManager.PERMISSION_DENIED);
+            }
+            return true;
+        });
+
+        futureTaskRunner.nextTask(() -> {
+            Thread.sleep(100);
+            int ACCESS_BACKGROUND_LOCATION  = ContextCompat.checkSelfPermission(GlobalApplcation.getContext(), permissions[2]);
+            if(ACCESS_BACKGROUND_LOCATION == PackageManager.PERMISSION_DENIED) {
+                ActivityCompat.requestPermissions(GlobalApplcation.currentActivity, new String[] {Manifest.permission.ACCESS_BACKGROUND_LOCATION}, 3);
+                do {
+                    ACCESS_BACKGROUND_LOCATION = ContextCompat.checkSelfPermission(GlobalApplcation.getContext(), permissions[2]);
+                } while (ACCESS_BACKGROUND_LOCATION == PackageManager.PERMISSION_DENIED);
+            }
+            return true;
+        });
+
+        futureTaskRunner.nextTask(() -> {
+            Task<Location> task = fusedLocationClient.getLastLocation();
+            while(true) {
+                if(task.isComplete()) break;
+            }
+            return task.getResult();
+        });
+
+        futureTaskRunner.setCallback(callback);
+
+        futureTaskRunner.start();
 
     }
 }

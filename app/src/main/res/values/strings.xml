@@ -46,7 +46,12 @@
     <string name="BASE_URL">http://parseapi.back4app.com/</string>
 
     <string name="function_1">알람</string>
-    <string name="function_2">foreground서비스</string>
+    <string name="function_2">google gms location (현재 위치)</string>
+    <string name="function_3">sqlLite</string>
+    <string name="function_4">intent setdata uri test</string>
+    <string name="function_5">5</string>
+    <string name="function_6">6</string>
+
 
     <string name="alarm_service_channel">alarm_service_channel</string>
     <string name="permission_text">알람 표시를 위해 \n\"다른 앱 위에 표시\"\n권한을 설정 해주세요."</string>
