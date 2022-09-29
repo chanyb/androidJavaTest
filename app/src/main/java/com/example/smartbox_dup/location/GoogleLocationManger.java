@@ -26,7 +26,6 @@ public class GoogleLocationManger {
 
     private static FusedLocationProviderClient fusedLocationClient;
     private static GoogleLocationManger instance = new GoogleLocationManger();
-    private CompositeDisposable compositeDisposable = new CompositeDisposable();
 
     private GoogleLocationManger() {
     }
