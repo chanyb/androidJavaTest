@@ -70,6 +70,19 @@ public class MyDBHandler {
         mDB.delete("student", "name=?", new String[]{name});
     }
 
+    public void update(int _id, String name, int age, String address) {
+        mDB = mHelper.getWritableDatabase();
+
+        ContentValues value = new ContentValues();
+        value.put("_id", _id);
+        value.put("name", name);
+        value.put("age", age);
+        value.put("address", address);
+
+        mDB.update("student", value, "_id=?", new String[] {String.valueOf(_id)});
+    }
+
+
     public void close() {
         mHelper.close();
     }
