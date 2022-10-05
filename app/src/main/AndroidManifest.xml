@@ -94,6 +94,8 @@
             android:screenOrientation="portrait"
             android:showOnLockScreen="true"
             android:showWhenLocked="true" />
+        <activity android:name=".screen.function.sqlite.SQLiteTest"
+            android:exported="false" />
 
         <service android:name=".SampleForegroundService" />
         <service

@@ -1,8 +1,10 @@
 package com.example.smartbox_dup.screen.function;
 
 import android.annotation.SuppressLint;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.location.Location;
 import android.location.LocationManager;
 import android.net.Uri;
@@ -16,12 +18,18 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.smartbox_dup.R;
 import com.example.smartbox_dup.location.GoogleLocationManger;
+import com.example.smartbox_dup.screen.function.alarm.Alarm;
 import com.example.smartbox_dup.screen.function.alarm.AlarmCreateActivity;
+import com.example.smartbox_dup.screen.function.sqlite.SQLiteTest;
 import com.example.smartbox_dup.sqlite.MyDBHandler;
+import com.example.smartbox_dup.sqlite.SQLiteHandler;
 import com.example.smartbox_dup.utils.ActivitySwitchManager;
 import com.example.smartbox_dup.utils.FutureTaskRunner;
 import com.google.android.gms.tasks.Task;
 
+import java.util.HashMap;
+import java.util.LinkedHashMap;
+import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
 
 import chanyb.android.java.GlobalApplcation;
@@ -57,21 +65,18 @@ public class FunctionListActivity extends AppCompatActivity {
 
         btn_3 = findViewById(R.id.btn_3);
         btn_3.setOnClickListener((view) -> {
-            MyDBHandler dbHandler = new MyDBHandler(GlobalApplcation.getContext(), "smartbox_dup.db");
-            dbHandler.insert("bbbb", 20, "010");
-            Cursor cursor = dbHandler.select("student","aaaaa");
-            cursor.moveToFirst();
-            do {
-                Log.i("this", cursor.getString(1));
-            } while(cursor.moveToNext());
+            Intent intent = new Intent(this, SQLiteTest.class);
+            startActivity(intent);
         });
 
         btn_4 = findViewById(R.id.btn_4);
         btn_4.setOnClickListener((view) -> {
+
         });
 
         btn_5 = findViewById(R.id.btn_5);
         btn_5.setOnClickListener((view) -> {
+
         });
 
         btn_6 = findViewById(R.id.btn_6);
