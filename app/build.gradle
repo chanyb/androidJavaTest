@@ -21,6 +21,7 @@ android {
             res.srcDirs =[
                     '/src/main/res/layouts/item',
                     '/src/main/res/layouts/activity',
+                    '/src/main/res/layouts/activity/function',
                     '/src/main/res/layouts/dialog',
                     '/src/main/res/layouts',
                     '/src/main/res'
@@ -92,5 +93,5 @@ dependencies {
     implementation 'commons-codec:commons-codec:1.10'
 
     // my module..!
-    implementation 'com.github.chanyb:android-development-support-tool-kit-java:0.0.2'
+    implementation 'com.github.chanyb:android-development-support-tool-kit-java:0.1.0'
 }

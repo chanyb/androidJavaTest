@@ -48,13 +48,22 @@
     <string name="function_1">알람</string>
     <string name="function_2">google gms location (현재 위치)</string>
     <string name="function_3">SQLite</string>
-    <string name="function_4"></string>
-    <string name="function_5"></string>
+    <string name="function_4">Volley</string>
+    <string name="function_5">Intent</string>
     <string name="function_6"></string>
     <string name="function_sqlite_1">sqLite - insert</string>
     <string name="function_sqlite_2">sqLite - select</string>
     <string name="function_sqlite_3">sqLite - update</string>
     <string name="function_sqlite_4">sqLite - delete</string>
+    <string name="function_volley_1">volley - get</string>
+    <string name="function_volley_2"></string>
+    <string name="function_volley_3"></string>
+    <string name="function_volley_4"></string>
+    <string name="function_intent_1">copyExtras Test</string>
+    <string name="function_intent_2"></string>
+    <string name="function_intent_3"></string>
+    <string name="function_intent_4"></string>
+
 
 
     <string name="alarm_service_channel">alarm_service_channel</string>

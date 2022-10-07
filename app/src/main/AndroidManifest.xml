@@ -96,6 +96,10 @@
             android:showWhenLocked="true" />
         <activity android:name=".screen.function.sqlite.SQLiteTest"
             android:exported="false" />
+        <activity android:name=".screen.function.volley.VolleyTest"
+            android:exported="false" />
+        <activity android:name=".screen.function.intent.IntentTest"
+            android:exported="false" />
 
         <service android:name=".SampleForegroundService" />
         <service

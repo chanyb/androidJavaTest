@@ -20,7 +20,9 @@ import com.example.smartbox_dup.R;
 import com.example.smartbox_dup.location.GoogleLocationManger;
 import com.example.smartbox_dup.screen.function.alarm.Alarm;
 import com.example.smartbox_dup.screen.function.alarm.AlarmCreateActivity;
+import com.example.smartbox_dup.screen.function.intent.IntentTest;
 import com.example.smartbox_dup.screen.function.sqlite.SQLiteTest;
+import com.example.smartbox_dup.screen.function.volley.VolleyTest;
 import com.example.smartbox_dup.sqlite.MyDBHandler;
 import com.example.smartbox_dup.sqlite.SQLiteHandler;
 import com.example.smartbox_dup.utils.ActivitySwitchManager;
@@ -71,12 +73,12 @@ public class FunctionListActivity extends AppCompatActivity {
 
         btn_4 = findViewById(R.id.btn_4);
         btn_4.setOnClickListener((view) -> {
-
+            startActivity(new Intent(this, VolleyTest.class));
         });
 
         btn_5 = findViewById(R.id.btn_5);
         btn_5.setOnClickListener((view) -> {
-
+            startActivity(new Intent(this, IntentTest.class));
         });
 
         btn_6 = findViewById(R.id.btn_6);

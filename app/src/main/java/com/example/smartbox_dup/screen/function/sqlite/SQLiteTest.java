@@ -43,10 +43,6 @@ public class SQLiteTest extends AppCompatActivity {
             if(sqLiteHandler == null) return;
 
             Cursor cursor = sqLiteHandler.select("Human", null, null, null, null, null, null, null);
-            String[] str = cursor.getColumnNames();
-            for(String s : str) {
-                Log.i("this", s);
-            }
             while(cursor.moveToNext()) {
                 Log.i("this", cursor.getString(0) + " " + cursor.getString(1) + " " + cursor.getString(2) + " " + cursor.getString(3));
             }
@@ -62,7 +58,10 @@ public class SQLiteTest extends AppCompatActivity {
 
         btn_4 = findViewById(R.id.btn_4);
         btn_4.setOnClickListener((view) -> {
+            if(sqLiteHandler == null) return;
 
+            SerializableClass human = new SerializableClass("pr_name", 4, "pr_addr", 4);
+            Log.i("this", "delete result: " + sqLiteHandler.delete("Human", human));
         });
     }
 

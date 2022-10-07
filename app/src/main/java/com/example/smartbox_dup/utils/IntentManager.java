@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.provider.Settings;
 
+import java.io.ByteArrayInputStream;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -42,13 +43,14 @@ public class IntentManager {
     public void copyExtras(Intent original, Intent duplicated) {
         Bundle bundle = original.getExtras();
 
-        Set<String> keys = bundle.keySet();
-        for (Iterator<String> iterator = keys.iterator(); iterator.hasNext();) {
-            String key = iterator.next();
-            if(original.getStringExtra(key) != null) duplicated.putExtra(key, original.getStringExtra(key));
-            else if(original.getByteArrayExtra(key) != null) duplicated.putExtra(key, original.getStringExtra(key));
-            else if(original.getIntExtra(key, -95958) != -95958) duplicated.putExtra(key, original.getStringExtra(key));
-            else duplicated.putExtra(key, "error");
+        for(String key : bundle.keySet()) {
+            Object obj = bundle.get(key);
+            if(obj instanceof Integer) duplicated.putExtra(key, (int) obj);
+            else if(obj instanceof String) duplicated.putExtra(key, (String) obj);
+            else if(obj instanceof Byte) duplicated.putExtra(key, (Byte) obj);
+            else if(obj instanceof Boolean) duplicated.putExtra(key, (Boolean) obj);
+            else if(obj instanceof byte[]) duplicated.putExtra(key, (byte[]) obj);
+            else throw new RuntimeException("unexpected value type");
         }
 
     }
