@@ -39,7 +39,7 @@ public class AlarmCreateActivity extends AppCompatActivity {
         edt_minute = findViewById(R.id.edt_minute);
         btn_1 = findViewById(R.id.btn_1);
         btn_1.setOnClickListener((view) -> {
-            ToastManager.getInstance().showToast(this, "알람 등록");
+            ToastManager.getInstance().show("알람 등록");
             int hour = Integer.parseInt(edt_hour.getText().toString());
             int minute = Integer.parseInt(edt_minute.getText().toString());
 
@@ -53,7 +53,7 @@ public class AlarmCreateActivity extends AppCompatActivity {
 
         btn_2 = findViewById(R.id.btn_2);
         btn_2.setOnClickListener((view) -> {
-            ToastManager.getInstance().showToast(this, "등록한 알람 취소");
+            ToastManager.getInstance().show("등록한 알람 취소");
             AlarmManager alarmManager = (AlarmManager) GlobalApplcation.getContext().getSystemService(Context.ALARM_SERVICE);
 
             Intent target = new Intent(GlobalApplcation.getContext(), AlarmBroadcastReceiver.class);

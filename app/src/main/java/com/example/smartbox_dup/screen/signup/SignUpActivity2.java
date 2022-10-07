@@ -148,7 +148,7 @@ public class SignUpActivity2 extends AppCompatActivity implements View.OnClickLi
 
                         if(res.get("back4app").getAsString().equals(RetrofitManager.BACK4APP.FAIL.toString())) {
                             // fail
-                            ToastManager.getInstance().showToast(context, "서버접속이 원활하지 않습니다.");
+                            ToastManager.getInstance().show("서버접속이 원활하지 않습니다.");
                         } else {
                             // success
                             ActivitySwitchManager.getInstance().changeActivity(context, SignUpActivity3.class,false);

@@ -224,7 +224,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         Log.i("this", "onNext");
                         JsonObject res = RetrofitManager.getInstance().signIn(obj);
                         if(res.get("back4app").getAsString().equals(String.valueOf(RetrofitManager.BACK4APP.FAIL))) {
-                            ToastManager.getInstance().showToast(context, "입력한 계정 정보를 확인 할 수 없습니다.");
+                            ToastManager.getInstance().show("입력한 계정 정보를 확인 할 수 없습니다.");
                         } else {
                             Intent i = new Intent(context, MainActivity.class);
                             i.putExtra("sessionToken", res.get("sessionToken").getAsString());

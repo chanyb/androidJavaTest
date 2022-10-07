@@ -142,7 +142,7 @@ public class WebViewManagerTest {
             super.onProgressChanged(view, newProgress);
 
             if (newProgress == 10) {
-                ToastManager.getInstance().showToast(context,"progress 10");
+                ToastManager.getInstance().show("progress 10");
 //                if (!mProgressDialog.isShowing()) {
 //                    mProgressDialog.setMessage(mContext.getString(R.string.please_wait));
 //                    mProgressDialog.setCancelable(false);
@@ -150,7 +150,7 @@ public class WebViewManagerTest {
 //                }
             }
             if (newProgress == 100) {
-                ToastManager.getInstance().showToast(context,"progress 100");
+                ToastManager.getInstance().show("progress 100");
 //                if (mProgressDialog.isShowing()) {
 //                    mProgressDialog.dismiss();
 //                }

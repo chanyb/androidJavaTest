@@ -1,16 +1,8 @@
 package com.example.smartbox_dup.screen.function;
 
-import android.annotation.SuppressLint;
-import android.content.ContentValues;
 import android.content.Intent;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.location.Location;
-import android.location.LocationManager;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.Settings;
-import android.util.Log;
 import android.widget.Button;
 
 import androidx.annotation.Nullable;
@@ -18,24 +10,10 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.smartbox_dup.R;
 import com.example.smartbox_dup.location.GoogleLocationManger;
-import com.example.smartbox_dup.screen.function.alarm.Alarm;
 import com.example.smartbox_dup.screen.function.alarm.AlarmCreateActivity;
 import com.example.smartbox_dup.screen.function.intent.IntentTest;
 import com.example.smartbox_dup.screen.function.sqlite.SQLiteTest;
 import com.example.smartbox_dup.screen.function.volley.VolleyTest;
-import com.example.smartbox_dup.sqlite.MyDBHandler;
-import com.example.smartbox_dup.sqlite.SQLiteHandler;
-import com.example.smartbox_dup.utils.ActivitySwitchManager;
-import com.example.smartbox_dup.utils.FutureTaskRunner;
-import com.google.android.gms.tasks.Task;
-
-import java.util.HashMap;
-import java.util.LinkedHashMap;
-import java.util.Map;
-import java.util.concurrent.atomic.AtomicReference;
-
-import chanyb.android.java.GlobalApplcation;
-import chanyb.android.java.ToastManager;
 
 public class FunctionListActivity extends AppCompatActivity {
 

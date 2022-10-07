@@ -21,7 +21,7 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
         sb.append("Action: " + intent.getAction() + "\n");
         sb.append("URI: " + intent.toUri(Intent.URI_INTENT_SCHEME).toString() + "\n");
         String log = sb.toString();
-        ToastManager.getInstance().showToast(context, log);
+        ToastManager.getInstance().show(log);
         Log.i("this",log);
 
 

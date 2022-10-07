@@ -9,20 +9,14 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.smartbox_dup.R;
-import com.example.smartbox_dup.SerializableObject;
 import com.example.smartbox_dup.screen.function.SerializableClass;
 import com.example.smartbox_dup.utils.ByteArrayManager;
-import com.example.smartbox_dup.utils.IntentManager;
 
-import org.json.JSONObject;
-
-import java.io.Serializable;
-import java.util.ArrayList;
-
-import chanyb.android.java.RequestManager;
+import chanyb.android.java.IntentManager;
 
 public class IntentTest extends AppCompatActivity {
-    Button btn_1,btn_2,btn_3,btn_4;
+    Button btn_1, btn_2, btn_3, btn_4;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,9 +61,9 @@ public class IntentTest extends AppCompatActivity {
         A.putExtra("g", true);
         A.putExtra("h", HumanToBytes.getByteArrayFromClassObject(human));
 
-        IntentManager.getInstance().copyExtras(A,B);
+        IntentManager.getInstance().copyExtras(A, B);
 
-        for(String key : B.getExtras().keySet()) {
+        for (String key : B.getExtras().keySet()) {
             Log.i("this", String.valueOf(B.getExtras().get(key)));
         }
 

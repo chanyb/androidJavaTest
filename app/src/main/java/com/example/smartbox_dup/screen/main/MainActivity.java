@@ -57,7 +57,7 @@ public class MainActivity extends AppCompatActivity {
         try{
             getIntent().getStringExtra("sessionToken");
         } catch(Exception e) {
-            ToastManager.getInstance().showToast(this, "sessionToken is empty");
+            ToastManager.getInstance().show("sessionToken is empty");
             return ;
         }
 
@@ -95,7 +95,7 @@ public class MainActivity extends AppCompatActivity {
         new Thread(() ->{
             JsonObject res = RetrofitManager.getInstance().getMenuItems(getIntent().getStringExtra("sessionToken"));
             if(res.get("back4app").getAsString().equals(String.valueOf(RetrofitManager.BACK4APP.FAIL))) {
-                ToastManager.getInstance().showToast(context, "요청 실패.");
+                ToastManager.getInstance().show("요청 실패.");
             } else {
                 menu_items = res.get("results").getAsJsonArray();
 
