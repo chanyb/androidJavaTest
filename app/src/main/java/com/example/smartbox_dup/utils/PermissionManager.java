@@ -1,10 +1,15 @@
 package com.example.smartbox_dup.utils;
 
+import android.Manifest;
 import android.app.Dialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.provider.Settings;
+
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
 import com.example.smartbox_dup.R;
 
@@ -45,6 +50,18 @@ public class PermissionManager {
             });
         } else {
             DialogManager.getInstance().dismissConfirmDialog();
+        }
+    }
+
+    public void cameraPermissionCheck() {
+        String[] permissions = {
+                Manifest.permission.CAMERA
+        };
+
+        int CAMERA_PERMISSION = ContextCompat.checkSelfPermission(GlobalApplcation.getContext(), permissions[0]);
+
+        if(CAMERA_PERMISSION == PackageManager.PERMISSION_DENIED) {
+            ActivityCompat.requestPermissions(GlobalApplcation.currentActivity, new String[]{Manifest.permission.CAMERA}, 0);
         }
     }
 }

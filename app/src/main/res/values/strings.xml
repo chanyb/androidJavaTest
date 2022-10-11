@@ -50,7 +50,11 @@
     <string name="function_3">SQLite</string>
     <string name="function_4">Volley</string>
     <string name="function_5">Intent</string>
-    <string name="function_6"></string>
+    <string name="function_6">camera</string>
+    <string name="function_7"></string>
+    <string name="function_8"></string>
+    <string name="function_9"></string>
+    <string name="function_10"></string>
     <string name="function_sqlite_1">sqLite - insert</string>
     <string name="function_sqlite_2">sqLite - select</string>
     <string name="function_sqlite_3">sqLite - update</string>
@@ -63,6 +67,9 @@
     <string name="function_intent_2"></string>
     <string name="function_intent_3"></string>
     <string name="function_intent_4"></string>
+
+    <string name="function_camera_1">open_camera</string>
+    <string name="function_camera_2">take_picture</string>
 
 
 

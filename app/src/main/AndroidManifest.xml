@@ -100,6 +100,8 @@
             android:exported="false" />
         <activity android:name=".screen.function.intent.IntentTest"
             android:exported="false" />
+        <activity android:name=".screen.function.camera.CameraTest"
+            android:exported="false" />
 
         <service android:name=".SampleForegroundService" />
         <service

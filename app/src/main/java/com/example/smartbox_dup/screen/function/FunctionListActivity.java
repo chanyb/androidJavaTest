@@ -11,6 +11,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.smartbox_dup.R;
 import com.example.smartbox_dup.location.GoogleLocationManger;
 import com.example.smartbox_dup.screen.function.alarm.AlarmCreateActivity;
+import com.example.smartbox_dup.screen.function.camera.CameraTest;
 import com.example.smartbox_dup.screen.function.intent.IntentTest;
 import com.example.smartbox_dup.screen.function.sqlite.SQLiteTest;
 import com.example.smartbox_dup.screen.function.volley.VolleyTest;
@@ -61,6 +62,7 @@ public class FunctionListActivity extends AppCompatActivity {
 
         btn_6 = findViewById(R.id.btn_6);
         btn_6.setOnClickListener((view) -> {
+            startActivity(new Intent(this, CameraTest.class));
         });
     }
 }
