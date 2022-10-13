@@ -53,7 +53,7 @@ public class PermissionManager {
         }
     }
 
-    public void cameraPermissionCheck() {
+    public void requestCameraPermission() {
         String[] permissions = {
                 Manifest.permission.CAMERA
         };
@@ -63,5 +63,14 @@ public class PermissionManager {
         if(CAMERA_PERMISSION == PackageManager.PERMISSION_DENIED) {
             ActivityCompat.requestPermissions(GlobalApplcation.currentActivity, new String[]{Manifest.permission.CAMERA}, 0);
         }
+    }
+
+    public boolean cameraPermissionCheck() {
+        String[] permissions = {
+                Manifest.permission.CAMERA
+        };
+
+        int CAMERA_PERMISSION = ContextCompat.checkSelfPermission(GlobalApplcation.getContext(), permissions[0]);
+        return CAMERA_PERMISSION == PackageManager.PERMISSION_GRANTED;
     }
 }
