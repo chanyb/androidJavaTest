@@ -51,7 +51,7 @@
     <string name="function_4">Volley</string>
     <string name="function_5">Intent</string>
     <string name="function_6">camera</string>
-    <string name="function_7"></string>
+    <string name="function_7">draw</string>
     <string name="function_8"></string>
     <string name="function_9"></string>
     <string name="function_10"></string>
@@ -71,6 +71,7 @@
     <string name="function_camera_1">open_camera</string>
     <string name="function_camera_2">take_picture</string>
 
+    <string name="function_draw_1">draw circle</string>
 
 
     <string name="alarm_service_channel">alarm_service_channel</string>

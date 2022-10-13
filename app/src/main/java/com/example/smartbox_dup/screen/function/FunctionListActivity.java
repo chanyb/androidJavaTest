@@ -12,13 +12,14 @@ import com.example.smartbox_dup.R;
 import com.example.smartbox_dup.location.GoogleLocationManger;
 import com.example.smartbox_dup.screen.function.alarm.AlarmCreateActivity;
 import com.example.smartbox_dup.screen.function.camera.CameraTest;
+import com.example.smartbox_dup.screen.function.draw.DrawTest;
 import com.example.smartbox_dup.screen.function.intent.IntentTest;
 import com.example.smartbox_dup.screen.function.sqlite.SQLiteTest;
 import com.example.smartbox_dup.screen.function.volley.VolleyTest;
 
 public class FunctionListActivity extends AppCompatActivity {
 
-    Button btn_1, btn_2, btn_3, btn_4, btn_5, btn_6;
+    Button btn_1, btn_2, btn_3, btn_4, btn_5, btn_6, btn_7;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -63,6 +64,11 @@ public class FunctionListActivity extends AppCompatActivity {
         btn_6 = findViewById(R.id.btn_6);
         btn_6.setOnClickListener((view) -> {
             startActivity(new Intent(this, CameraTest.class));
+        });
+
+        btn_7 = findViewById(R.id.btn_7);
+        btn_7.setOnClickListener((view) -> {
+            startActivity(new Intent(this, DrawTest.class));
         });
     }
 }
