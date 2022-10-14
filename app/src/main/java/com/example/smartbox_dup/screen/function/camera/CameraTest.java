@@ -12,6 +12,7 @@ import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Surface;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,6 +27,7 @@ import androidx.camera.view.PreviewView;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ProcessLifecycleOwner;
 
+import com.bumptech.glide.Glide;
 import com.example.smartbox_dup.R;
 import com.example.smartbox_dup.utils.DatetimeManager;
 import com.example.smartbox_dup.utils.FutureTaskRunner;
@@ -37,6 +39,7 @@ import org.json.JSONException;
 import java.io.File;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
 
 import chanyb.android.java.GlobalApplcation;
 
@@ -45,6 +48,7 @@ public class CameraTest extends AppCompatActivity {
     PreviewView previewView;
     ImageCapture imageCapture;
     Button btn_capture;
+    ImageView imageView;
 //    ConstraintLayout lo_preview;
 
     @Override
@@ -75,6 +79,7 @@ public class CameraTest extends AppCompatActivity {
     }
 
     private void init() {
+        imageView = findViewById(R.id.imageView);
         imageCapture = new ImageCapture.Builder()
                 .setTargetRotation(Surface.ROTATION_0)
                 .build();
@@ -133,27 +138,24 @@ public class CameraTest extends AppCompatActivity {
 
         ImageCapture.OutputFileOptions outputFileOptions =
                 new ImageCapture.OutputFileOptions.Builder(GlobalApplcation.getContext().getContentResolver(), MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues).build();
-        imageCapture.takePicture(outputFileOptions, (runnable) -> {
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                        Cursor cursor = getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, null, null, null);
+        imageCapture.takePicture(outputFileOptions,
+                Executors.newSingleThreadExecutor(),
+                new ImageCapture.OnImageSavedCallback() {
+                    @Override
+                    public void onImageSaved(@NonNull ImageCapture.OutputFileResults outputFileResults) {
+                        Log.i("this", "onImageSaved");
+                        runOnUiThread(()->Glide.with(GlobalApplcation.currentActivity).load(outputFileResults.getSavedUri()).into(imageView));
                     }
 
-                }, null
+                    @Override
+                    public void onError(@NonNull ImageCaptureException exception) {
+
+                    }
+                }
 
         );
 
 
-    }
-
-    private Bitmap rotate(Bitmap bitmap, int degree) {
-        int w = bitmap.getWidth();
-        int h = bitmap.getHeight();
-
-        Matrix mtx = new Matrix();
-        //       mtx.postRotate(degree);
-        mtx.setRotate(degree);
-
-        return Bitmap.createBitmap(bitmap, 0, 0, w, h, mtx, true);
     }
 }
 
