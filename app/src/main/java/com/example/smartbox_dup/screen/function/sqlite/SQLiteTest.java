@@ -11,10 +11,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.smartbox_dup.R;
 import com.example.smartbox_dup.screen.function.SerializableClass;
 
+import java.lang.reflect.InvocationTargetException;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 import chanyb.android.java.SQLiteHandler;
+
 
 public class SQLiteTest extends AppCompatActivity {
     Button btn_1, btn_2, btn_3, btn_4;
@@ -32,7 +35,7 @@ public class SQLiteTest extends AppCompatActivity {
         btn_1 = findViewById(R.id.btn_1);
         btn_1.setOnClickListener((view) -> {
             if (sqLiteHandler == null) return;
-            SerializableClass human = new SerializableClass("pr_name", 1, "pr_addr", 1);
+            SerializableClass human = new SerializableClass("pr_name2", 2, "pr_addr2", 2);
             Log.i("this", "insert result: " + sqLiteHandler.insert("Human", human));
         });
 
@@ -40,10 +43,15 @@ public class SQLiteTest extends AppCompatActivity {
         btn_2.setOnClickListener((view) -> {
             if (sqLiteHandler == null) return;
 
-            Cursor cursor = sqLiteHandler.select("Human", null, null, null, null, null, null, null);
-            while (cursor.moveToNext()) {
-                Log.i("this", cursor.getString(0) + " " + cursor.getString(1) + " " + cursor.getString(2) + " " + cursor.getString(3));
+            try {
+                ArrayList<Object> queryResult = sqLiteHandler.select(SerializableClass.class, "Human", null, null, null, null, null, null, null);
+                Log.i("this", "====>" + (queryResult.size()));
+            } catch (InvocationTargetException e) {
+                e.printStackTrace();
+            } catch (IllegalAccessException e) {
+                e.printStackTrace();
             }
+
         });
 
         btn_3 = findViewById(R.id.btn_3);
@@ -75,4 +83,6 @@ public class SQLiteTest extends AppCompatActivity {
         sqliteBuilder.addTable("Human", humanInfo);
         sqLiteHandler = sqliteBuilder.build();
     }
+
+
 }

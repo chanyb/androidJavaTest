@@ -95,7 +95,7 @@ dependencies {
     implementation 'commons-codec:commons-codec:1.10'
 
     // my module..!
-    implementation 'com.github.chanyb:android-development-support-tool-kit-java:0.2.0'
+    implementation 'com.github.chanyb:android-development-support-tool-kit-java:0.3.3'
 
     // androidx - cameraX
     implementation "androidx.camera:camera-core:1.1.0"
