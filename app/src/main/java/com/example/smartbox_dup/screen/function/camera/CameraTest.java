@@ -3,7 +3,10 @@ package com.example.smartbox_dup.screen.function.camera;
 import android.content.ContentValues;
 import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.graphics.Matrix;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -36,6 +39,7 @@ import com.google.common.util.concurrent.ListenableFuture;
 
 import org.json.JSONException;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
@@ -47,8 +51,8 @@ public class CameraTest extends AppCompatActivity {
     private ListenableFuture<ProcessCameraProvider> cameraProviderFuture;
     PreviewView previewView;
     ImageCapture imageCapture;
-    Button btn_capture;
-    ImageView imageView;
+    Button btn_capture, btn_update;
+    ImageView imageView, imageView2;
 //    ConstraintLayout lo_preview;
 
     @Override
@@ -57,6 +61,18 @@ public class CameraTest extends AppCompatActivity {
         setContentView(R.layout.activity_function_camera);
         if(!PermissionManager.getInstance().cameraPermissionCheck()) {
             FutureTaskRunner<Boolean> futureTaskRunner = new FutureTaskRunner<>();
+//            futureTaskRunner.nextTask(() -> {
+//                if(!PermissionManager.getInstance().requestWriteExternalStoragePermission()) {
+//                    // 이미 거절하여 요청 실패
+//                }
+//                while (true) {
+//                    if(PermissionManager.getInstance().writeExternalStoragePermissionCheck()) {
+//                        Log.i("this", "permission granted: " + PermissionManager.getInstance().writeExternalStoragePermissionCheck());
+//                        break;
+//                    }
+//                }
+//                return true;
+//            });
             futureTaskRunner.nextTask(() -> {
                 PermissionManager.getInstance().requestCameraPermission();
                 while (true) {
@@ -80,9 +96,16 @@ public class CameraTest extends AppCompatActivity {
 
     private void init() {
         imageView = findViewById(R.id.imageView);
+        imageView2 = findViewById(R.id.imageView2);
         imageCapture = new ImageCapture.Builder()
                 .setTargetRotation(Surface.ROTATION_0)
                 .build();
+
+        btn_update = findViewById(R.id.btn_update);
+        btn_update.setOnClickListener(view -> {
+            updateImage();
+        });
+
 
         previewView = findViewById(R.id.previewView);
         cameraProviderFuture = ProcessCameraProvider.getInstance(GlobalApplcation.getContext());
@@ -154,8 +177,27 @@ public class CameraTest extends AppCompatActivity {
                 }
 
         );
+    }
 
+    private void updateImage() {
+        BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
+        Bitmap bitmap = drawable.getBitmap();
+        byte[] bytes = getImageByte(bitmap);
 
+        Bitmap copiedBitmap = byteArrayToBitmap(bytes);
+        imageView2.setImageBitmap(copiedBitmap);
+    }
+
+    public byte[] getImageByte(Bitmap bitmap) {
+        ByteArrayOutputStream out = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, out);
+
+        return out.toByteArray();
+    }
+
+    public Bitmap byteArrayToBitmap( byte[] byteArray ) {
+        Bitmap bitmap = BitmapFactory.decodeByteArray( byteArray, 0, byteArray.length ) ;
+        return bitmap;
     }
 }
 

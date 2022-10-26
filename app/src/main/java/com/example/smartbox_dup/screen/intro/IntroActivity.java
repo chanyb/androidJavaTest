@@ -126,32 +126,38 @@ public class IntroActivity extends AppCompatActivity {
     private void futureTaskManager_test() {
         FutureTaskRunner<Boolean> futureTaskRunner = new FutureTaskRunner<>();
 
-        futureTaskRunner.nextTask(() -> {
-            runOnUiThread(() -> {
-                PermissionManager.getInstance().overlayPermissionCheck();
-            });
-            while(true) {
-                if(!PermissionManager.getInstance().drawOverlaysRequiredButNotGranted()) break;
-            }
-            return true;
-        });
+//        futureTaskRunner.nextTask(() -> {
+//            runOnUiThread(() -> {
+//                PermissionManager.getInstance().overlayPermissionCheck();
+//            });
+//            while(true) {
+//                if(!PermissionManager.getInstance().drawOverlaysRequiredButNotGranted()) break;
+//            }
+//            return true;
+//        });
+
+//        futureTaskRunner.nextTask(() -> {
+//            runOnUiThread(() -> {
+//                setRingerMode(AudioManager.State.SILENT);
+//            });
+//
+//            NotificationManager notificationManager;
+//            notificationManager = (NotificationManager) GlobalApplcation.getContext().getSystemService(Context.NOTIFICATION_SERVICE);
+//
+//            while(true) {
+//                if(notificationManager.isNotificationPolicyAccessGranted() && GlobalApplcation.getContext().isForeground()) break;
+//            }
+//
+//            return true;
+//        });
+
+//        futureTaskRunner.setCallback(res -> {
+//            startActivity(new Intent(this, FunctionListActivity.class));
+//            finish();
+//            return true;
+//        });
 
         futureTaskRunner.nextTask(() -> {
-            runOnUiThread(() -> {
-                setRingerMode(AudioManager.State.SILENT);
-            });
-
-            NotificationManager notificationManager;
-            notificationManager = (NotificationManager) GlobalApplcation.getContext().getSystemService(Context.NOTIFICATION_SERVICE);
-
-            while(true) {
-                if(notificationManager.isNotificationPolicyAccessGranted() && GlobalApplcation.getContext().isForeground()) break;
-            }
-
-            return true;
-        });
-
-        futureTaskRunner.setCallback(res -> {
             startActivity(new Intent(this, FunctionListActivity.class));
             finish();
             return true;
