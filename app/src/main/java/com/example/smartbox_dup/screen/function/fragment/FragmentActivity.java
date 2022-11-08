@@ -15,7 +15,7 @@ import com.example.smartbox_dup.R;
 public class FragmentActivity extends AppCompatActivity {
     FragmentManager fragmentManager;
     Fragment fragmentA, fragmentB;
-    Button btn_1, btn_2;
+    Button btn_1, btn_2, btn_3;
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
