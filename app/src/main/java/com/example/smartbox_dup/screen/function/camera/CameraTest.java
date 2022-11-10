@@ -1,11 +1,15 @@
 package com.example.smartbox_dup.screen.function.camera;
 
 import android.content.ContentValues;
+import android.content.Context;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.ImageDecoder;
 import android.graphics.Matrix;
+import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
 import android.os.Build;
@@ -41,6 +45,12 @@ import org.json.JSONException;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
@@ -103,7 +113,7 @@ public class CameraTest extends AppCompatActivity {
 
         btn_update = findViewById(R.id.btn_update);
         btn_update.setOnClickListener(view -> {
-            updateImage();
+//            updateImage();
         });
 
 
@@ -168,6 +178,7 @@ public class CameraTest extends AppCompatActivity {
                     public void onImageSaved(@NonNull ImageCapture.OutputFileResults outputFileResults) {
                         Log.i("this", "onImageSaved");
                         runOnUiThread(()->Glide.with(GlobalApplcation.currentActivity).load(outputFileResults.getSavedUri()).into(imageView));
+                        updateImage(outputFileResults.getSavedUri());
                     }
 
                     @Override
@@ -179,13 +190,59 @@ public class CameraTest extends AppCompatActivity {
         );
     }
 
-    private void updateImage() {
-        BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
-        Bitmap bitmap = drawable.getBitmap();
-        byte[] bytes = getImageByte(bitmap);
+    private void updateImage(Uri uri) {
+        Bitmap bitmap = getBitmapFromUri(uri);
+        Bitmap infoBitmap = addInfoImage(GlobalApplcation.getContext(), bitmap, 33.123412, 127.15124231);
+        runOnUiThread(() -> imageView2.setImageBitmap(infoBitmap));
+    }
 
-        Bitmap copiedBitmap = byteArrayToBitmap(bytes);
-        imageView2.setImageBitmap(copiedBitmap);
+
+    public static void saveBitmapToGallery(Bitmap bitmap, String fileName, String fileDesc) {
+        MediaStore.Images.Media.insertImage(GlobalApplcation.getContext().getContentResolver(), bitmap, fileName, fileDesc);
+    }
+
+    public static Bitmap getBitmapFromUri(Uri uri) {
+        Bitmap bitmap = null;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            try {
+                bitmap = ImageDecoder.decodeBitmap(ImageDecoder.createSource(GlobalApplcation.getContext().getContentResolver(), uri));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            try {
+                bitmap = MediaStore.Images.Media.getBitmap(GlobalApplcation.getContext().getContentResolver(), uri);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return bitmap;
+    }
+
+    public static Bitmap addInfoImage(Context context, Bitmap original, double mLon, double mLat){
+//        Bitmap dest = Bitmap.createBitmap(toEdit.getWidth(), toEdit.getHeight(), Bitmap.Config.ARGB_8888);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String dateTime = sdf.format(Calendar.getInstance().getTime()); // reading local time in the system
+
+        Bitmap bAddedInfo = original.copy(Bitmap.Config.ARGB_8888, true);
+        Canvas cs = new Canvas(bAddedInfo);
+        Paint tPaint = new Paint();
+        tPaint.setTextSize(100);
+        tPaint.setColor(Color.WHITE);
+        tPaint.setStyle(Paint.Style.FILL);
+        float height = tPaint.measureText("yY");
+//        cs.drawBitmap(toEdit, 0f, 0f, null); //원본비트맵
+        cs.drawText(dateTime, 20f, height + 15f, tPaint); //날짜시간
+        if (mLat != 0.0 && mLon != 0.0) {
+            String sX = String.format("%.6f", mLon);
+            String sY = String.format("%.6f", mLat);
+            cs.drawText(sY + ", " + sX, 20f, height * 2 + 15f, tPaint); //위도 + 경도 - 34.9506986, 127.4872429
+            cs.drawText("대전광역시 서구 관저북로 80 원앙마을아파트 213동 1201호", 20f, height * 3 + 15f, tPaint); //주소정보
+        }
+
+        saveBitmapToGallery(bAddedInfo, "test", "");
+
+        return bAddedInfo;
     }
 
     public byte[] getImageByte(Bitmap bitmap) {
