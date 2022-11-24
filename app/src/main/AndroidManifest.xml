@@ -106,6 +106,8 @@
             android:exported="false" />
         <activity android:name=".screen.function.fragment.FragmentActivity"
             android:exported="false" />
+        <activity android:name=".screen.function.location.LocationTest"
+            android:exported="false" />
 
         <service android:name=".SampleForegroundService" />
         <service

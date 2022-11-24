@@ -53,12 +53,13 @@
     <string name="function_6">camera</string>
     <string name="function_7">draw</string>
     <string name="function_8">fragment</string>
-    <string name="function_9"></string>
+    <string name="function_9">location</string>
     <string name="function_10"></string>
     <string name="function_sqlite_1">sqLite - insert</string>
     <string name="function_sqlite_2">sqLite - select</string>
     <string name="function_sqlite_3">sqLite - update</string>
     <string name="function_sqlite_4">sqLite - delete</string>
+    <string name="function_sqlite_5">sqLite - selectAll</string>
     <string name="function_volley_1">volley - get</string>
     <string name="function_volley_2"></string>
     <string name="function_volley_3"></string>
@@ -75,6 +76,11 @@
 
     <string name="function_fragment_1">Show fragment A</string>
     <string name="function_fragment_2">Show fragment B</string>
+
+    <string name="function_location_1">LM/requestUpdate - GPS</string>
+    <string name="function_location_2">LM/requestUpdate - NETWORK</string>
+    <string name="function_location_3">LM/lastKnown - GPS</string>
+    <string name="function_location_4">LM/lastKnown - Network</string>
 
 
     <string name="alarm_service_channel">alarm_service_channel</string>
