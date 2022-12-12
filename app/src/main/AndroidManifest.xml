@@ -108,6 +108,8 @@
             android:exported="false" />
         <activity android:name=".screen.function.location.LocationTest"
             android:exported="false" />
+        <activity android:name=".screen.function.socket.SocketTest"
+            android:exported="false" />
 
         <service android:name=".SampleForegroundService" />
         <service
