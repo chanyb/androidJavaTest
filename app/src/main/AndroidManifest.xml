@@ -110,6 +110,8 @@
             android:exported="false" />
         <activity android:name=".screen.function.socket.SocketTest"
             android:exported="false" />
+        <activity android:name=".screen.function.gallary.GallaryTest"
+            android:exported="false" />
 
         <service android:name=".SampleForegroundService" />
         <service

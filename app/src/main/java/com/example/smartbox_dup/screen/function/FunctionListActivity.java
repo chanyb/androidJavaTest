@@ -14,6 +14,7 @@ import com.example.smartbox_dup.screen.function.alarm.AlarmCreateActivity;
 import com.example.smartbox_dup.screen.function.camera.CameraTest;
 import com.example.smartbox_dup.screen.function.draw.DrawTest;
 import com.example.smartbox_dup.screen.function.fragment.FragmentActivity;
+import com.example.smartbox_dup.screen.function.gallary.GallaryTest;
 import com.example.smartbox_dup.screen.function.intent.IntentTest;
 import com.example.smartbox_dup.screen.function.location.LocationTest;
 import com.example.smartbox_dup.screen.function.socket.SocketTest;
@@ -22,7 +23,7 @@ import com.example.smartbox_dup.screen.function.volley.VolleyTest;
 
 public class FunctionListActivity extends AppCompatActivity {
 
-    Button btn_1, btn_2, btn_3, btn_4, btn_5, btn_6, btn_7, btn_8, btn_9, btn_10;
+    Button btn_1, btn_2, btn_3, btn_4, btn_5, btn_6, btn_7, btn_8, btn_9, btn_10, btn_11;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -87,6 +88,11 @@ public class FunctionListActivity extends AppCompatActivity {
         btn_10 = findViewById(R.id.btn_10);
         btn_10.setOnClickListener((view) -> {
             startActivity(new Intent(this, SocketTest.class));
+        });
+
+        btn_11 = findViewById(R.id.btn_11);
+        btn_11.setOnClickListener((view) -> {
+            startActivity(new Intent(this, GallaryTest.class));
         });
 
     }
