@@ -20,10 +20,11 @@ import com.example.smartbox_dup.screen.function.location.LocationTest;
 import com.example.smartbox_dup.screen.function.socket.SocketTest;
 import com.example.smartbox_dup.screen.function.sqlite.SQLiteTest;
 import com.example.smartbox_dup.screen.function.volley.VolleyTest;
+import com.example.smartbox_dup.screen.function.webview.WebviewTest;
 
 public class FunctionListActivity extends AppCompatActivity {
 
-    Button btn_1, btn_2, btn_3, btn_4, btn_5, btn_6, btn_7, btn_8, btn_9, btn_10, btn_11;
+    Button btn_1, btn_2, btn_3, btn_4, btn_5, btn_6, btn_7, btn_8, btn_9, btn_10, btn_11, btn_12;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -93,6 +94,11 @@ public class FunctionListActivity extends AppCompatActivity {
         btn_11 = findViewById(R.id.btn_11);
         btn_11.setOnClickListener((view) -> {
             startActivity(new Intent(this, GallaryTest.class));
+        });
+
+        btn_12 = findViewById(R.id.btn_12);
+        btn_12.setOnClickListener((view) -> {
+            startActivity(new Intent(this, WebviewTest.class));
         });
 
     }
