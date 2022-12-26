@@ -87,8 +87,9 @@
     <string name="function_socket_2">socket-submit</string>
     <string name="function_socket_3">socket-disconnect</string>
 
-    <string name="function_gallary_1">getPhoto-single</string>
-    <string name="function_gallary_2">getPhoto-multi</string>
+    <string name="function_gallary_1">getPhoto-startActivityForResult-single</string>
+    <string name="function_gallary_2">getPhoto-ActivityResultLauncher-single</string>
+    <string name="function_gallary_3">getPhoto-ActivityResultLauncher-multi</string>
 
 
     <string name="alarm_service_channel">alarm_service_channel</string>
