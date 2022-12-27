@@ -47,5 +47,8 @@ public class WebviewTest extends AppCompatActivity {
     /**
      * 결론: 웹뷰는 Serializable Class가 아니기 때문에, ByteArrayManager를 통해 byte array로 변환 할 수 없다.
      * 따라서, 객체의 이동이 안되며, 했다고 해도 webviewA = webviewB 를 통해 B를 A에 대입할 수 없으므로, 웹뷰의 각종 세팅을 꺼내서 동일하게 맞춰주면 세션을 유지시킬 수 있는 것으로 보인다.
+     * 1) WebChromeClient
+     * 2) WebViewClient
+     * 3) url
      */
 }
