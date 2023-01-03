@@ -114,6 +114,8 @@
             android:exported="false" />
         <activity android:name=".screen.function.webview.WebviewTest"
             android:exported="false" />
+        <activity android:name=".screen.function.fingerprint.FingerPrintTest"
+            android:exported="false" />
 
         <service android:name=".SampleForegroundService" />
         <service

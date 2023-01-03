@@ -13,6 +13,7 @@ import com.example.smartbox_dup.location.GoogleLocationManger;
 import com.example.smartbox_dup.screen.function.alarm.AlarmCreateActivity;
 import com.example.smartbox_dup.screen.function.camera.CameraTest;
 import com.example.smartbox_dup.screen.function.draw.DrawTest;
+import com.example.smartbox_dup.screen.function.fingerprint.FingerPrintTest;
 import com.example.smartbox_dup.screen.function.fragment.FragmentActivity;
 import com.example.smartbox_dup.screen.function.gallary.GallaryTest;
 import com.example.smartbox_dup.screen.function.intent.IntentTest;
@@ -24,7 +25,7 @@ import com.example.smartbox_dup.screen.function.webview.WebviewTest;
 
 public class FunctionListActivity extends AppCompatActivity {
 
-    Button btn_1, btn_2, btn_3, btn_4, btn_5, btn_6, btn_7, btn_8, btn_9, btn_10, btn_11, btn_12;
+    Button btn_1, btn_2, btn_3, btn_4, btn_5, btn_6, btn_7, btn_8, btn_9, btn_10, btn_11, btn_12, btn_13;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -99,6 +100,11 @@ public class FunctionListActivity extends AppCompatActivity {
         btn_12 = findViewById(R.id.btn_12);
         btn_12.setOnClickListener((view) -> {
             startActivity(new Intent(this, WebviewTest.class));
+        });
+
+        btn_13 = findViewById(R.id.btn_13);
+        btn_13.setOnClickListener((view) -> {
+            startActivity(new Intent(this, FingerPrintTest.class));
         });
 
     }
