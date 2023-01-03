@@ -144,6 +144,16 @@
             app:layout_constraintEnd_toEndOf="@id/btn_12"
             />
 
+        <Button
+            android:id="@+id/btn_14"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:text="@string/function_14"
+            app:layout_constraintTop_toBottomOf="@id/btn_13"
+            app:layout_constraintStart_toStartOf="@id/btn_13"
+            app:layout_constraintEnd_toEndOf="@id/btn_13"
+            />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </ScrollView>

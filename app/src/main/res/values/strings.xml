@@ -58,6 +58,7 @@
     <string name="function_11">gallary</string>
     <string name="function_12">webview</string>
     <string name="function_13">fingerprint</string>
+    <string name="function_14">calendar(built in app)</string>
     <string name="function_sqlite_1">sqLite - insert</string>
     <string name="function_sqlite_2">sqLite - select</string>
     <string name="function_sqlite_3">sqLite - update</string>
@@ -96,6 +97,8 @@
     <string name="function_webview_1">webview-현재상태 옮기기</string>
 
     <string name="function_fingerprint_1">지문인식 사용하기</string>
+
+    <string name="function_calendar_1">일정 가져오기</string>
 
 
 

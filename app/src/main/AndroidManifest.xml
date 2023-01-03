@@ -116,6 +116,8 @@
             android:exported="false" />
         <activity android:name=".screen.function.fingerprint.FingerPrintTest"
             android:exported="false" />
+        <activity android:name=".screen.function.calendarapp.CalendarTest"
+            android:exported="false" />
 
         <service android:name=".SampleForegroundService" />
         <service
@@ -194,6 +196,10 @@
 
     <!-- Audio Record -->
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
+
+    <!-- calendar -->
+    <uses-permission android:name="android.permission.READ_CALENDAR" />
+    <uses-permission android:name="android.permission.WRITE_CALENDAR" />
 
     <queries>
         <package android:name="com.kakao.talk" />

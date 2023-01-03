@@ -45,7 +45,17 @@ public class FingerPrintTest extends AppCompatActivity {
             @Override
             public void onAuthenticationSucceeded(@NonNull BiometricPrompt.AuthenticationResult result) {
                 super.onAuthenticationSucceeded(result);
-                Log.i("this", "onAuthenticationSucceeded: " + result);
+                result.getAuthenticationType();
+                if(result.getAuthenticationType() == BiometricPrompt.AUTHENTICATION_RESULT_TYPE_DEVICE_CREDENTIAL) {
+                    Log.i("this", "AUTHENTICATION_RESULT_TYPE_DEVICE_CREDENTIAL");
+                } else if(result.getAuthenticationType() == BiometricPrompt.AUTHENTICATION_RESULT_TYPE_BIOMETRIC) {
+                    // 얼굴인식, 지문인식 - 둘 다 등록되어있다면, 얼굴인식을 진행할 지 지문인식을 진행할 지 선택하는 화면이 나온다.
+                    Log.i("this", "AUTHENTICATION_RESULT_TYPE_BIOMETRIC");
+                } else if(result.getAuthenticationType() == BiometricPrompt.AUTHENTICATION_RESULT_TYPE_UNKNOWN) {
+                    Log.i("this", "AUTHENTICATION_RESULT_TYPE_UNKNOWN");
+                } else {
+                    Log.i("this", "??");
+                }
             }
 
             @Override
@@ -59,6 +69,7 @@ public class FingerPrintTest extends AppCompatActivity {
                 .setTitle("Biometric login for my app")
                 .setSubtitle("Log in using your biometic credential")
                 .setNegativeButtonText("Use account password")
+                .setConfirmationRequired(false)
                 .build();
 
         biometricPrompt.authenticate(promptInfo);
