@@ -118,6 +118,8 @@
             android:exported="false" />
         <activity android:name=".screen.function.calendarapp.CalendarTest"
             android:exported="false" />
+        <activity android:name=".screen.function.adbshell.AdbShellTest"
+            android:exported="false" />
 
         <service android:name=".SampleForegroundService" />
         <service

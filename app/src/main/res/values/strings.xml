@@ -59,6 +59,7 @@
     <string name="function_12">webview</string>
     <string name="function_13">fingerprint</string>
     <string name="function_14">calendar(built in app)</string>
+    <string name="function_15">adb shell test</string>
     <string name="function_sqlite_1">sqLite - insert</string>
     <string name="function_sqlite_2">sqLite - select</string>
     <string name="function_sqlite_3">sqLite - update</string>

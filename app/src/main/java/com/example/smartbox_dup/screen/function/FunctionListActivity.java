@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.smartbox_dup.R;
 import com.example.smartbox_dup.location.GoogleLocationManger;
+import com.example.smartbox_dup.screen.function.adbshell.AdbShellTest;
 import com.example.smartbox_dup.screen.function.alarm.AlarmCreateActivity;
 import com.example.smartbox_dup.screen.function.calendarapp.CalendarTest;
 import com.example.smartbox_dup.screen.function.camera.CameraTest;
@@ -26,7 +27,7 @@ import com.example.smartbox_dup.screen.function.webview.WebviewTest;
 
 public class FunctionListActivity extends AppCompatActivity {
 
-    Button btn_1, btn_2, btn_3, btn_4, btn_5, btn_6, btn_7, btn_8, btn_9, btn_10, btn_11, btn_12, btn_13, btn_14;
+    Button btn_1, btn_2, btn_3, btn_4, btn_5, btn_6, btn_7, btn_8, btn_9, btn_10, btn_11, btn_12, btn_13, btn_14, btn_15;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -111,6 +112,11 @@ public class FunctionListActivity extends AppCompatActivity {
         btn_14 = findViewById(R.id.btn_14);
         btn_14.setOnClickListener((view) -> {
             startActivity(new Intent(this, CalendarTest.class));
+        });
+
+        btn_15 = findViewById(R.id.btn_15);
+        btn_15.setOnClickListener((view) -> {
+            startActivity(new Intent(this, AdbShellTest.class));
         });
     }
 }
