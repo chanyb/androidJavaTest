@@ -120,7 +120,12 @@
             android:exported="false" />
         <activity android:name=".screen.function.adbshell.AdbShellTest"
             android:exported="false" />
+        <activity android:name=".screen.function.printonothers.PrintOnOtherAppTest"
+            android:exported="true"
+            android:enabled="true">
+        </activity>
 
+        <service android:name=".screen.function.printonothers.FloatingService" android:enabled="true"/>
         <service android:name=".SampleForegroundService" />
         <service
             android:name=".utils.FCMManager"

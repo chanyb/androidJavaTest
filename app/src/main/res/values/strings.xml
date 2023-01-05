@@ -60,6 +60,7 @@
     <string name="function_13">fingerprint</string>
     <string name="function_14">calendar(built in app)</string>
     <string name="function_15">adb shell test</string>
+    <string name="function_16">다른 앱 위에 표시</string>
     <string name="function_sqlite_1">sqLite - insert</string>
     <string name="function_sqlite_2">sqLite - select</string>
     <string name="function_sqlite_3">sqLite - update</string>
@@ -101,6 +102,8 @@
 
     <string name="function_calendar_1">일정 가져오기</string>
 
+    <string name="function_print_on_other_app_1">권한 받기</string>
+    <string name="app_ing">에서 실행중입니다.\n잠시만 기다려 주십시오.</string>
 
 
     <string name="alarm_service_channel">alarm_service_channel</string>

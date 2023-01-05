@@ -3,8 +3,10 @@ package com.example.smartbox_dup.screen.function;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -20,6 +22,7 @@ import com.example.smartbox_dup.screen.function.fragment.FragmentActivity;
 import com.example.smartbox_dup.screen.function.gallary.GallaryTest;
 import com.example.smartbox_dup.screen.function.intent.IntentTest;
 import com.example.smartbox_dup.screen.function.location.LocationTest;
+import com.example.smartbox_dup.screen.function.printonothers.PrintOnOtherAppTest;
 import com.example.smartbox_dup.screen.function.socket.SocketTest;
 import com.example.smartbox_dup.screen.function.sqlite.SQLiteTest;
 import com.example.smartbox_dup.screen.function.volley.VolleyTest;
@@ -27,7 +30,7 @@ import com.example.smartbox_dup.screen.function.webview.WebviewTest;
 
 public class FunctionListActivity extends AppCompatActivity {
 
-    Button btn_1, btn_2, btn_3, btn_4, btn_5, btn_6, btn_7, btn_8, btn_9, btn_10, btn_11, btn_12, btn_13, btn_14, btn_15;
+    Button btn_1, btn_2, btn_3, btn_4, btn_5, btn_6, btn_7, btn_8, btn_9, btn_10, btn_11, btn_12, btn_13, btn_14, btn_15, btn_16;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -117,6 +120,11 @@ public class FunctionListActivity extends AppCompatActivity {
         btn_15 = findViewById(R.id.btn_15);
         btn_15.setOnClickListener((view) -> {
             startActivity(new Intent(this, AdbShellTest.class));
+        });
+
+        btn_16 = findViewById(R.id.btn_16);
+        btn_16.setOnClickListener((view) -> {
+            startActivity(new Intent(this, PrintOnOtherAppTest.class));
         });
     }
 }
