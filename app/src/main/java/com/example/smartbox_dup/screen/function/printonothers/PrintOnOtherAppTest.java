@@ -50,7 +50,7 @@ public class PrintOnOtherAppTest extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         setContentView(R.layout.activity_function_print_on_other_app);
-        acquireWakeLock(this);
+//        acquireWakeLock(this);
         init();
         super.onCreate(savedInstanceState);
     }
@@ -68,7 +68,7 @@ public class PrintOnOtherAppTest extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        releaseWakeLock();
+//        releaseWakeLock();
         super.onDestroy();
     }
 
