@@ -12,6 +12,7 @@ import android.widget.Button;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
@@ -21,6 +22,9 @@ import chanyb.android.java.GlobalApplcation;
 
 public class AdbShellTest extends AppCompatActivity {
 
+    ConstraintLayout lo_touchpad;
+    DrawingView drawingView;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         setContentView(R.layout.activity_function_adbshell);
@@ -29,10 +33,8 @@ public class AdbShellTest extends AppCompatActivity {
     }
 
     private void init() {
-
-    }
-
-    private void btn_1_action() {
-
+        lo_touchpad = findViewById(R.id.lo_touchpad);
+        drawingView = new DrawingView(this);
+        lo_touchpad.addView(drawingView);
     }
 }
