@@ -35,11 +35,20 @@ public class CalendarTest extends AppCompatActivity {
     };
 
     public static final String[] EVENT_PROJECTION = new String[] {
-            CalendarContract.Events.CALENDAR_ID,                           // 0
-            CalendarContract.Calendars.ACCOUNT_NAME,                  // 1
-            CalendarContract.Calendars.CALENDAR_DISPLAY_NAME,         // 2
-            CalendarContract.Calendars.OWNER_ACCOUNT,                  // 3
-            CalendarContract.Calendars.NAME
+            CalendarContract.Events.CALENDAR_DISPLAY_NAME,
+            CalendarContract.Events.TITLE,
+            CalendarContract.Events.EVENT_LOCATION,
+            CalendarContract.Events.DTSTART, // 시작 datetime
+            CalendarContract.Events.DTEND, // 끝 datetime
+            CalendarContract.Events.HAS_ALARM, // 알람 존재여부 1/0
+            CalendarContract.Events.DURATION, // P1D, P3600S, null
+            CalendarContract.Events.EVENT_TIMEZONE, // UTC, Asia/Seoul, ...
+            CalendarContract.Events.EVENT_END_TIMEZONE, // null
+            CalendarContract.Events.STATUS, // STATUS_TENTATIVE(0), STATUSCONFIRMED(1), STATUS_CANCELED(2)
+            CalendarContract.Events.ALL_DAY, // isAllDay 1/0
+            CalendarContract.Events.LAST_DATE, // 일정이 끝난 시간을 나타내는 timestamp 1672790400000
+            CalendarContract.Events.RDATE, // null
+            CalendarContract.Events.RRULE // FREQ=YEARLY;COUNT=10;INTERVAL=1;WKST=SU;BYMONTHDAY=27;BYMONTH=1
     };
 
     Button btn_1;
@@ -71,24 +80,28 @@ public class CalendarTest extends AppCompatActivity {
             // Run query
             Cursor cur = null;
             ContentResolver cr = getContentResolver();
-            Uri uri = CalendarContract.Calendars.CONTENT_URI;
+            Uri uri = CalendarContract.Events.CONTENT_URI;
             // Submit the query and get a Cursor object back.
             cur = cr.query(uri, EVENT_PROJECTION, null, null, null);
 
             while (cur.moveToNext()) {
-                long calID = 0;
-                String displayName = null;
-                String accountName = null;
-                String ownerName = null;
-                String name = null;
 
-                calID = cur.getLong(PROJECTION_ID_INDEX);
-                displayName = cur.getString(PROJECTION_DISPLAY_NAME_INDEX);
-                accountName = cur.getString(PROJECTION_ACCOUNT_NAME_INDEX);
-                ownerName = cur.getString(PROJECTION_OWNER_ACCOUNT_INDEX);
-                name = cur.getString(4);
 
-                Log.i("this", calID + " / " + displayName + " / " + accountName + " / " + ownerName + " / " + name);
+                String displayName = cur.getString(0);
+                String title = cur.getString(1);
+                String location = cur.getString(2);
+                String dtStart = cur.getString(3);
+                String dtEnd = cur.getString(4);
+                int hasAlarm = cur.getInt(5);
+                String duration = cur.getString(6);
+                String eventTimeZone = cur.getString(7);
+                String eventEndTimeZone = cur.getString(8);
+                int status = cur.getInt(9);
+                int allDay = cur.getInt(10);
+                long lastDate = cur.getLong(11);
+                String rDate = cur.getString(12);
+                String rRule = cur.getString(13);
+                Log.i("this", displayName + " / " + title + " / " + location + " / " + dtStart + " / " + dtEnd + " / " + hasAlarm + " / " + duration + " / " + eventTimeZone + " / " + eventEndTimeZone + " / " + status + " / " + allDay + " / " + lastDate + " / " + rDate + " / " + rRule);
             }
         }
     }
