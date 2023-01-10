@@ -2,6 +2,8 @@ package com.example.smartbox_dup.screen.function.calendarapp;
 
 import android.Manifest;
 import android.content.ContentResolver;
+import android.content.ContentUris;
+import android.content.ContentValues;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.net.Uri;
@@ -17,21 +19,16 @@ import androidx.core.content.ContextCompat;
 
 import com.example.smartbox_dup.R;
 
+import java.util.Calendar;
+
 import chanyb.android.java.GlobalApplcation;
 
 public class CalendarTest extends AppCompatActivity {
 
-    private static final int PROJECTION_ID_INDEX = 0;
-    private static final int PROJECTION_ACCOUNT_NAME_INDEX = 1;
-    private static final int PROJECTION_DISPLAY_NAME_INDEX = 2;
-    private static final int PROJECTION_OWNER_ACCOUNT_INDEX = 3;
-
     public static final String[] CALENDAR_PROJECTION = new String[] {
-            CalendarContract.Calendars._ID,                           // 0
-            CalendarContract.Calendars.ACCOUNT_NAME,                  // 1
-            CalendarContract.Calendars.CALENDAR_DISPLAY_NAME,         // 2
-            CalendarContract.Calendars.OWNER_ACCOUNT,                  // 3
-            CalendarContract.Calendars.NAME
+            CalendarContract.Calendars._ID,
+            CalendarContract.Calendars.NAME,
+            CalendarContract.Calendars.CALENDAR_DISPLAY_NAME,
     };
 
     public static final String[] EVENT_PROJECTION = new String[] {
@@ -48,10 +45,11 @@ public class CalendarTest extends AppCompatActivity {
             CalendarContract.Events.ALL_DAY, // isAllDay 1/0
             CalendarContract.Events.LAST_DATE, // 일정이 끝난 시간을 나타내는 timestamp 1672790400000
             CalendarContract.Events.RDATE, // null
-            CalendarContract.Events.RRULE // FREQ=YEARLY;COUNT=10;INTERVAL=1;WKST=SU;BYMONTHDAY=27;BYMONTH=1
+            CalendarContract.Events.RRULE, // FREQ=YEARLY;COUNT=10;INTERVAL=1;WKST=SU;BYMONTHDAY=27;BYMONTH=1
+            CalendarContract.Events.DESCRIPTION // 메모
     };
 
-    Button btn_1;
+    private Button btn_0, btn_1, btn_2, btn_3;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -61,10 +59,45 @@ public class CalendarTest extends AppCompatActivity {
     }
 
     private void init() {
+        btn_0 = findViewById(R.id.btn_0);
+        btn_0.setOnClickListener((view) -> btn_0_action());
+
         btn_1 = findViewById(R.id.btn_1);
         btn_1.setOnClickListener((view) -> {
             btn_1_action();
         });
+
+        btn_2 = findViewById(R.id.btn_2);
+        btn_2.setOnClickListener((view) -> btn_2_action());
+
+        btn_3 = findViewById(R.id.btn_3);
+        btn_3.setOnClickListener((view) -> btn_3_action());
+    }
+
+    private void btn_0_action() {
+        String[] permissions = {
+                Manifest.permission.READ_CALENDAR, Manifest.permission.WRITE_CALENDAR
+        };
+
+        int CAMERA_PERMISSION = ContextCompat.checkSelfPermission(GlobalApplcation.getContext(), permissions[0]);
+
+        if(CAMERA_PERMISSION == PackageManager.PERMISSION_DENIED) {
+            ActivityCompat.requestPermissions(GlobalApplcation.currentActivity, permissions, 0);
+        } else {
+            // Run query
+            Cursor cur = null;
+            ContentResolver cr = getContentResolver();
+            Uri uri = CalendarContract.Events.CONTENT_URI;
+            // Submit the query and get a Cursor object back.
+            cur = cr.query(uri, CALENDAR_PROJECTION, null, null, null);
+
+            while (cur.moveToNext()) {
+                String ID = cur.getString(0);
+                String NAME = cur.getString(1);
+                String CALENDAR_DISPLAY_NAME = cur.getString(2);
+                Log.i("this", ID + " / " + NAME + " / " + CALENDAR_DISPLAY_NAME);
+            }
+        }
     }
 
     private void btn_1_action() {
@@ -85,8 +118,6 @@ public class CalendarTest extends AppCompatActivity {
             cur = cr.query(uri, EVENT_PROJECTION, null, null, null);
 
             while (cur.moveToNext()) {
-
-
                 String displayName = cur.getString(0);
                 String title = cur.getString(1);
                 String location = cur.getString(2);
@@ -104,5 +135,35 @@ public class CalendarTest extends AppCompatActivity {
                 Log.i("this", displayName + " / " + title + " / " + location + " / " + dtStart + " / " + dtEnd + " / " + hasAlarm + " / " + duration + " / " + eventTimeZone + " / " + eventEndTimeZone + " / " + status + " / " + allDay + " / " + lastDate + " / " + rDate + " / " + rRule);
             }
         }
+    }
+
+    private void btn_2_action() {
+        Calendar beginTime = Calendar.getInstance();
+        beginTime.set(2023, 0, 12, 0, 0);
+        long startMillis = beginTime.getTimeInMillis();
+
+        Calendar endTime = Calendar.getInstance();
+        endTime.set(2023, 0, 12, 24, 00);
+        long endMillis = endTime.getTimeInMillis();
+
+        ContentResolver contentResolver = getContentResolver();
+        ContentValues contentValues = new ContentValues();
+
+        contentValues.put(CalendarContract.Events.DTSTART, startMillis);
+        contentValues.put(CalendarContract.Events.DTEND, endMillis);
+        contentValues.put(CalendarContract.Events.TITLE, "캘린더입력");
+        contentValues.put(CalendarContract.Events.DESCRIPTION, "테스트");
+        contentValues.put(CalendarContract.Events.CALENDAR_ID, 5);
+        contentValues.put(CalendarContract.Events.EVENT_TIMEZONE, "Asia/Seoul");
+
+        contentResolver.insert(CalendarContract.Events.CONTENT_URI, contentValues);
+    }
+
+    private void btn_3_action() {
+        ContentResolver cr = getContentResolver();
+        Uri deleteUri = null;
+        deleteUri = ContentUris.withAppendedId(CalendarContract.Events.CONTENT_URI, -55);
+        int rows = cr.delete(deleteUri, null, null);
+        Log.i("this", "Rows deleted: " + rows);
     }
 }
