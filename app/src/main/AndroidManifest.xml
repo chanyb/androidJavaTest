@@ -122,6 +122,8 @@
             android:exported="false" />
         <activity android:name=".screen.function.printonothers.PrintOnOtherAppTest"
             android:exported="false" />
+        <activity android:name=".screen.function.viewbinding.ViewBindingTestActivity"
+            android:exported="false" />
 
         <service android:name=".screen.function.printonothers.FloatingService" android:enabled="true"/>
         <service android:name=".SampleForegroundService" />

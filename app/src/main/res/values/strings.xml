@@ -61,6 +61,8 @@
     <string name="function_14">calendar(built in app)</string>
     <string name="function_15">adb shell test</string>
     <string name="function_16">다른 앱 위에 표시</string>
+    <string name="function_17">viewBinding</string>
+
     <string name="function_sqlite_1">sqLite - insert</string>
     <string name="function_sqlite_2">sqLite - select</string>
     <string name="function_sqlite_3">sqLite - update</string>
