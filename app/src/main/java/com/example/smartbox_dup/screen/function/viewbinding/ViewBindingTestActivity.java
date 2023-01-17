@@ -23,7 +23,7 @@ public class ViewBindingTestActivity extends AppCompatActivity {
     private void updateUI() {
 
         runOnUiThread(() -> {
-            binding.txt1.setText("asdfasdfasdf");
+            binding.txt1.setText("#123412");
             binding.txt1.setBackgroundColor(Color.GRAY);
         });
     }

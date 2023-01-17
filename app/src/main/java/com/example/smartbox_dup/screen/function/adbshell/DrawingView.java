@@ -38,7 +38,7 @@ public class DrawingView extends View {
     private void init() {
         bitmapPaint = new Paint(Paint.DITHER_FLAG);
         paint = new Paint();
-        paint.setStrokeWidth(5f);
+        paint.setStrokeWidth(20f);
         paint.setStyle(Paint.Style.FILL);
         paint.setColor(Color.BLACK);
 
@@ -64,7 +64,7 @@ public class DrawingView extends View {
         y = event.getY();
 
         mCanvas.drawLine(mx, my, x, y, paint);
-        Log.i("this", mx + "," + my + " / " + x + "," + y);
+        mCanvas.drawCircle(x,y,paint.getStrokeWidth()/2, paint);
         mx = x;
         my = y;
         invalidate();
