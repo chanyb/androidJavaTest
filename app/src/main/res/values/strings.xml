@@ -62,6 +62,7 @@
     <string name="function_15">adb shell test</string>
     <string name="function_16">다른 앱 위에 표시</string>
     <string name="function_17">viewBinding</string>
+    <string name="function_18">sensor</string>
 
     <string name="function_sqlite_1">sqLite - insert</string>
     <string name="function_sqlite_2">sqLite - select</string>
@@ -106,6 +107,9 @@
     <string name="function_calendar_1">일정 가져오기</string>
     <string name="function_calendar_2">일정 등록하기</string>
     <string name="function_calendar_3">일정 삭제하기</string>
+
+    <string name="function_sensor_1">회전 벡터 센서 테스트</string>
+    <string name="function_sensor_2">회전 벡터 센서 테스트 종료</string>
 
     <string name="function_print_on_other_app_1">권한 받기</string>
     <string name="app_ing">에서 실행중입니다.\n잠시만 기다려 주십시오.</string>

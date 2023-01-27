@@ -11,6 +11,8 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
+import chanyb.android.java.GlobalApplcation;
+
 public class DrawingView extends View {
     private Paint paint;
     float mx,x,my,y;
@@ -70,4 +72,8 @@ public class DrawingView extends View {
         invalidate();
         return true;
     }
+
+    public void getPhoneSize() {
+    }
+
 }
