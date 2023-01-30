@@ -126,6 +126,8 @@
             android:exported="false" />
         <activity android:name=".screen.function.sensor.SensorTest"
             android:exported="false" />
+        <activity android:name=".screen.function.notification.NotifcationTest"
+            android:exported="false" />
 
         <service android:name=".screen.function.printonothers.FloatingService" android:enabled="true"/>
         <service android:name=".SampleForegroundService" />
@@ -141,6 +143,7 @@
         </service>
         <service android:name=".screen.function.alarm.AlarmService" />
         <service android:name=".ServiceChecker" />
+        <service android:name=".screen.function.notification.NotificationService" />
 
 
     </application>

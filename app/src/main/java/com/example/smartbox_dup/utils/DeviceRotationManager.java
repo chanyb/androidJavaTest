@@ -35,11 +35,21 @@ public class DeviceRotationManager {
         void onLandscapeReverse();
     }
 
-    public void addListener(@NonNull DeviceRotateListener listener) {
+    private void addListener(@NonNull DeviceRotateListener listener) {
         this.listener = listener;
     }
 
-    private void registerListener(Context mContext, DeviceRotateListener listener) {
+
+    public void unregisterListener() {
+        if(sensorEventListener != null && sensorManager != null) {
+            sensorManager.unregisterListener(sensorEventListener);
+            this.listener = null;
+        }
+    }
+
+    public void registerListener(Context mContext, DeviceRotateListener listener) {
+        if (this.listener != null) return; // 한번에 한 곳에서만 register 할 수 있다.
+
         sensorManager = (SensorManager) mContext.getSystemService(Context.SENSOR_SERVICE);
         sensor = sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
         if(sensor == null) {
@@ -52,8 +62,6 @@ public class DeviceRotationManager {
             @Override
             public void onSensorChanged(SensorEvent event) {
                 ROTATE_STATE STATE = checkOrientation(event.values);
-
-                if(listener == null) return;
 
                 if (STATE == ROTATE_STATE.PORTRAIT) {
                     listener.onPortrait();
