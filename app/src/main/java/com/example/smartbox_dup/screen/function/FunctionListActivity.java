@@ -20,6 +20,7 @@ import com.example.smartbox_dup.screen.function.fragment.FragmentActivity;
 import com.example.smartbox_dup.screen.function.gallary.GallaryTest;
 import com.example.smartbox_dup.screen.function.intent.IntentTest;
 import com.example.smartbox_dup.screen.function.location.LocationTest;
+import com.example.smartbox_dup.screen.function.network.NetworkTest;
 import com.example.smartbox_dup.screen.function.notification.NotifcationTest;
 import com.example.smartbox_dup.screen.function.printonothers.PrintOnOtherAppTest;
 import com.example.smartbox_dup.screen.function.sensor.SensorTest;
@@ -31,7 +32,7 @@ import com.example.smartbox_dup.screen.function.webview.WebviewTest;
 
 public class FunctionListActivity extends AppCompatActivity {
 
-    Button btn_1, btn_2, btn_3, btn_4, btn_5, btn_6, btn_7, btn_8, btn_9, btn_10, btn_11, btn_12, btn_13, btn_14, btn_15, btn_16, btn_17, btn_18, btn_19;
+    Button btn_1, btn_2, btn_3, btn_4, btn_5, btn_6, btn_7, btn_8, btn_9, btn_10, btn_11, btn_12, btn_13, btn_14, btn_15, btn_16, btn_17, btn_18, btn_19, btn_20, btn_21, btn_22;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -141,6 +142,11 @@ public class FunctionListActivity extends AppCompatActivity {
         btn_19 = findViewById(R.id.btn_19);
         btn_19.setOnClickListener((view) -> {
             startActivity(new Intent(this, NotifcationTest.class));
+        });
+
+        btn_20 = findViewById(R.id.btn_20);
+        btn_20.setOnClickListener((view) -> {
+            startActivity(new Intent(this, NetworkTest.class));
         });
     }
 }

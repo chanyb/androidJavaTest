@@ -116,6 +116,8 @@
     <string name="function_notification_1">foreground notification</string>
     <string name="function_notification_2">service stop</string>
 
+    <string name="function_network_1">getFile</string>
+
     <string name="function_print_on_other_app_1">권한 받기</string>
     <string name="app_ing">에서 실행중입니다.\n잠시만 기다려 주십시오.</string>
 
