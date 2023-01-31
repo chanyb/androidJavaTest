@@ -23,7 +23,7 @@ import com.example.smartbox_dup.utils.DeviceRotationManager;
 import chanyb.android.java.GlobalApplcation;
 
 public class NotifcationTest extends AppCompatActivity {
-    private Button btn_1;
+    private Button btn_1, btn_2;
     private String channelId;
 
     @Override
@@ -37,6 +37,11 @@ public class NotifcationTest extends AppCompatActivity {
         btn_1 = findViewById(R.id.btn_1);
         btn_1.setOnClickListener((view) -> {
             btn_1_action();
+        });
+
+        btn_2 = findViewById(R.id.btn_2);
+        btn_2.setOnClickListener((view) -> {
+            btn_2_action();
         });
 
         channelId = "hello";
@@ -54,17 +59,20 @@ public class NotifcationTest extends AppCompatActivity {
         boolean chk = false;
         try {
             if (!isServiceRunningCheck(aClass)) {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    Log.i("this", "startForegroundService");
-                    mContext.startForegroundService(new Intent(mContext, aClass));
-                } else {
-                    mContext.startService(new Intent(mContext, aClass));
-                }
+
             }
             chk = true;
         } catch (Exception e) {
             Log.i("this", "exception!!: " + e);
         }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            Log.i("this", "startForegroundService");
+            mContext.startForegroundService(new Intent(mContext, aClass));
+        } else {
+            mContext.startService(new Intent(mContext, aClass));
+        }
+
         return chk;
     }
 
@@ -85,6 +93,10 @@ public class NotifcationTest extends AppCompatActivity {
             if (!GlobalApplcation.getContext().isNotificationChannelEnabled(channelId)) ;
             GlobalApplcation.getContext().createNotificationChannel(channelId, NotificationManager.IMPORTANCE_LOW);
         }
+    }
+
+    private void btn_2_action() {
+        stopService(new Intent(GlobalApplcation.getContext(), NotificationService.class));
     }
 
 }

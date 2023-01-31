@@ -48,6 +48,7 @@ public class NotificationService extends Service {
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
+        // bindService()로 호출 할 수 있다.
         return null;
     }
 
