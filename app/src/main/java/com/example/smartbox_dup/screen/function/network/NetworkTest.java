@@ -85,13 +85,13 @@ public class NetworkTest extends AppCompatActivity {
     }
 
     private void btn_2_action() {
-        File apkFile = new File(getAbsolutePath(mContext) + File.separator + APK_VERSION_CHECK_FILE);
+        File file = new File(getAbsolutePath(mContext) + File.separator + APK_VERSION_CHECK_FILE);
         InputStreamReader reader = null;
         BufferedReader fin = null;
 
         try {
-            if (apkFile.exists()) {
-                reader = new InputStreamReader(new FileInputStream(apkFile), "UTF-8");
+            if (file.exists()) {
+                reader = new InputStreamReader(new FileInputStream(file), "UTF-8");
                 fin = new BufferedReader(reader);
                 String ss;
                 while ((ss = fin.readLine()) != null) {
@@ -120,6 +120,46 @@ public class NetworkTest extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+    }
+
+    public String readLine(String path) {
+        File file = new File(path);
+        InputStreamReader reader = null;
+        BufferedReader fin = null;
+
+        try {
+            if (file.exists()) {
+                reader = new InputStreamReader(new FileInputStream(file), "UTF-8");
+                fin = new BufferedReader(reader);
+                String ss;
+                while ((ss = fin.readLine()) != null) {
+                    if (ss.indexOf("=") > 0) {
+                        continue;
+                    }
+
+                    return ss;
+                }
+            }
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        } finally {
+            try {
+                if (reader != null) {
+                    reader.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            try {
+                if (fin != null) {
+                    fin.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return null;
     }
 
     public void btn_3_action() {
