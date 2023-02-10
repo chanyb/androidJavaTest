@@ -100,6 +100,7 @@
     <string name="function_gallary_1">getPhoto-startActivityForResult-single</string>
     <string name="function_gallary_2">getPhoto-ActivityResultLauncher-single</string>
     <string name="function_gallary_3">getPhoto-ActivityResultLauncher-multi</string>
+    <string name="function_gallary_4">custom view 에서 갤러리사진 보기</string>
 
     <string name="function_webview_1">webview-현재상태 옮기기</string>
 

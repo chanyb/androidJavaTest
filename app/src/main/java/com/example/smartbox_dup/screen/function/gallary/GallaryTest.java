@@ -1,9 +1,14 @@
 package com.example.smartbox_dup.screen.function.gallary;
 
+import android.Manifest;
+import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.Button;
 
@@ -13,14 +18,20 @@ import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.example.smartbox_dup.R;
-import com.example.smartbox_dup.screen.function.socket.TCPClient;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class GallaryTest extends AppCompatActivity {
-    Button btn_1, btn_2, btn_3;
+    private Button btn_1, btn_2, btn_3, btn_4;
+    private ConstraintLayout lo_images;
+    private PhotoFragment photoFragment;
     static int CODE_REQUEST_GALLARY=1;
 
     ActivityResultLauncher<String> mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(),
@@ -86,9 +97,22 @@ public class GallaryTest extends AppCompatActivity {
 
         btn_3 = findViewById(R.id.btn_3);
         btn_3.setOnClickListener((view) ->{
-//            mGetMultiContent.launch("image/*");
-            Intent tel = new Intent(Intent.ACTION_DIAL, Uri.parse("tel:15884343"));
-            startActivity(tel);
+            mGetMultiContent.launch("image/*");
         });
+
+        btn_4 = findViewById(R.id.btn_4);
+        btn_4.setOnClickListener((view) -> btn_4_click_event());
+
+        photoFragment = new PhotoFragment();
+
     }
+
+    private void btn_4_click_event() {
+        // 전체 이미지 uri 가져오기
+        Log.i("this", "btn_4_click_event");
+        FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
+        ft.replace(R.id.lo_images, photoFragment);
+        ft.commit();
+    }
+
 }
