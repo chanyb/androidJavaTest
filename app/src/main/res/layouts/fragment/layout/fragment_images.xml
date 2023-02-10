@@ -28,6 +28,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintWidth_percent="0.5"
+        android:theme="@style/SpinnerTheme"
         android:textSize="20dp"
         />
 
