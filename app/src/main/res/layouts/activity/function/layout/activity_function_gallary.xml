@@ -63,6 +63,12 @@
             app:layout_constraintStart_toStartOf="@id/btn_3"
             app:layout_constraintEnd_toEndOf="@id/btn_3">
 
+            <ImageView
+                android:id="@+id/img_photo"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
 
 

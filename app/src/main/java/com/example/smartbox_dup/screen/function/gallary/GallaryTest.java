@@ -2,15 +2,22 @@ package com.example.smartbox_dup.screen.function.gallary;
 
 import android.Manifest;
 import android.content.ContentResolver;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.database.Cursor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.ImageDecoder;
+import android.graphics.drawable.BitmapDrawable;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.ImageView;
 
 import androidx.activity.result.ActivityResultCallback;
 import androidx.activity.result.ActivityResultLauncher;
@@ -23,14 +30,21 @@ import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.smartbox_dup.R;
+import com.example.smartbox_dup.sqlite.Database;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class GallaryTest extends AppCompatActivity {
     private Button btn_1, btn_2, btn_3, btn_4;
     private ConstraintLayout lo_images;
+    private ImageView img_photo;
     private PhotoFragment photoFragment;
     static int CODE_REQUEST_GALLARY=1;
 
@@ -40,6 +54,15 @@ public class GallaryTest extends AppCompatActivity {
                 public void onActivityResult(Uri uri) {
                     // Handle the returned Uri
                     Log.i("this", "onActivityResult - URI: "+ uri);
+                    Bitmap bitmap = getBitmapFromUri(uri);
+                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+                    byte[] byteArr = byteArrayOutputStream.toByteArray();
+                    ContentValues cv = new ContentValues();
+                    cv.put("datetime", "1");
+                    cv.put("image", byteArr);
+                    Database.getHuntInfoTable().insert("hunt_info", cv);
+
                 }
             });
 
@@ -97,14 +120,14 @@ public class GallaryTest extends AppCompatActivity {
 
         btn_3 = findViewById(R.id.btn_3);
         btn_3.setOnClickListener((view) ->{
-            mGetMultiContent.launch("image/*");
+            getImageFromSqlite();
         });
 
         btn_4 = findViewById(R.id.btn_4);
         btn_4.setOnClickListener((view) -> btn_4_click_event());
 
         photoFragment = new PhotoFragment();
-
+        img_photo = findViewById(R.id.img_photo);
     }
 
     private void btn_4_click_event() {
@@ -115,4 +138,44 @@ public class GallaryTest extends AppCompatActivity {
         ft.commit();
     }
 
+
+    public Bitmap getBitmapFromUri(Uri uri) {
+        Bitmap bitmap = null;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            try {
+                bitmap = ImageDecoder.decodeBitmap(ImageDecoder.createSource(getContentResolver(), uri));
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        } else {
+            try {
+                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return bitmap;
+    }
+
+    public void getImageFromSqlite() {
+        Cursor cursor = Database.getHuntInfoTable().selectCursor("hunt_info", new String[]{"datetime", "image"}, null, null, null, null, null, null);
+        while(cursor.moveToNext()) {
+            String datetime = cursor.getString(cursor.getColumnIndexOrThrow("datetime"));
+            byte[] imageBytes = cursor.getBlob(cursor.getColumnIndexOrThrow("image"));
+            Bitmap bitmap = getBitmapFromBlob(imageBytes);
+            if(bitmap == null) {
+                Log.i("this", "bitmap is null");
+            } else {
+                Glide.with(this).load(bitmap).into(img_photo);
+            }
+
+//            BitmapDrawable ob = new BitmapDrawable(getResources(), bitmap);
+//            lo_images.setBackgroundDrawable(ob);
+        }
+
+    }
+
+    public Bitmap getBitmapFromBlob(byte[] bytes) {
+        return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+    }
 }

@@ -137,6 +137,10 @@
                 <data android:mimeType="image/*" />
             </intent-filter>
         </activity>
+        <activity android:name=".screen.function.actrstlauncher.ActivityResultLauncherTest"
+            android:exported="false" />
+        <activity android:name=".screen.function.actrstlauncher.ActivityResultLauncherTest2"
+            android:exported="false" />
 
         <service android:name=".screen.function.printonothers.FloatingService" android:enabled="true"/>
         <service android:name=".SampleForegroundService" />
