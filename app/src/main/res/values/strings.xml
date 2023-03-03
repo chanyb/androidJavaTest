@@ -2,7 +2,7 @@
     <string name="app_name">smartbox_dup</string>
 
     <string name="vName_text">이름</string>
-    <string name="vId_hint">아이디를 입력하세요</string>
+    <string name="vId_hint" translatable="false">아이디를 입력하세요</string>
     <string name="vId_permitted_helperText">사용할 수 있는 아이디입니다.</string>
     <string name="vPassword_hint">비밀번호를 입력하세요</string>
     <string name="vPassword_permitted_helperText">사용 가능한 비밀번호 입니다.</string>

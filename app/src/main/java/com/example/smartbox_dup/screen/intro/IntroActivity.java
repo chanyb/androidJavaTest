@@ -4,8 +4,11 @@ import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.res.Configuration;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.util.Log;
 
 import androidx.annotation.Nullable;
@@ -21,6 +24,7 @@ import com.example.smartbox_dup.utils.AudioManager;
 import com.example.smartbox_dup.utils.FutureTaskRunner;
 import com.example.smartbox_dup.utils.PermissionManager;
 
+import java.util.Locale;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
@@ -35,12 +39,40 @@ public class IntroActivity extends AppCompatActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intro);
+
+        Log.i("this", "Intro - onCreate");
+    }
+
+    public void set_language_code(String language){
+        Locale locale = new Locale(language);
+        Locale.setDefault(locale);
+        Configuration config = new Configuration();
+        config.locale = locale;
+        getBaseContext().getResources().updateConfiguration(config, getBaseContext().getResources().getDisplayMetrics());
     }
 
     @Override
     protected void onResume() {
         super.onResume();
         checkpoints();
+        if(getIntent().getStringExtra("lang") == null) {
+            Log.i("this", "lang is null");
+            set_language_code("en");
+            Handler mHandler = new Handler(Looper.getMainLooper());
+            mHandler.postDelayed(() -> {
+                runOnUiThread(() -> {
+                    set_language_code("kr");
+                    Intent intent = new Intent(this, IntroActivity.class);
+                    intent.putExtra("lang", "kr");
+                    startActivity(intent);
+                    overridePendingTransition(0, 0);
+                    finish();
+                });
+            }, 1000);
+        } else {
+            Log.i("this", "lang is not null");
+        }
+
     }
 
     private void nextPage() {
