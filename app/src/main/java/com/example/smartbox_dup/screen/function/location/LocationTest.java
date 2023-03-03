@@ -97,6 +97,7 @@ public class LocationTest extends AppCompatActivity {
     }
 
     private void btn_2_action() {
+        Log.i("this", "btn_2_action");
         PermissionManager.getInstance().requestPermissions(new String[] {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION});
         LocationManager locationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -109,10 +110,12 @@ public class LocationTest extends AppCompatActivity {
             // for ActivityCompat#requestPermissions for more details.
             return;
         }
-        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, new LocationListener() {
+        Log.i("this", "requestLocationUpdates");
+        locationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000 * 30 * 1, 5, new LocationListener() {
             @Override
             public void onLocationChanged(@NonNull Location location) {
                 Log.i("this", location.toString());
+                runOnUiThread(() -> txt_location.setText(location.toString()));
                 locationManager.removeUpdates(this);
             }
         });
