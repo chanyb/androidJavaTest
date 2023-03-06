@@ -12,13 +12,20 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Parcelable;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.ImageView;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
+import com.bumptech.glide.request.RequestOptions;
 import com.example.smartbox_dup.R;
 import com.example.smartbox_dup.screen.function.notification.NotificationService;
 
@@ -31,6 +38,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
 
 import chanyb.android.java.GlobalApplcation;
 
@@ -40,12 +48,24 @@ public class NetworkTest extends AppCompatActivity {
     private Context mContext;
     private static String APK_DOWNLOAD_PATH = "http://apk-link14.kworks.co.kr/apk/smartdtg2/";
     private static final String APK_VERSION_CHECK_FILE = "smartdtg2.txt";
+    private ImageView img_photo;
+
+    public ActivityResultLauncher<Intent> mStartForResult = registerForActivityResult(
+            new ActivityResultContracts.StartActivityForResult(),
+            result -> {
+                if(result.getResultCode() == RESULT_OK) {
+                    Intent intent = result.getData();
+                    Log.i("this", "RESULT_OK");
+                }
+            }
+    );
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         setContentView(R.layout.activity_function_network);
         init();
         super.onCreate(savedInstanceState);
+        getSendedIntent();
     }
 
     private void init() {
@@ -65,6 +85,7 @@ public class NetworkTest extends AppCompatActivity {
             btn_3_action();
         });
 
+        img_photo = findViewById(R.id.img_photo);
     }
 
 
@@ -298,5 +319,14 @@ public class NetworkTest extends AppCompatActivity {
         Intent intent = new Intent(Intent.ACTION_VIEW);
         intent.setData(Uri.parse("market://details?id=" + "com.kworks.smartdgt"));
         startActivity(intent);
+    }
+
+    public void getSendedIntent() {
+        Uri uri = getIntent().getParcelableExtra("android.intent.extra.STREAM");
+        if(uri != null) {
+            Log.i("this", String.valueOf(uri));
+            Glide.with(mContext).load(uri).apply(new RequestOptions().transform(new RoundedCorners(50))).into(img_photo);
+        }
+
     }
 }
