@@ -52,8 +52,14 @@ public class SensorTest extends AppCompatActivity {
     private SensorEventListener accelSensorEventListener;
     private long lastTimestamp;
     private float[] lastAcceleration;
+    private float lastX, lastY, lastZ;
     private static final float NS2S = 1.0f / 1000000000.0f;
     private float currentSpeed_x, currentSpeed_y, currentSpeed_z;
+    private float speed;
+    private static final int SHAKE_THRESHOLD = 600;
+    private static final int MAX_SENSOR_VALUES = 100;
+    private static final int MIN_SENSOR_VALUES = 10;
+
     private LocationManager locationManager;
     private LocationListener locationListener = new LocationListener() {
         @Override
@@ -138,30 +144,42 @@ public class SensorTest extends AppCompatActivity {
         // 가속도 센서테스트
         accelSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
         currentSpeed_x = currentSpeed_y = currentSpeed_z = -99f;
-        lastTimestamp = System.currentTimeMillis();
-
+        lastTimestamp = -1l;
+        speed = 0;
         accelSensorEventListener = new SensorEventListener() {
             @Override
             public void onSensorChanged(SensorEvent event) {
 
-                if (currentSpeed_x == -99f) {
-                    // init
-                    currentSpeed_x = event.values[0];
-                    currentSpeed_y = event.values[1];
-                    currentSpeed_z = event.values[2];
-                    return;
+                long currentTime = System.currentTimeMillis();
+                float x = event.values[0];
+                float y = event.values[1];
+                float z = event.values[2];
+                if (lastTimestamp == -1l) {
+                   lastTimestamp = currentTime;
+                   lastX = x;
+                   lastY = y;
+                   lastZ = z;
+                   return ;
                 }
-                float acceleration_x = event.values[0]; // Get the acceleration value along the x-axis
-                float acceleration_y = event.values[0]; // Get the acceleration value along the x-axis
-                float acceleration_z = event.values[0]; // Get the acceleration value along the x-axis
 
-                float timeDelta = (event.timestamp - lastTimestamp) / 1000000000.0f;
+                long timeInterval = currentTime - lastTimestamp;
+                if (timeInterval < 100) return;
 
-                currentSpeed_x = currentSpeed_x + acceleration_x * timeDelta;
-                currentSpeed_y = currentSpeed_y + acceleration_y * timeDelta;
-                currentSpeed_z = currentSpeed_z + acceleration_z * timeDelta;
+                lastTimestamp = currentTime;
 
-                Log.i("this", currentSpeed_x + " / " + currentSpeed_y + " / " + currentSpeed_z);
+
+                float deltaX = x - lastX;
+                float deltaY = y - lastY;
+                float deltaZ = z - lastZ;
+
+                lastX = x;
+                lastY = y;
+                lastZ = z;
+
+                float speedDelta = Math.abs(deltaX + deltaY + deltaZ) / timeInterval * 10000; // m/s^2를 m/s로 바꾸기 위해
+                speed = speedDelta * 0.001f;
+
+                txt_x.setText(String.format(Locale.getDefault(), "%.2f km/h", speed*3.6));
 
             }
 
