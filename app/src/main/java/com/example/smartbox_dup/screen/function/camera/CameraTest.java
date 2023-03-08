@@ -1,7 +1,10 @@
 package com.example.smartbox_dup.screen.function.camera;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -11,10 +14,17 @@ import android.graphics.ImageDecoder;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.drawable.BitmapDrawable;
+import android.hardware.camera2.CameraAccessException;
+import android.hardware.camera2.CameraCharacteristics;
+import android.hardware.camera2.CameraManager;
+import android.hardware.camera2.CameraMetadata;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
+import android.os.Handler;
+import android.os.Looper;
+import android.print.PrintAttributes;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Surface;
@@ -24,36 +34,53 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.camera.camera2.interop.Camera2CameraInfo;
 import androidx.camera.core.Camera;
+import androidx.camera.core.CameraControl;
+import androidx.camera.core.CameraInfo;
 import androidx.camera.core.CameraSelector;
 import androidx.camera.core.ImageCapture;
 import androidx.camera.core.ImageCaptureException;
 import androidx.camera.core.Preview;
+import androidx.camera.core.UseCaseGroup;
+import androidx.camera.core.VideoCapture;
 import androidx.camera.lifecycle.ProcessCameraProvider;
+import androidx.camera.video.FallbackStrategy;
+import androidx.camera.video.Quality;
+import androidx.camera.video.QualitySelector;
 import androidx.camera.view.PreviewView;
+import androidx.camera.view.video.OutputFileOptions;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ProcessLifecycleOwner;
 
 import com.bumptech.glide.Glide;
 import com.example.smartbox_dup.R;
 import com.example.smartbox_dup.utils.DatetimeManager;
+import com.example.smartbox_dup.utils.DeviceRotationManager;
 import com.example.smartbox_dup.utils.FutureTaskRunner;
 import com.example.smartbox_dup.utils.PermissionManager;
+import com.google.android.gms.common.images.Size;
 import com.google.common.util.concurrent.ListenableFuture;
 
 import org.json.JSONException;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.FileNotFoundException;
+import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Date;
+import java.util.List;
+import java.util.Set;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
+
 
 import chanyb.android.java.GlobalApplcation;
 
@@ -61,15 +88,22 @@ public class CameraTest extends AppCompatActivity {
     private ListenableFuture<ProcessCameraProvider> cameraProviderFuture;
     PreviewView previewView;
     ImageCapture imageCapture;
-    Button btn_capture, btn_update;
+    Button btn_capture, btn_video_capture;
     ImageView imageView, imageView2;
+    UseCaseGroup useCaseGroup;
+    VideoCapture videoCapture;
+    Handler mHandler;
+
+    Camera camera;
 //    ConstraintLayout lo_preview;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_function_camera);
-        if(!PermissionManager.getInstance().cameraPermissionCheck()) {
+        mHandler = new Handler(Looper.getMainLooper());
+        Log.i("this", getExternalFilesDir(null).getAbsolutePath());
+        if (!PermissionManager.getInstance().cameraPermissionCheck()) {
             FutureTaskRunner<Boolean> futureTaskRunner = new FutureTaskRunner<>();
 //            futureTaskRunner.nextTask(() -> {
 //                if(!PermissionManager.getInstance().requestWriteExternalStoragePermission()) {
@@ -86,9 +120,10 @@ public class CameraTest extends AppCompatActivity {
             futureTaskRunner.nextTask(() -> {
                 PermissionManager.getInstance().requestCameraPermission();
                 while (true) {
-                    if(PermissionManager.getInstance().cameraPermissionCheck()) return true;
+                    if (PermissionManager.getInstance().cameraPermissionCheck()) return true;
                 }
             });
+            ActivityCompat.requestPermissions(this, new String[]{Manifest.permission.RECORD_AUDIO},0);
             futureTaskRunner.setCallback((res) -> {
                 runOnUiThread(() -> init());
                 return true;
@@ -107,13 +142,10 @@ public class CameraTest extends AppCompatActivity {
     private void init() {
         imageView = findViewById(R.id.imageView);
         imageView2 = findViewById(R.id.imageView2);
-        imageCapture = new ImageCapture.Builder()
-                .setTargetRotation(Surface.ROTATION_0)
-                .build();
 
-        btn_update = findViewById(R.id.btn_update);
-        btn_update.setOnClickListener(view -> {
-//            updateImage();
+        btn_video_capture = findViewById(R.id.btn_video_capture);
+        btn_video_capture.setOnClickListener(view -> {
+            stopCapture();
         });
 
 
@@ -123,6 +155,7 @@ public class CameraTest extends AppCompatActivity {
             try {
                 ProcessCameraProvider cameraProvider = cameraProviderFuture.get();
                 bindPreview(cameraProvider);
+
             } catch (ExecutionException | InterruptedException e) {
                 // No errors need to be handled for this Future.
                 // This should never be reached.
@@ -135,6 +168,42 @@ public class CameraTest extends AppCompatActivity {
         });
     }
 
+    @SuppressLint("RestrictedApi")
+    private VideoCapture videoCaptureTest(ListenableFuture<ProcessCameraProvider> cameraFuture) {
+        ProcessCameraProvider camera = null;
+        try {
+            camera = cameraFuture.get();
+        } catch (ExecutionException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        int rotation = getWindowManager().getDefaultDisplay().getRotation();
+        Size resolution = new Size(1920, 1080);
+
+        videoCapture = new VideoCapture.Builder()
+                .setTargetRotation(Surface.ROTATION_0)
+                .build();
+
+
+
+        return videoCapture;
+    }
+
+    // A helper function to translate Quality to a string
+    public String qualityToString(Quality quality) {
+        if (Quality.UHD == quality) {
+            return "UHD";
+        } else if (Quality.FHD == quality) {
+            return "FHD";
+        } else if (Quality.HD == quality) {
+            return "HD";
+        } else if (Quality.SD == quality) {
+            return "SD";
+        }
+        throw new IllegalArgumentException();
+    }
+
     private void bindPreview(@NonNull ProcessCameraProvider cameraProvider) {
         Preview preview = new Preview.Builder().build();
 
@@ -143,13 +212,68 @@ public class CameraTest extends AppCompatActivity {
                 .build();
 
         preview.setSurfaceProvider(previewView.getSurfaceProvider());
+        imageCapture = new ImageCapture.Builder()
+                .setTargetRotation(Surface.ROTATION_0)
+                .build();
+
+        useCaseGroup = new UseCaseGroup.Builder().addUseCase(preview).addUseCase(imageCapture).build();
+
+
 
         try{
             cameraProvider.unbindAll();
-            Camera camera = cameraProvider.bindToLifecycle(ProcessLifecycleOwner.get(), cameraSelector, preview, imageCapture);
+            camera = cameraProvider.bindToLifecycle(ProcessLifecycleOwner.get(), cameraSelector, preview, videoCaptureTest(cameraProviderFuture));
         } catch (Exception e) {
             Log.i("this", "error", e);
         }
+    }
+
+    @SuppressLint("RestrictedApi")
+    private void stopCapture() {
+        startCapture();
+        mHandler.postDelayed(() -> {
+            videoCapture.stopRecording();
+        }, 10000);
+    }
+
+    @SuppressLint("RestrictedApi")
+    private void startCapture() {
+        File file = new File(getExternalFilesDir(null), "video.mp4");
+        VideoCapture.OutputFileOptions outputFile = new VideoCapture.OutputFileOptions.Builder(file).build();
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.RECORD_AUDIO) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            Log.e("this", "recordAudio permission deniedError");
+        }
+        videoCapture.startRecording(outputFile, Executors.newSingleThreadExecutor(), new VideoCapture.OnVideoSavedCallback() {
+            @Override
+            public void onVideoSaved(@NonNull VideoCapture.OutputFileResults outputFileResults) {
+                Log.i("this", "onVideoSaved");
+                File dcimDir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM);
+                File destFile = new File(dcimDir, "video.mp4");
+
+                try (InputStream is = new FileInputStream(file);
+                     OutputStream os = new FileOutputStream(destFile)) {
+                    byte[] buffer = new byte[1024];
+                    int bytesRead;
+                    while ((bytesRead = is.read(buffer)) != -1) {
+                        os.write(buffer, 0, bytesRead);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onError(int videoCaptureError, @NonNull String message, @Nullable Throwable cause) {
+                Log.e("this", "onError: " + message, cause);
+            }
+        });
     }
 
     private void capture() {
