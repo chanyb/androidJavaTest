@@ -5,26 +5,18 @@ import android.annotation.SuppressLint;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ImageDecoder;
-import android.graphics.Matrix;
 import android.graphics.Paint;
-import android.graphics.drawable.BitmapDrawable;
-import android.hardware.camera2.CameraAccessException;
-import android.hardware.camera2.CameraCharacteristics;
-import android.hardware.camera2.CameraManager;
-import android.hardware.camera2.CameraMetadata;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.os.Handler;
 import android.os.Looper;
-import android.print.PrintAttributes;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Surface;
@@ -34,10 +26,7 @@ import android.widget.ImageView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.camera.camera2.interop.Camera2CameraInfo;
 import androidx.camera.core.Camera;
-import androidx.camera.core.CameraControl;
-import androidx.camera.core.CameraInfo;
 import androidx.camera.core.CameraSelector;
 import androidx.camera.core.ImageCapture;
 import androidx.camera.core.ImageCaptureException;
@@ -45,11 +34,8 @@ import androidx.camera.core.Preview;
 import androidx.camera.core.UseCaseGroup;
 import androidx.camera.core.VideoCapture;
 import androidx.camera.lifecycle.ProcessCameraProvider;
-import androidx.camera.video.FallbackStrategy;
 import androidx.camera.video.Quality;
-import androidx.camera.video.QualitySelector;
 import androidx.camera.view.PreviewView;
-import androidx.camera.view.video.OutputFileOptions;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.lifecycle.ProcessLifecycleOwner;
@@ -57,7 +43,6 @@ import androidx.lifecycle.ProcessLifecycleOwner;
 import com.bumptech.glide.Glide;
 import com.example.smartbox_dup.R;
 import com.example.smartbox_dup.utils.DatetimeManager;
-import com.example.smartbox_dup.utils.DeviceRotationManager;
 import com.example.smartbox_dup.utils.FutureTaskRunner;
 import com.example.smartbox_dup.utils.PermissionManager;
 import com.google.android.gms.common.images.Size;
@@ -73,14 +58,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
-import java.util.List;
-import java.util.Set;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
-
 
 import chanyb.android.java.GlobalApplcation;
 
@@ -185,8 +165,6 @@ public class CameraTest extends AppCompatActivity {
                 .setTargetRotation(Surface.ROTATION_0)
                 .build();
 
-
-
         return videoCapture;
     }
 
@@ -217,8 +195,6 @@ public class CameraTest extends AppCompatActivity {
                 .build();
 
         useCaseGroup = new UseCaseGroup.Builder().addUseCase(preview).addUseCase(imageCapture).build();
-
-
 
         try{
             cameraProvider.unbindAll();
