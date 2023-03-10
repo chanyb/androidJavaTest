@@ -11,6 +11,8 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ImageDecoder;
 import android.graphics.Paint;
+import android.graphics.SurfaceTexture;
+import android.media.MediaPlayer;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -20,8 +22,10 @@ import android.os.Looper;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Surface;
+import android.view.TextureView;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.VideoView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -50,9 +54,11 @@ import com.google.common.util.concurrent.ListenableFuture;
 
 import org.json.JSONException;
 
+import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -73,6 +79,10 @@ public class CameraTest extends AppCompatActivity {
     UseCaseGroup useCaseGroup;
     VideoCapture videoCapture;
     Handler mHandler;
+    TextureView textureView;
+    private MediaPlayer mediaPlayer;
+    private Context mContext;
+    Surface surface1;
 
     Camera camera;
 //    ConstraintLayout lo_preview;
@@ -82,6 +92,8 @@ public class CameraTest extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_function_camera);
         mHandler = new Handler(Looper.getMainLooper());
+        mContext = this;
+        mediaPlayer = new MediaPlayer();
         Log.i("this", getExternalFilesDir(null).getAbsolutePath());
         if (!PermissionManager.getInstance().cameraPermissionCheck()) {
             FutureTaskRunner<Boolean> futureTaskRunner = new FutureTaskRunner<>();
@@ -130,22 +142,28 @@ public class CameraTest extends AppCompatActivity {
 
 
         previewView = findViewById(R.id.previewView);
-        cameraProviderFuture = ProcessCameraProvider.getInstance(GlobalApplcation.getContext());
-        cameraProviderFuture.addListener(() -> {
-            try {
-                ProcessCameraProvider cameraProvider = cameraProviderFuture.get();
-                bindPreview(cameraProvider);
-
-            } catch (ExecutionException | InterruptedException e) {
-                // No errors need to be handled for this Future.
-                // This should never be reached.
-            }
-        }, ContextCompat.getMainExecutor(GlobalApplcation.getContext()));
+//        cameraProviderFuture = ProcessCameraProvider.getInstance(GlobalApplcation.getContext());
+//        cameraProviderFuture.addListener(() -> {
+//            try {
+//                ProcessCameraProvider cameraProvider = cameraProviderFuture.get();
+//                bindPreview(cameraProvider);
+//
+//            } catch (ExecutionException | InterruptedException e) {
+//                // No errors need to be handled for this Future.
+//                // This should never be reached.
+//            }
+//        }, ContextCompat.getMainExecutor(GlobalApplcation.getContext()));
 
         btn_capture = findViewById(R.id.btn_capture);
         btn_capture.setOnClickListener((view) -> {
             capture();
         });
+
+        textureView = findViewById(R.id.videoView22);
+
+
+
+
     }
 
     @SuppressLint("RestrictedApi")
@@ -204,12 +222,111 @@ public class CameraTest extends AppCompatActivity {
         }
     }
 
-    @SuppressLint("RestrictedApi")
     private void stopCapture() {
-        startCapture();
-        mHandler.postDelayed(() -> {
-            videoCapture.stopRecording();
-        }, 10000);
+        Log.i("this", "stopCapture() s");
+        surface1 = new Surface(textureView.getSurfaceTexture());
+        mediaPlayer.setSurface(null);
+        mediaPlayer.setSurface(surface1);
+//        TextureView.SurfaceTextureListener surfaceTextureListener = new TextureView.SurfaceTextureListener() {
+//            @Override
+//            public void onSurfaceTextureAvailable(SurfaceTexture surfaceTexture, int width, int height) {
+//                // SurfaceTexture가 생성된 경우
+//                surface1 = new Surface(surfaceTexture);
+//                mediaPlayer.setSurface(surface1);
+////                mediaPlayer.prepare();
+////                mediaPlayer.start();
+////                mediaPlayer.prepareAsync();
+////                mediaPlayer.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
+////                    @Override
+////                    public void onPrepared(MediaPlayer mediaPlayer) {
+////                        Log.i("this", "onPrepared");
+////                        mediaPlayer.start();
+////                    }
+////                });
+//            }
+//
+//            @Override
+//            public void onSurfaceTextureSizeChanged(SurfaceTexture surfaceTexture, int width, int height) {
+//                // SurfaceTexture의 크기가 변경된 경우
+//            }
+//
+//            @Override
+//            public boolean onSurfaceTextureDestroyed(SurfaceTexture surfaceTexture) {
+//                // SurfaceTexture가 파괴된 경우
+//                if (mediaPlayer != null) {
+//                    mediaPlayer.stop();
+//                    mediaPlayer.release();
+//                    mediaPlayer = null;
+//                }
+//                return true;
+//            }
+//
+//            @Override
+//            public void onSurfaceTextureUpdated(SurfaceTexture surfaceTexture) {
+//                // SurfaceTexture가 업데이트된 경우
+//            }
+//        };
+
+        try{
+            mediaPlayer.reset();
+            mediaPlayer.setDataSource(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM)+"/video.mp4");
+            mediaPlayer.prepareAsync();
+            mediaPlayer.setOnPreparedListener((mp) -> mp.start());
+        } catch (Exception e) {
+            Log.i("this", "error", e);
+        }
+
+        Log.i("this", "stopCapture() e");
+//        startCapture();
+//        mHandler.postDelayed(() -> {
+//            videoCapture.stopRecording();
+//        }, 10000);
+//
+//        mHandler.postDelayed(() -> {
+//            Log.i("this", "12000 s");
+//            final MediaPlayer[] mediaPlayer = {new MediaPlayer()};
+//
+//            // textureView에 mediaPlayer 연결
+//            TextureView.SurfaceTextureListener surfaceTextureListener = new TextureView.SurfaceTextureListener() {
+//                @Override
+//                public void onSurfaceTextureAvailable(@NonNull SurfaceTexture surfaceTexture, int i, int i1) {
+//                    Log.i("this", "onSurfaceTextureAvailable");
+//                    Surface surface1 = new Surface(surfaceTexture);
+//                    try {
+//                        mediaPlayer[0] = new MediaPlayer();
+//                        mediaPlayer[0].setDataSource(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DCIM)+"/video.mp4");
+//                        mediaPlayer[0].setSurface(surface1);
+//                        mediaPlayer[0].prepare();
+//                        mediaPlayer[0].start();
+//                    } catch (IOException e) {
+//                        e.printStackTrace();
+//                    }
+//                }
+//
+//                @Override
+//                public void onSurfaceTextureSizeChanged(@NonNull SurfaceTexture surfaceTexture, int i, int i1) {
+//
+//                }
+//
+//                @Override
+//                public boolean onSurfaceTextureDestroyed(@NonNull SurfaceTexture surfaceTexture) {
+//                    Log.i("this", "onSurfaceTextureDestroyed");
+//                    if (mediaPlayer[0] != null) {
+//                        mediaPlayer[0].release();
+//                        mediaPlayer[0] = null;
+//                    }
+//                    return true;
+//                }
+//
+//                @Override
+//                public void onSurfaceTextureUpdated(@NonNull SurfaceTexture surfaceTexture) {
+//
+//                }
+//            };
+//
+//            textureView.setSurfaceTextureListener(surfaceTextureListener);
+//            Log.i("this", "12000 e");
+//        }, 12000);
     }
 
     @SuppressLint("RestrictedApi")
@@ -337,7 +454,7 @@ public class CameraTest extends AppCompatActivity {
             String sX = String.format("%.6f", mLon);
             String sY = String.format("%.6f", mLat);
             cs.drawText(sY + ", " + sX, 20f, height * 2 + 15f, tPaint); //위도 + 경도 - 34.9506986, 127.4872429
-            cs.drawText("대전광역시 서구 관저북로 80 원앙마을아파트 213동 1201호", 20f, height * 3 + 15f, tPaint); //주소정보
+            cs.drawText("대전광역시 서구 관저북로 80 원앙마을아파트", 20f, height * 3 + 15f, tPaint); //주소정보
         }
 
         saveBitmapToGallery(bAddedInfo, "test", "");
@@ -356,7 +473,36 @@ public class CameraTest extends AppCompatActivity {
         Bitmap bitmap = BitmapFactory.decodeByteArray( byteArray, 0, byteArray.length ) ;
         return bitmap;
     }
+
+
+    public static byte[] getVideoFile(String fileName) {
+
+        String sz = fileName + ".mp4";
+        File file = new File(sz);
+        int fileSize = (int) file.length();
+        byte[] outBuffer = new byte[ fileSize];
+        byte[] readBuffer = new byte[1024];
+
+        if (file.exists()) {
+            try {
+                FileInputStream fileInputStream = new FileInputStream(file);
+                int count = 0;
+                int nReadSize =0 ;
+                while ((count = fileInputStream.read(readBuffer)) > 0){
+                    System.arraycopy(readBuffer , 0 , outBuffer, nReadSize, count);
+                    nReadSize += count;
+                }
+                fileInputStream.close();
+                return outBuffer;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return null;
+    }
 }
+
+
 
 
 
