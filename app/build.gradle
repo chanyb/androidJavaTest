@@ -117,7 +117,4 @@ dependencies {
 
     // volley
     implementation 'com.android.volley:volley:1.2.1'
-
-    // apache httpComponents 사용을 위한 library
-    implementation 'org.apache.httpcomponents:httpmime:4.5.13'
 }
