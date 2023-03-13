@@ -1,5 +1,6 @@
 package com.example.smartbox_dup.utils;
 
+import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
@@ -113,9 +114,9 @@ public class RequestManager {
     }
 
     /**
-     * @param url         Destination URL
-     * @param params      parameter key value pairs
-     * @param listener    Success and Error Listener interface implementation
+     * @param url       Destination URL
+     * @param params    parameter key value pairs
+     * @param listener  Success and Error Listener interface implementation
      */
     public void addUrlencodedRequest(String url, Map<String, String> params, Listener listener) {
         this.listener = listener;
@@ -138,12 +139,16 @@ public class RequestManager {
     }
 
     /**
-     * @param url         Destination URL
-     * @param file        File object
-     * @param listener    Success and Error Listener interface implementation
+     * @param context       Context
+     * @param url           Destination URL
+     * @param params        body params
+     * @param fileParams    file params
+     * @param listener      Success and Error Listener interface implementation
      */
-    public void addMultipartRequest(String url, File file, Listener listener) {
-
+    public void addMultipartRequest(Context context, String url, Map<String, Object> params, Map<String, File> fileParams, Listener listener) {
+        this.listener = listener;
+        Request request = new MultipartRequest(context, Request.Method.POST, url, params, fileParams, successListener, errorListener);
+        requestQueue.add(request);
     }
 
     public interface Listener {
@@ -173,4 +178,6 @@ public class RequestManager {
             }
         }
     };
+
+
 }

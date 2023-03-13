@@ -37,6 +37,7 @@ import com.example.smartbox_dup.R;
 import com.example.smartbox_dup.sqlite.Database;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -177,5 +178,41 @@ public class GallaryTest extends AppCompatActivity {
 
     public Bitmap getBitmapFromBlob(byte[] bytes) {
         return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+    }
+
+
+    public File getFileFromUri(Uri uri) {
+        File file = null;
+        if (uri.getScheme().equals("content")) {
+            ContentResolver contentResolver = getContentResolver();
+            String mimeType = contentResolver.getType(uri);
+
+            if (mimeType == null) {
+                // MIME 타입을 알 수 없는 경우 처리
+                Log.e("this", "mimeType error occur: " + mimeType);
+            } else if (mimeType.equals("image/jpeg") || mimeType.equals("image/png")) {
+                // 이미지 파일 처리
+                Cursor cursor = contentResolver.query(uri, new String[]{MediaStore.Images.Media.DATA}, null, null, null);
+                if (cursor != null) {
+                    cursor.moveToFirst();
+                    String filePath = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA));
+                    cursor.close();
+                    file = new File(filePath);
+                }
+            } else if (mimeType.equals("video/mp4") || mimeType.equals("video/x-msvideo")) {
+                // 비디오 파일 처리
+                Cursor cursor = contentResolver.query(uri, new String[]{MediaStore.Video.Media.DATA}, null, null, null);
+                if (cursor != null) {
+                    cursor.moveToFirst();
+                    String filePath = cursor.getString(cursor.getColumnIndexOrThrow(MediaStore.Video.Media.DATA));
+                    cursor.close();
+                    file = new File(filePath);
+                }
+            } else {
+                // 기타 파일 처리
+                Log.e("this", "mimeType error occur: " + mimeType);
+            }
+        }
+        return file;
     }
 }

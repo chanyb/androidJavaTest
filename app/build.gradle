@@ -9,7 +9,7 @@ android {
     defaultConfig {
         applicationId "com.example.smartbox_dup"
         minSdk 23
-        targetSdk 32
+        targetSdk 33
         versionCode 1
         versionName "1.0"
 
@@ -117,4 +117,5 @@ dependencies {
 
     // volley
     implementation 'com.android.volley:volley:1.2.1'
+//    implementation 'com.android.volley:volley-multipart:0.1.0'
 }
