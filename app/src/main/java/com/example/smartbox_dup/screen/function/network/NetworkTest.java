@@ -40,7 +40,6 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
-import chanyb.android.java.GlobalApplcation;
 
 public class NetworkTest extends AppCompatActivity {
     private Button btn_1, btn_2, btn_3;

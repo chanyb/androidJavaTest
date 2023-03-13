@@ -10,6 +10,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.example.smartbox_dup.utils.FutureTaskRunner;
+import com.example.smartbox_dup.utils.GlobalApplication;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.Task;
@@ -17,8 +18,6 @@ import com.google.android.gms.tasks.Task;
 import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 
-import chanyb.android.java.GlobalApplcation;
-import chanyb.android.java.ToastManager;
 import io.reactivex.rxjava3.disposables.CompositeDisposable;
 
 
@@ -31,7 +30,7 @@ public class GoogleLocationManger {
     }
 
     public static GoogleLocationManger getInstance() {
-        if(fusedLocationClient == null) fusedLocationClient = LocationServices.getFusedLocationProviderClient(GlobalApplcation.getContext());
+        if(fusedLocationClient == null) fusedLocationClient = LocationServices.getFusedLocationProviderClient(GlobalApplication.getContext());
         if(instance == null) instance = new GoogleLocationManger();
         return instance;
     }
@@ -45,11 +44,11 @@ public class GoogleLocationManger {
         FutureTaskRunner<Object> futureTaskRunner = new FutureTaskRunner();
 
         futureTaskRunner.nextTask(() -> {
-            int ACCESS_FINE_LOCATION = ContextCompat.checkSelfPermission(GlobalApplcation.getContext(), permissions[0]);
+            int ACCESS_FINE_LOCATION = ContextCompat.checkSelfPermission(GlobalApplication.getContext(), permissions[0]);
             if(ACCESS_FINE_LOCATION == PackageManager.PERMISSION_DENIED) {
-                ActivityCompat.requestPermissions(GlobalApplcation.currentActivity, new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+                ActivityCompat.requestPermissions(GlobalApplication.currentActivity, new String[] {Manifest.permission.ACCESS_FINE_LOCATION}, 1);
                 while (true) {
-                    ACCESS_FINE_LOCATION = ContextCompat.checkSelfPermission(GlobalApplcation.getContext(), permissions[0]);
+                    ACCESS_FINE_LOCATION = ContextCompat.checkSelfPermission(GlobalApplication.getContext(), permissions[0]);
                     if(ACCESS_FINE_LOCATION != PackageManager.PERMISSION_DENIED) break;
                 }
             }
@@ -58,11 +57,11 @@ public class GoogleLocationManger {
 
         futureTaskRunner.nextTask(() -> {
             Thread.sleep(100);
-            int ACCESS_COARSE_LOCATION  = ContextCompat.checkSelfPermission(GlobalApplcation.getContext(),  permissions[1]);
+            int ACCESS_COARSE_LOCATION  = ContextCompat.checkSelfPermission(GlobalApplication.getContext(),  permissions[1]);
             if(ACCESS_COARSE_LOCATION == PackageManager.PERMISSION_DENIED) {
-                ActivityCompat.requestPermissions(GlobalApplcation.currentActivity, new String[] {Manifest.permission.ACCESS_COARSE_LOCATION}, 2);
+                ActivityCompat.requestPermissions(GlobalApplication.currentActivity, new String[] {Manifest.permission.ACCESS_COARSE_LOCATION}, 2);
                 do {
-                    ACCESS_COARSE_LOCATION = ContextCompat.checkSelfPermission(GlobalApplcation.getContext(), permissions[1]);
+                    ACCESS_COARSE_LOCATION = ContextCompat.checkSelfPermission(GlobalApplication.getContext(), permissions[1]);
                 } while (ACCESS_COARSE_LOCATION == PackageManager.PERMISSION_DENIED);
             }
             return true;
@@ -70,11 +69,11 @@ public class GoogleLocationManger {
 
         futureTaskRunner.nextTask(() -> {
             Thread.sleep(100);
-            int ACCESS_BACKGROUND_LOCATION  = ContextCompat.checkSelfPermission(GlobalApplcation.getContext(), permissions[2]);
+            int ACCESS_BACKGROUND_LOCATION  = ContextCompat.checkSelfPermission(GlobalApplication.getContext(), permissions[2]);
             if(ACCESS_BACKGROUND_LOCATION == PackageManager.PERMISSION_DENIED) {
-                ActivityCompat.requestPermissions(GlobalApplcation.currentActivity, new String[] {Manifest.permission.ACCESS_BACKGROUND_LOCATION}, 3);
+                ActivityCompat.requestPermissions(GlobalApplication.currentActivity, new String[] {Manifest.permission.ACCESS_BACKGROUND_LOCATION}, 3);
                 do {
-                    ACCESS_BACKGROUND_LOCATION = ContextCompat.checkSelfPermission(GlobalApplcation.getContext(), permissions[2]);
+                    ACCESS_BACKGROUND_LOCATION = ContextCompat.checkSelfPermission(GlobalApplication.getContext(), permissions[2]);
                 } while (ACCESS_BACKGROUND_LOCATION == PackageManager.PERMISSION_DENIED);
             }
             return true;

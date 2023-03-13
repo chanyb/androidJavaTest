@@ -17,8 +17,8 @@ import androidx.core.app.NotificationCompat;
 
 import com.example.smartbox_dup.R;
 import com.example.smartbox_dup.utils.ByteArrayManager;
+import com.example.smartbox_dup.utils.GlobalApplication;
 
-import chanyb.android.java.GlobalApplcation;
 
 public class AlarmService extends Service {
     Alarm alarm;
@@ -50,9 +50,9 @@ public class AlarmService extends Service {
             notificationIntent.putExtra("isScreenOn", isScreenOn);
             notificationIntent.putExtra("alarm", bytes);
 
-            if(GlobalApplcation.getContext().isForeground()) { // foreground면, 현재 Activity 기억하기
-                if (GlobalApplcation.currentActivity != null)
-                    notificationIntent.putExtra("activity", GlobalApplcation.currentActivity.getClass().getName());
+            if(GlobalApplication.getContext().isForeground()) { // foreground면, 현재 Activity 기억하기
+                if (GlobalApplication.currentActivity != null)
+                    notificationIntent.putExtra("activity", GlobalApplication.currentActivity.getClass().getName());
             }
 
             PendingIntent pendingIntent = null;
@@ -67,7 +67,7 @@ public class AlarmService extends Service {
                 alarmTitle = alarm.getTitle();
             }
 
-            Notification notification = new NotificationCompat.Builder(this, GlobalApplcation.getContext().getString(R.string.alarm_service_channel))
+            Notification notification = new NotificationCompat.Builder(this, GlobalApplication.getContext().getString(R.string.alarm_service_channel))
                     .setContentText(alarmTitle)
                     .setSmallIcon(R.drawable.logo)
                     .setSound(null)

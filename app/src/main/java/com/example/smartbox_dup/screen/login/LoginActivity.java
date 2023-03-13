@@ -28,6 +28,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 
 import java.io.ByteArrayOutputStream;
@@ -52,6 +53,7 @@ import com.example.smartbox_dup.WakeupWorker;
 import com.example.smartbox_dup.network.RetrofitManager;
 import com.example.smartbox_dup.utils.ActivitySwitchManager;
 import com.example.smartbox_dup.utils.FCMManager;
+import com.example.smartbox_dup.utils.GlobalApplication;
 import com.example.smartbox_dup.viewmodel.SocialLogin;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -61,8 +63,6 @@ import com.kakao.sdk.user.UserApiClient;
 import com.navercorp.nid.NaverIdLoginSDK;
 import com.navercorp.nid.oauth.OAuthLoginCallback;
 
-import chanyb.android.java.GlobalApplcation;
-import chanyb.android.java.ToastManager;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Observer;
@@ -224,7 +224,7 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
                         Log.i("this", "onNext");
                         JsonObject res = RetrofitManager.getInstance().signIn(obj);
                         if(res.get("back4app").getAsString().equals(String.valueOf(RetrofitManager.BACK4APP.FAIL))) {
-                            ToastManager.getInstance().show("입력한 계정 정보를 확인 할 수 없습니다.");
+                            Toast.makeText(context, "입력한 계정 정보를 확인 할 수 없습니다.", Toast.LENGTH_SHORT).show();
                         } else {
                             Intent i = new Intent(context, MainActivity.class);
                             i.putExtra("sessionToken", res.get("sessionToken").getAsString());
@@ -247,9 +247,9 @@ public class LoginActivity extends AppCompatActivity implements View.OnClickList
 
                 break;
             case R.id.tb_signUp:
-                if(GlobalApplcation.getContext().isServiceRunningCheck(SampleForegroundService.class)) {
+                if(GlobalApplication.getContext().isServiceRunningCheck(SampleForegroundService.class)) {
                     Log.i("this", "서비스가 실행중입니다.");
-                    GlobalApplcation.getContext().stopService(new Intent(this, SampleForegroundService.class));
+                    GlobalApplication.getContext().stopService(new Intent(this, SampleForegroundService.class));
                 } else {
                     Log.i("this", "서비스가 실행되고 있지 않습니다.");
                     startForegroundService();

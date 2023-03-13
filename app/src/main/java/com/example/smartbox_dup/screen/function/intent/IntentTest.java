@@ -12,7 +12,6 @@ import com.example.smartbox_dup.R;
 import com.example.smartbox_dup.screen.function.SerializableClass;
 import com.example.smartbox_dup.utils.ByteArrayManager;
 
-import chanyb.android.java.IntentManager;
 
 public class IntentTest extends AppCompatActivity {
     Button btn_1, btn_2, btn_3, btn_4;
@@ -61,7 +60,7 @@ public class IntentTest extends AppCompatActivity {
         A.putExtra("g", true);
         A.putExtra("h", HumanToBytes.getByteArrayFromClassObject(human));
 
-        IntentManager.getInstance().copyExtras(A, B);
+//        IntentManager.getInstance().copyExtras(A, B);
 
         for (String key : B.getExtras().keySet()) {
             Log.i("this", String.valueOf(B.getExtras().get(key)));

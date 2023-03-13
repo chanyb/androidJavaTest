@@ -22,6 +22,7 @@ import com.example.smartbox_dup.screen.login.LoginActivity;
 import com.example.smartbox_dup.utils.ActivitySwitchManager;
 import com.example.smartbox_dup.utils.AudioManager;
 import com.example.smartbox_dup.utils.FutureTaskRunner;
+import com.example.smartbox_dup.utils.GlobalApplication;
 import com.example.smartbox_dup.utils.PermissionManager;
 
 import java.util.Locale;
@@ -29,8 +30,6 @@ import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.FutureTask;
 
-import chanyb.android.java.GlobalApplcation;
-import chanyb.android.java.ToastManager;
 
 public class IntroActivity extends AppCompatActivity {
     NetworkBroadcastReceiver networkBroadcastReceiver;
@@ -114,7 +113,7 @@ public class IntroActivity extends AppCompatActivity {
     }
 
     private void setGroundStateListener() {
-        GlobalApplcation.getContext().addListener(new GlobalApplcation.Listener() {
+        GlobalApplication.getContext().addListener(new GlobalApplication.Listener() {
             @Override
             public void onBecameForeground() {
                 Log.i("this", "onBecameForeground");
@@ -174,10 +173,10 @@ public class IntroActivity extends AppCompatActivity {
 //            });
 //
 //            NotificationManager notificationManager;
-//            notificationManager = (NotificationManager) GlobalApplcation.getContext().getSystemService(Context.NOTIFICATION_SERVICE);
+//            notificationManager = (NotificationManager) GlobalApplication.getContext().getSystemService(Context.NOTIFICATION_SERVICE);
 //
 //            while(true) {
-//                if(notificationManager.isNotificationPolicyAccessGranted() && GlobalApplcation.getContext().isForeground()) break;
+//                if(notificationManager.isNotificationPolicyAccessGranted() && GlobalApplication.getContext().isForeground()) break;
 //            }
 //
 //            return true;

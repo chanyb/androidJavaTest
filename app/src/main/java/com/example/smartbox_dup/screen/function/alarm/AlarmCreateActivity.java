@@ -9,15 +9,15 @@ import android.os.Bundle;
 import android.os.SystemClock;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
 
 import com.example.smartbox_dup.R;
+import com.example.smartbox_dup.utils.GlobalApplication;
 
-import chanyb.android.java.GlobalApplcation;
-import chanyb.android.java.ToastManager;
 
 public class AlarmCreateActivity extends AppCompatActivity {
 
@@ -39,7 +39,7 @@ public class AlarmCreateActivity extends AppCompatActivity {
         edt_minute = findViewById(R.id.edt_minute);
         btn_1 = findViewById(R.id.btn_1);
         btn_1.setOnClickListener((view) -> {
-            ToastManager.getInstance().show("알람 등록");
+            Toast.makeText(this, "알람등록", Toast.LENGTH_SHORT).show();
             int hour = Integer.parseInt(edt_hour.getText().toString());
             int minute = Integer.parseInt(edt_minute.getText().toString());
 
@@ -53,16 +53,16 @@ public class AlarmCreateActivity extends AppCompatActivity {
 
         btn_2 = findViewById(R.id.btn_2);
         btn_2.setOnClickListener((view) -> {
-            ToastManager.getInstance().show("등록한 알람 취소");
-            AlarmManager alarmManager = (AlarmManager) GlobalApplcation.getContext().getSystemService(Context.ALARM_SERVICE);
+            Toast.makeText(this, "등록한 알람 취소", Toast.LENGTH_SHORT).show();
+            AlarmManager alarmManager = (AlarmManager) GlobalApplication.getContext().getSystemService(Context.ALARM_SERVICE);
 
-            Intent target = new Intent(GlobalApplcation.getContext(), AlarmBroadcastReceiver.class);
+            Intent target = new Intent(GlobalApplication.getContext(), AlarmBroadcastReceiver.class);
             target.setAction("com.smartbox_dup.actionTest");
             PendingIntent targetPending;
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                targetPending = PendingIntent.getBroadcast(GlobalApplcation.getContext(), 13, target, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE);
+                targetPending = PendingIntent.getBroadcast(GlobalApplication.getContext(), 13, target, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE);
             } else {
-                targetPending = PendingIntent.getBroadcast(GlobalApplcation.getContext(), 13, target, PendingIntent.FLAG_UPDATE_CURRENT);
+                targetPending = PendingIntent.getBroadcast(GlobalApplication.getContext(), 13, target, PendingIntent.FLAG_UPDATE_CURRENT);
             }
 
             alarmManager.cancel(targetPending);
@@ -70,7 +70,7 @@ public class AlarmCreateActivity extends AppCompatActivity {
     }
 
     private void createAlarmServiceChannel() {
-        GlobalApplcation.getContext().createNotificationChannel(GlobalApplcation.getContext().getString(R.string.alarm_service_channel), NotificationCompat.PRIORITY_MAX);
+        GlobalApplication.getContext().createNotificationChannel(GlobalApplication.getContext().getString(R.string.alarm_service_channel), NotificationCompat.PRIORITY_MAX);
     }
 
 }

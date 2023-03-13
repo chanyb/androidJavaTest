@@ -19,12 +19,12 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.File;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
-import chanyb.android.java.GlobalApplcation;
 
 
 public class RequestManager {
@@ -33,7 +33,7 @@ public class RequestManager {
 
     private RequestManager() {
         headers = new HashMap<>();
-        requestQueue = Volley.newRequestQueue(GlobalApplcation.getContext());
+        requestQueue = Volley.newRequestQueue(GlobalApplication.getContext());
     }
 
     private static RequestQueue requestQueue;
@@ -112,6 +112,11 @@ public class RequestManager {
         requestQueue.add(request);
     }
 
+    /**
+     * @param url         Destination URL
+     * @param params      parameter key value pairs
+     * @param listener    Success and Error Listener interface implementation
+     */
     public void addUrlencodedRequest(String url, Map<String, String> params, Listener listener) {
         this.listener = listener;
 
@@ -130,6 +135,15 @@ public class RequestManager {
         };
         request.setRetryPolicy(new DefaultRetryPolicy(10000, 0, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT));
         requestQueue.add(request);
+    }
+
+    /**
+     * @param url         Destination URL
+     * @param file        File object
+     * @param listener    Success and Error Listener interface implementation
+     */
+    public void addMultipartRequest(String url, File file, Listener listener) {
+
     }
 
     public interface Listener {

@@ -8,10 +8,9 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.smartbox_dup.R;
+import com.example.smartbox_dup.utils.RequestManager;
 
 import org.json.JSONObject;
-
-import chanyb.android.java.RequestManager;
 
 public class VolleyTest extends AppCompatActivity {
     private Button btn_1, btn_2, btn_3, btn_4;
@@ -58,6 +57,5 @@ public class VolleyTest extends AppCompatActivity {
                 Log.i("this", errStr);
             }
         };
-        RequestManager.getInstance().addRequest(RequestManager.POST, "http://192.168.0.43:9001/user/test", obj, listener);
     }
 }

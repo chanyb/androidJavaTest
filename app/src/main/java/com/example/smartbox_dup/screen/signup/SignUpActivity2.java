@@ -11,6 +11,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
@@ -23,7 +24,6 @@ import com.google.gson.JsonObject;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import chanyb.android.java.ToastManager;
 import io.reactivex.rxjava3.annotations.NonNull;
 import io.reactivex.rxjava3.core.Observable;
 import io.reactivex.rxjava3.core.Observer;
@@ -37,7 +37,6 @@ public class SignUpActivity2 extends AppCompatActivity implements View.OnClickLi
     private TextView tb_phoneCheck;
     private TextView tb_confirm;
     private Intent intent;
-    private ToastManager toastManager;
     private TextView tv_idDuplicateMessage;
     private TextView tv_passwordCheckMessage;
     private TextView tv_phoneCheckMessage;
@@ -64,7 +63,6 @@ public class SignUpActivity2 extends AppCompatActivity implements View.OnClickLi
         this.tb_idDuplicateCheck = findViewById(R.id.tb_idDuplicateCheck);
         this.tb_phoneCheck = findViewById(R.id.tb_phoneCheck);
         this.tb_confirm = findViewById(R.id.tb_confirm);
-        this.toastManager = ToastManager.getInstance();
         this.tv_idDuplicateMessage = findViewById(R.id.tv_idDuplicateMessage);
         this.tv_passwordCheckMessage = findViewById(R.id.tv_passwordCheckMessage);
         this.tv_phoneCheckMessage = findViewById(R.id.tv_phoneCheckMessage);
@@ -148,7 +146,7 @@ public class SignUpActivity2 extends AppCompatActivity implements View.OnClickLi
 
                         if(res.get("back4app").getAsString().equals(RetrofitManager.BACK4APP.FAIL.toString())) {
                             // fail
-                            ToastManager.getInstance().show("서버접속이 원활하지 않습니다.");
+                            Toast.makeText(context, "서버접속이 원활하지 않습니다.", Toast.LENGTH_SHORT).show();
                         } else {
                             // success
                             ActivitySwitchManager.getInstance().changeActivity(context, SignUpActivity3.class,false);

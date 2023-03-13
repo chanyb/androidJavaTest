@@ -39,7 +39,6 @@ import org.json.JSONObject;
 import java.util.Calendar;
 import java.util.Locale;
 
-import chanyb.android.java.GlobalApplcation;
 
 public class SensorTest extends AppCompatActivity {
     private static final int RADIAN_TO_DEGREE = -57;

@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -23,8 +24,6 @@ import com.google.gson.JsonObject;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
-
-import chanyb.android.java.ToastManager;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -57,7 +56,7 @@ public class MainActivity extends AppCompatActivity {
         try{
             getIntent().getStringExtra("sessionToken");
         } catch(Exception e) {
-            ToastManager.getInstance().show("sessionToken is empty");
+            Toast.makeText(context, "sessionToken is empty", Toast.LENGTH_SHORT).show();
             return ;
         }
 
@@ -95,7 +94,7 @@ public class MainActivity extends AppCompatActivity {
         new Thread(() ->{
             JsonObject res = RetrofitManager.getInstance().getMenuItems(getIntent().getStringExtra("sessionToken"));
             if(res.get("back4app").getAsString().equals(String.valueOf(RetrofitManager.BACK4APP.FAIL))) {
-                ToastManager.getInstance().show("요청 실패.");
+                Toast.makeText(context, "요청 실패.", Toast.LENGTH_SHORT).show();
             } else {
                 menu_items = res.get("results").getAsJsonArray();
 

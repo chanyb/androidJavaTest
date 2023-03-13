@@ -27,7 +27,6 @@ import com.example.smartbox_dup.screen.intro.IntroActivity;
 
 import java.util.Calendar;
 
-import chanyb.android.java.GlobalApplcation;
 
 public class FloatingService extends Service {
 

@@ -48,6 +48,7 @@ import com.bumptech.glide.Glide;
 import com.example.smartbox_dup.R;
 import com.example.smartbox_dup.utils.DatetimeManager;
 import com.example.smartbox_dup.utils.FutureTaskRunner;
+import com.example.smartbox_dup.utils.GlobalApplication;
 import com.example.smartbox_dup.utils.PermissionManager;
 import com.google.android.gms.common.images.Size;
 import com.google.common.util.concurrent.ListenableFuture;
@@ -68,7 +69,6 @@ import java.util.Calendar;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Executors;
 
-import chanyb.android.java.GlobalApplcation;
 
 public class CameraTest extends AppCompatActivity {
     private ListenableFuture<ProcessCameraProvider> cameraProviderFuture;
@@ -142,7 +142,7 @@ public class CameraTest extends AppCompatActivity {
 
 
         previewView = findViewById(R.id.previewView);
-//        cameraProviderFuture = ProcessCameraProvider.getInstance(GlobalApplcation.getContext());
+//        cameraProviderFuture = ProcessCameraProvider.getInstance(GlobalApplication.getContext());
 //        cameraProviderFuture.addListener(() -> {
 //            try {
 //                ProcessCameraProvider cameraProvider = cameraProviderFuture.get();
@@ -152,7 +152,7 @@ public class CameraTest extends AppCompatActivity {
 //                // No errors need to be handled for this Future.
 //                // This should never be reached.
 //            }
-//        }, ContextCompat.getMainExecutor(GlobalApplcation.getContext()));
+//        }, ContextCompat.getMainExecutor(GlobalApplication.getContext()));
 
         btn_capture = findViewById(R.id.btn_capture);
         btn_capture.setOnClickListener((view) -> {
@@ -387,14 +387,14 @@ public class CameraTest extends AppCompatActivity {
         imageCapture.setFlashMode(ImageCapture.FLASH_MODE_AUTO);
 
         ImageCapture.OutputFileOptions outputFileOptions =
-                new ImageCapture.OutputFileOptions.Builder(GlobalApplcation.getContext().getContentResolver(), MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues).build();
+                new ImageCapture.OutputFileOptions.Builder(GlobalApplication.getContext().getContentResolver(), MediaStore.Images.Media.EXTERNAL_CONTENT_URI, contentValues).build();
         imageCapture.takePicture(outputFileOptions,
                 Executors.newSingleThreadExecutor(),
                 new ImageCapture.OnImageSavedCallback() {
                     @Override
                     public void onImageSaved(@NonNull ImageCapture.OutputFileResults outputFileResults) {
                         Log.i("this", "onImageSaved");
-                        runOnUiThread(()->Glide.with(GlobalApplcation.currentActivity).load(outputFileResults.getSavedUri()).into(imageView));
+                        runOnUiThread(()->Glide.with(GlobalApplication.currentActivity).load(outputFileResults.getSavedUri()).into(imageView));
                         updateImage(outputFileResults.getSavedUri());
                     }
 
@@ -409,26 +409,26 @@ public class CameraTest extends AppCompatActivity {
 
     private void updateImage(Uri uri) {
         Bitmap bitmap = getBitmapFromUri(uri);
-        Bitmap infoBitmap = addInfoImage(GlobalApplcation.getContext(), bitmap, 33.123412, 127.15124231);
+        Bitmap infoBitmap = addInfoImage(GlobalApplication.getContext(), bitmap, 33.123412, 127.15124231);
         runOnUiThread(() -> imageView2.setImageBitmap(infoBitmap));
     }
 
 
     public static void saveBitmapToGallery(Bitmap bitmap, String fileName, String fileDesc) {
-        MediaStore.Images.Media.insertImage(GlobalApplcation.getContext().getContentResolver(), bitmap, fileName, fileDesc);
+        MediaStore.Images.Media.insertImage(GlobalApplication.getContext().getContentResolver(), bitmap, fileName, fileDesc);
     }
 
     public static Bitmap getBitmapFromUri(Uri uri) {
         Bitmap bitmap = null;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             try {
-                bitmap = ImageDecoder.decodeBitmap(ImageDecoder.createSource(GlobalApplcation.getContext().getContentResolver(), uri));
+                bitmap = ImageDecoder.decodeBitmap(ImageDecoder.createSource(GlobalApplication.getContext().getContentResolver(), uri));
             } catch (IOException e) {
                 e.printStackTrace();
             }
         } else {
             try {
-                bitmap = MediaStore.Images.Media.getBitmap(GlobalApplcation.getContext().getContentResolver(), uri);
+                bitmap = MediaStore.Images.Media.getBitmap(GlobalApplication.getContext().getContentResolver(), uri);
             } catch (IOException e) {
                 e.printStackTrace();
             }

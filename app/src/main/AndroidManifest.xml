@@ -5,7 +5,7 @@
 
 
     <application
-        android:name="chanyb.android.java.GlobalApplcation"
+        android:name=".utils.GlobalApplication"
         android:allowBackup="true"
         android:icon="@drawable/logo"
         android:label="@string/app_name"
@@ -13,6 +13,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Smartbox_dup"
         android:usesCleartextTraffic="true">
+
+        <uses-library android:name="org.apache.http.legacy" android:required="false" />
 
         <receiver android:name=".broadcastreceiver.MyBroadcastReceiver"
             android:exported="true">

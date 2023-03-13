@@ -14,8 +14,8 @@ import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
 import com.example.smartbox_dup.screen.login.LoginActivity;
+import com.example.smartbox_dup.utils.GlobalApplication;
 
-import chanyb.android.java.GlobalApplcation;
 
 public class ServiceChecker extends Service {
 
@@ -38,9 +38,9 @@ public class ServiceChecker extends Service {
         Log.i("this", "onStartCommand");
         this.generateForegroundNotification();
 
-        if(!GlobalApplcation.getContext().isServiceRunningCheck(SampleForegroundService.class)) {
+        if(!GlobalApplication.getContext().isServiceRunningCheck(SampleForegroundService.class)) {
             Intent sampleForegroundService = new Intent(this, SampleForegroundService.class);
-            GlobalApplcation.getContext().startService(sampleForegroundService);
+            GlobalApplication.getContext().startService(sampleForegroundService);
         }
 
         stopSelf();
@@ -71,8 +71,8 @@ public class ServiceChecker extends Service {
         // Create the NotificationChannel, but only on API 26+ because
         // the NotificationChannel class is new and not in the support library
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            if(!GlobalApplcation.getContext().isNotificationChannelEnabled(channelId));
-            GlobalApplcation.getContext().createNotificationChannel(channelId, NotificationManager.IMPORTANCE_LOW);
+            if(!GlobalApplication.getContext().isNotificationChannelEnabled(channelId));
+            GlobalApplication.getContext().createNotificationChannel(channelId, NotificationManager.IMPORTANCE_LOW);
         }
     }
 }

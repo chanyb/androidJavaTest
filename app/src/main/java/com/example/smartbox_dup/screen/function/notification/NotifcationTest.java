@@ -19,8 +19,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.smartbox_dup.R;
 import com.example.smartbox_dup.utils.DeviceRotationManager;
+import com.example.smartbox_dup.utils.GlobalApplication;
 
-import chanyb.android.java.GlobalApplcation;
 
 public class NotifcationTest extends AppCompatActivity {
     private Button btn_1, btn_2;
@@ -90,13 +90,13 @@ public class NotifcationTest extends AppCompatActivity {
         // Create the NotificationChannel, but only on API 26+ because
         // the NotificationChannel class is new and not in the support library
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            if (!GlobalApplcation.getContext().isNotificationChannelEnabled(channelId)) ;
-            GlobalApplcation.getContext().createNotificationChannel(channelId, NotificationManager.IMPORTANCE_LOW);
+            if (!GlobalApplication.getContext().isNotificationChannelEnabled(channelId)) ;
+            GlobalApplication.getContext().createNotificationChannel(channelId, NotificationManager.IMPORTANCE_LOW);
         }
     }
 
     private void btn_2_action() {
-        stopService(new Intent(GlobalApplcation.getContext(), NotificationService.class));
+        stopService(new Intent(GlobalApplication.getContext(), NotificationService.class));
     }
 
 }

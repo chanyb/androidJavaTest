@@ -18,7 +18,6 @@ import androidx.core.content.ContextCompat;
 
 import com.example.smartbox_dup.R;
 
-import chanyb.android.java.GlobalApplcation;
 
 public class AdbShellTest extends AppCompatActivity {
 

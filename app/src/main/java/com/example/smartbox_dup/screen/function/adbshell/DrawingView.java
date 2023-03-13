@@ -11,7 +11,6 @@ import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
 
-import chanyb.android.java.GlobalApplcation;
 
 public class DrawingView extends View {
     private Paint paint;

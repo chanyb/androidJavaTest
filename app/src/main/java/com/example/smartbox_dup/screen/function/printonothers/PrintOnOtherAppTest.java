@@ -27,11 +27,11 @@ import androidx.core.app.NotificationCompat;
 
 import com.example.smartbox_dup.R;
 import com.example.smartbox_dup.screen.intro.IntroActivity;
+import com.example.smartbox_dup.utils.GlobalApplication;
 import com.example.smartbox_dup.utils.PermissionManager;
 
 import java.util.Calendar;
 
-import chanyb.android.java.GlobalApplcation;
 
 public class PrintOnOtherAppTest extends AppCompatActivity {
 
@@ -101,7 +101,7 @@ public class PrintOnOtherAppTest extends AppCompatActivity {
             channel.setSound(null, null);
             // Register the channel with the system; you can't change the importance
             // or other notification behaviors after this
-            NotificationManager notificationManager = GlobalApplcation.getContext().getSystemService(NotificationManager.class);
+            NotificationManager notificationManager = GlobalApplication.getContext().getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         }
     }

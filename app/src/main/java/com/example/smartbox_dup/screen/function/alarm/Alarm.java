@@ -8,11 +8,11 @@ import android.os.Build;
 import android.os.SystemClock;
 
 import com.example.smartbox_dup.utils.ByteArrayManager;
+import com.example.smartbox_dup.utils.GlobalApplication;
 
 import java.io.Serializable;
 import java.util.Calendar;
 
-import chanyb.android.java.GlobalApplcation;
 
 public class Alarm implements Serializable {
     private String title;
@@ -43,18 +43,18 @@ public class Alarm implements Serializable {
     }
 
     public void schedule(int id) {
-        AlarmManager alarmManager = (AlarmManager) GlobalApplcation.getContext().getSystemService(Context.ALARM_SERVICE);
+        AlarmManager alarmManager = (AlarmManager) GlobalApplication.getContext().getSystemService(Context.ALARM_SERVICE);
         ByteArrayManager<Alarm> bcTransformer = new ByteArrayManager<>();
-        Intent myIntent = new Intent(GlobalApplcation.getContext(), AlarmBroadcastReceiver.class);
+        Intent myIntent = new Intent(GlobalApplication.getContext(), AlarmBroadcastReceiver.class);
         myIntent.putExtra("alarm", bcTransformer.getByteArrayFromClassObject(this));
 
         myIntent.setAction("com.smartbox_dup.actionTest");
 
         PendingIntent alarmPendingIntent = null;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            alarmPendingIntent = PendingIntent.getBroadcast(GlobalApplcation.getContext(), id, myIntent,PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE);
+            alarmPendingIntent = PendingIntent.getBroadcast(GlobalApplication.getContext(), id, myIntent,PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_MUTABLE);
         } else {
-            alarmPendingIntent = PendingIntent.getBroadcast(GlobalApplcation.getContext(), id, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+            alarmPendingIntent = PendingIntent.getBroadcast(GlobalApplication.getContext(), id, myIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         }
 
 

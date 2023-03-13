@@ -15,10 +15,9 @@ import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.Toast;
 
 import java.net.URLDecoder;
-
-import chanyb.android.java.ToastManager;
 
 public class WebViewManagerTest {
     private static WebViewManagerTest instance = new WebViewManagerTest();
@@ -142,7 +141,7 @@ public class WebViewManagerTest {
             super.onProgressChanged(view, newProgress);
 
             if (newProgress == 10) {
-                ToastManager.getInstance().show("progress 10");
+                Toast.makeText(context, "progress 10", Toast.LENGTH_SHORT).show();
 //                if (!mProgressDialog.isShowing()) {
 //                    mProgressDialog.setMessage(mContext.getString(R.string.please_wait));
 //                    mProgressDialog.setCancelable(false);
@@ -150,7 +149,7 @@ public class WebViewManagerTest {
 //                }
             }
             if (newProgress == 100) {
-                ToastManager.getInstance().show("progress 100");
+                Toast.makeText(context, "progress 100", Toast.LENGTH_SHORT).show();
 //                if (mProgressDialog.isShowing()) {
 //                    mProgressDialog.dismiss();
 //                }

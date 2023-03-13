@@ -18,10 +18,10 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
 import com.example.smartbox_dup.R;
+import com.example.smartbox_dup.utils.GlobalApplication;
 
 import java.util.Calendar;
 
-import chanyb.android.java.GlobalApplcation;
 
 public class CalendarTest extends AppCompatActivity {
 
@@ -79,10 +79,10 @@ public class CalendarTest extends AppCompatActivity {
                 Manifest.permission.READ_CALENDAR, Manifest.permission.WRITE_CALENDAR
         };
 
-        int CAMERA_PERMISSION = ContextCompat.checkSelfPermission(GlobalApplcation.getContext(), permissions[0]);
+        int CAMERA_PERMISSION = ContextCompat.checkSelfPermission(GlobalApplication.getContext(), permissions[0]);
 
         if(CAMERA_PERMISSION == PackageManager.PERMISSION_DENIED) {
-            ActivityCompat.requestPermissions(GlobalApplcation.currentActivity, permissions, 0);
+            ActivityCompat.requestPermissions(GlobalApplication.currentActivity, permissions, 0);
         } else {
             // Run query
             Cursor cur = null;
@@ -105,10 +105,10 @@ public class CalendarTest extends AppCompatActivity {
                 Manifest.permission.READ_CALENDAR, Manifest.permission.WRITE_CALENDAR
         };
 
-        int CAMERA_PERMISSION = ContextCompat.checkSelfPermission(GlobalApplcation.getContext(), permissions[0]);
+        int CAMERA_PERMISSION = ContextCompat.checkSelfPermission(GlobalApplication.getContext(), permissions[0]);
 
         if(CAMERA_PERMISSION == PackageManager.PERMISSION_DENIED) {
-            ActivityCompat.requestPermissions(GlobalApplcation.currentActivity, permissions, 0);
+            ActivityCompat.requestPermissions(GlobalApplication.currentActivity, permissions, 0);
         } else {
             // Run query
             Cursor cur = null;

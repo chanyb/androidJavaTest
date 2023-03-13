@@ -6,6 +6,8 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
+import com.example.smartbox_dup.utils.GlobalApplication;
+
 import java.io.Serializable;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
@@ -13,8 +15,6 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
-
-import chanyb.android.java.GlobalApplcation;
 
 public class SQLiteHandler {
 
@@ -35,7 +35,7 @@ public class SQLiteHandler {
 
         ArrayList<String> sqls = getCreateTableSql(tables, columns);
 
-        mHelper = new SQLiteOpenHelper(GlobalApplcation.getContext(), fileName, null, version) {
+        mHelper = new SQLiteOpenHelper(GlobalApplication.getContext(), fileName, null, version) {
             @Override
             public void onCreate(SQLiteDatabase sqLiteDatabase) {
                 for (String sql : sqls) {

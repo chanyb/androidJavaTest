@@ -18,8 +18,8 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.smartbox_dup.R;
 import com.example.smartbox_dup.utils.ByteArrayManager;
+import com.example.smartbox_dup.utils.GlobalApplication;
 
-import chanyb.android.java.GlobalApplcation;
 
 public class FullScreenAlarmActivity extends AppCompatActivity {
     Context mContext;
@@ -58,7 +58,7 @@ public class FullScreenAlarmActivity extends AppCompatActivity {
                 if(getIntent().getStringExtra("activity") != null) {
                     try {
                         Class<?> someClass = Class.forName(getIntent().getStringExtra("activity"));
-                        Intent myIntent = new Intent(GlobalApplcation.getContext(), someClass);
+                        Intent myIntent = new Intent(GlobalApplication.getContext(), someClass);
                         startActivity(myIntent);
                     } catch (ClassNotFoundException e) {
                         e.printStackTrace();

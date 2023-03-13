@@ -10,13 +10,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.smartbox_dup.R;
 import com.example.smartbox_dup.screen.function.SerializableClass;
+import com.example.smartbox_dup.sqlite.SQLiteHandler;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
-
-import chanyb.android.java.SQLiteHandler;
 
 
 public class SQLiteTest extends AppCompatActivity {

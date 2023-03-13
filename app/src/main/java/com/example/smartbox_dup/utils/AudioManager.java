@@ -10,15 +10,13 @@ import android.view.View;
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.appcompat.app.AppCompatActivity;
 
-import chanyb.android.java.GlobalApplcation;
-
 public class AudioManager {
     public enum State {
         VIBRATE, NORMAL, SILENT
     };
     private static AudioManager instance;
     private AudioManager() {
-        systemAudioManager = (android.media.AudioManager) GlobalApplcation.getContext().getSystemService(Context.AUDIO_SERVICE);
+        systemAudioManager = (android.media.AudioManager) GlobalApplication.getContext().getSystemService(Context.AUDIO_SERVICE);
     }
     private android.media.AudioManager systemAudioManager;
 
@@ -39,7 +37,7 @@ public class AudioManager {
                 break;
             case SILENT:
                 NotificationManager notificationManager;
-                notificationManager = (NotificationManager) GlobalApplcation.getContext().getSystemService(Context.NOTIFICATION_SERVICE);
+                notificationManager = (NotificationManager) GlobalApplication.getContext().getSystemService(Context.NOTIFICATION_SERVICE);
 
                 if (!notificationManager.isNotificationPolicyAccessGranted()) {
                     DialogManager.getInstance().showConfirmDialog("허용해야 함", new View.OnClickListener() {
@@ -47,7 +45,7 @@ public class AudioManager {
                         public void onClick(View view) {
                             Intent intent = new Intent(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS);
                             intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK); // Activity가 아닌 곳에서 startActivity를 할 때 필요한 Flag
-                            GlobalApplcation.currentActivity.startActivity(intent);
+                            GlobalApplication.currentActivity.startActivity(intent);
                         }
                     });
                 } else {

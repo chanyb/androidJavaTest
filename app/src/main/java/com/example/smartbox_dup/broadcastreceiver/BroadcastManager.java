@@ -7,7 +7,7 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.util.Log;
 
-import chanyb.android.java.GlobalApplcation;
+import com.example.smartbox_dup.utils.GlobalApplication;
 
 
 public class BroadcastManager {
@@ -20,7 +20,7 @@ public class BroadcastManager {
     }
 
     public void register(BroadcastReceiver broadcastReceiver, IntentFilter intentFilter) {
-        Context context = GlobalApplcation.getContext();
+        Context context = GlobalApplication.getContext();
         if(context != null) context.registerReceiver(broadcastReceiver, intentFilter);
         else throw new NullPointerException("GlobalApplication.getContext() is null value");
     }
@@ -31,7 +31,7 @@ public class BroadcastManager {
     }
 
     public void sendBroadcast(Intent intent) {
-        Context context = GlobalApplcation.getContext();
+        Context context = GlobalApplication.getContext();
         if(context == null) throw new NullPointerException("GlobalApplication.getContext() is null value");
 
         context.sendBroadcast(intent);
@@ -45,7 +45,7 @@ public class BroadcastManager {
 
     public void unregister(BroadcastReceiver receiver) {
         if(receiver == null) throw new NullPointerException("The receiver parameter is null value");
-        Context context = GlobalApplcation.getContext();
+        Context context = GlobalApplication.getContext();
         if(context != null) context.unregisterReceiver(receiver);
         else throw new NullPointerException("GlobalApplication.getContext() is null value");
     }
