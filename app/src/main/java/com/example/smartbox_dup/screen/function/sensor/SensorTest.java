@@ -45,12 +45,12 @@ public class SensorTest extends AppCompatActivity {
     private SensorManager sensorManager;
     private Sensor sensor;
     private SensorEventListener sensorEventListener;
-    private Button btn_1, btn_2, btn_3, btn_4, btn_5;
+    private Button btn_1, btn_2, btn_3, btn_4, btn_5, btn_6;
     private TextView txt_x, txt_y, txt_z;
     private Sensor accelSensor;
     private SensorEventListener accelSensorEventListener;
     private long lastTimestamp;
-    private float[] lastAcceleration;
+    private float[] lastAcceleration, currentVelocity, position;
     private float lastX, lastY, lastZ;
     private static final float NS2S = 1.0f / 1000000000.0f;
     private float currentSpeed_x, currentSpeed_y, currentSpeed_z;
@@ -66,13 +66,7 @@ public class SensorTest extends AppCompatActivity {
             double latitude = location.getLatitude();
             double longitude = location.getLongitude();
             JSONObject obj = DatetimeManager.getInstance().getSystemDateTime();
-            try {
-                txt_x.setText(obj.getString("datetime"));
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            txt_y.setText(latitude + "/" + longitude);
-            txt_z.setText(location.getSpeed() + "/" + location.getAltitude());
+            txt_y.setText(location.getSpeed() + "");
         }
     };
 
@@ -141,31 +135,32 @@ public class SensorTest extends AppCompatActivity {
 
     private void btn_3_action() {
         // 가속도 센서테스트
-        accelSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        accelSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
         currentSpeed_x = currentSpeed_y = currentSpeed_z = -99f;
         lastTimestamp = -1l;
         speed = 0;
+
+        lastAcceleration = new float[3];
+        currentVelocity = new float[3];
+        position = new float[3];
+
         accelSensorEventListener = new SensorEventListener() {
             @Override
             public void onSensorChanged(SensorEvent event) {
 
-                long currentTime = System.currentTimeMillis();
                 float x = event.values[0];
                 float y = event.values[1];
                 float z = event.values[2];
                 if (lastTimestamp == -1l) {
-                   lastTimestamp = currentTime;
+                   lastTimestamp = event.timestamp;
                    lastX = x;
                    lastY = y;
                    lastZ = z;
                    return ;
                 }
 
-                long timeInterval = currentTime - lastTimestamp;
-                if (timeInterval < 100) return;
-
-                lastTimestamp = currentTime;
-
+                long timeInterval = event.timestamp - lastTimestamp;
+                if(timeInterval < 100) return;
 
                 float deltaX = x - lastX;
                 float deltaY = y - lastY;
@@ -176,9 +171,16 @@ public class SensorTest extends AppCompatActivity {
                 lastZ = z;
 
                 float speedDelta = Math.abs(deltaX + deltaY + deltaZ) / timeInterval * 10000; // m/s^2를 m/s로 바꾸기 위해
-                speed = speedDelta * 0.001f;
+                float acceleration = (float) Math.sqrt(x * x + y * y + z * z);
+                speed = speedDelta*0.1f;
 
-                txt_x.setText(String.format(Locale.getDefault(), "%.2f km/h", speed*3.6));
+                acceleration = acceleration - 0.01f;
+                if(acceleration < 0) acceleration = 0f;
+
+                txt_x.setText(String.format(Locale.getDefault(), "%.5f", acceleration));
+                lastTimestamp = event.timestamp;
+
+
 
             }
 
@@ -195,13 +197,6 @@ public class SensorTest extends AppCompatActivity {
         // 자이로 센서테스트
     }
 
-    private float calculateSpeed(float[] acceleration, float[] lastAcceleration, float timeInterval, float currentSpeed) {
-        float deltaX = ((acceleration[0] + lastAcceleration[0]) / 2) * timeInterval * timeInterval;
-        float deltaY = ((acceleration[1] + lastAcceleration[1]) / 2) * timeInterval * timeInterval;
-        float deltaZ = ((acceleration[2] + lastAcceleration[2]) / 2) * timeInterval * timeInterval;
-        float deltaSpeed = (float) Math.sqrt(deltaX * deltaX + deltaY * deltaY + deltaZ * deltaZ);
-        return currentSpeed + deltaSpeed;
-    }
 
     private void btn_5_action() {
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {

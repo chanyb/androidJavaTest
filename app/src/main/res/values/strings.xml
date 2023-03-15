@@ -117,6 +117,7 @@
     <string name="function_sensor_3">가속도 센서 테스트</string>
     <string name="function_sensor_4">자이로 센서 테스트</string>
     <string name="function_sensor_5">위치 센서 테스트</string>
+    <string name="function_sensor_6">중력 센서 테스트</string>
 
     <string name="function_notification_1">foreground notification</string>
     <string name="function_notification_2">service stop</string>
