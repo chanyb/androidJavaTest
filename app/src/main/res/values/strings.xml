@@ -114,10 +114,14 @@
 
     <string name="function_sensor_1">회전 벡터 센서 테스트</string>
     <string name="function_sensor_2">회전 벡터 센서 테스트 종료</string>
-    <string name="function_sensor_3">가속도 센서 테스트</string>
+    <string name="function_sensor_3">선형가속도 센서 테스트</string>
     <string name="function_sensor_4">자이로 센서 테스트</string>
     <string name="function_sensor_5">위치 센서 테스트</string>
     <string name="function_sensor_6">중력 센서 테스트</string>
+    <string name="function_sensor_7">보행 계수기 센서 테스트</string>
+    <string name="function_sensor_8">보행 탐지 센서 테스트</string>
+    <string name="function_sensor_9">중요한 동작 센서 테스트</string>
+    <string name="function_sensor_10">기기 방향 계산 테스트</string>
 
     <string name="function_notification_1">foreground notification</string>
     <string name="function_notification_2">service stop</string>
