@@ -52,8 +52,8 @@ public class SensorTest extends AppCompatActivity {
     private SensorEventListener sensorEventListener;
     private Button btn_1, btn_2, btn_3, btn_4, btn_5, btn_6, btn_7, btn_8, btn_9, btn_10;
     private TextView txt_x, txt_y, txt_z;
-    private Sensor accelSensor, gravitySensor, stepCounterSensor, stepDetectorSensor, significationMotionSensor, orientationSensor;
-    private SensorEventListener accelSensorEventListener, gravitySensorListener, stepCounterListener, stepDetectorListener, significationMotionListener, orientationListener;
+    private Sensor accelSensor, gravitySensor, stepCounterSensor, stepDetectorSensor, significationMotionSensor, orientationSensor, accelerometerSensor, magneticFieldSensor;
+    private SensorEventListener accelSensorEventListener, gravitySensorListener, stepCounterListener, stepDetectorListener, significationMotionListener, orientationListener, accelerometerListener, magneticFieldListener;
     private long lastTimestamp;
     private float[] lastAcceleration, currentVelocity, position;
     private float lastX, lastY, lastZ;
@@ -64,6 +64,10 @@ public class SensorTest extends AppCompatActivity {
     private static final int MAX_SENSOR_VALUES = 100;
     private static final int MIN_SENSOR_VALUES = 10;
     private PowerManager.WakeLock wakeLock;
+    private final float[] accelerometerReading = new float[3];
+    private final float[] magnetometerReading = new float[3];
+    private final float[] rotationMatrix = new float[9];
+    private final float[] orientationAngles = new float[3];
 
     private LocationManager locationManager;
     private LocationListener locationListener = new LocationListener() {
@@ -141,7 +145,7 @@ public class SensorTest extends AppCompatActivity {
         btn_9.setOnClickListener((v) -> btn_9_action());
 
         btn_10 = findViewById(R.id.btn_10);
-        btn_10.setOnClickListener((v) -> btn_9_action());
+        btn_10.setOnClickListener((v) -> btn_10_action());
 
         txt_x = findViewById(R.id.txt_x);
         txt_y = findViewById(R.id.txt_y);
@@ -359,12 +363,62 @@ public class SensorTest extends AppCompatActivity {
     }
 
     private void btn_10_action() {
-        // Rotation matrix based on current readings from accelerometer and magnetometer.
-        final float[] rotationMatrix = new float[9];
-        SensorManager.getRotationMatrix(rotationMatrix, null, accelerometerReading, magnetometerReading);
+        accelerometerSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
+        if (accelerometerSensor != null) {
 
-// Express the updated rotation matrix as three orientation angles.
-        final float[] orientationAngles = new float[3];
+            accelerometerListener = new SensorEventListener() {
+                @Override
+                public void onSensorChanged(SensorEvent event) {
+                    System.arraycopy(event.values, 0, accelerometerReading,
+                            0, accelerometerReading.length);
+
+                    updateOrientationAngles();
+                }
+
+                @Override
+                public void onAccuracyChanged(Sensor sensor, int i) {
+
+                }
+            };
+
+            sensorManager.registerListener(accelerometerListener, accelerometerSensor,
+                    SensorManager.SENSOR_DELAY_NORMAL, SensorManager.SENSOR_DELAY_UI);
+        }
+        magneticFieldSensor = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
+        if (magneticFieldSensor != null) {
+            magneticFieldListener = new SensorEventListener() {
+                @Override
+                public void onSensorChanged(SensorEvent event) {
+                    System.arraycopy(event.values, 0, magnetometerReading,
+                            0, magnetometerReading.length);
+
+                    updateOrientationAngles();
+                }
+
+                @Override
+                public void onAccuracyChanged(Sensor sensor, int i) {
+
+                }
+            };
+            sensorManager.registerListener(magneticFieldListener, magneticFieldSensor,
+                    SensorManager.SENSOR_DELAY_NORMAL, SensorManager.SENSOR_DELAY_UI);
+        }
+
+    }
+
+    public void updateOrientationAngles() {
+        // Update rotation matrix, which is needed to update orientation angles.
+        SensorManager.getRotationMatrix(rotationMatrix, null,
+                accelerometerReading, magnetometerReading);
+
+        // "mRotationMatrix" now has up-to-date information.
+
         SensorManager.getOrientation(rotationMatrix, orientationAngles);
+
+        float azimuthInRadians = orientationAngles[0];
+        float azimuthInDegrees = (float) (Math.toDegrees(azimuthInRadians) + 360) % 360;
+
+        txt_z.setText("Heading: " + Float.toString(azimuthInDegrees) + " degrees");
+        // "mOrientationAngles" now has up-to-date information.
     }
 }
