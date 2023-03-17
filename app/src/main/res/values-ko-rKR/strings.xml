@@ -107,6 +107,7 @@
     <string name="function_sensor_9">중요한 동작 센서 테스트_ko</string>
     <string name="function_sensor_10">기기 방향 계산 테스트_ko</string>
     <string name="function_sensor_11">근접 센서 테스트_ko</string>
+    <string name="function_sensor_12">조도 테스트_ko</string>
     <string name="function_notification_1">foreground notification</string>
     <string name="function_notification_2">service stop</string>
     <string name="function_network_1">getFile</string>

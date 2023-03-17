@@ -50,7 +50,7 @@ public class SensorTest extends AppCompatActivity {
     private SensorManager sensorManager;
     private Sensor sensor;
     private SensorEventListener sensorEventListener;
-    private Button btn_1, btn_2, btn_3, btn_4, btn_5, btn_6, btn_7, btn_8, btn_9, btn_10, btn_11;
+    private Button btn_1, btn_2, btn_3, btn_4, btn_5, btn_6, btn_7, btn_8, btn_9, btn_10, btn_11, btn_12;
     private TextView txt_x, txt_y, txt_z;
     private Sensor accelSensor, gravitySensor, stepCounterSensor, stepDetectorSensor, significationMotionSensor, orientationSensor, accelerometerSensor, magneticFieldSensor, proximitySensor, lightSensor;
     private SensorEventListener accelSensorEventListener, gravitySensorListener, stepCounterListener, stepDetectorListener, significationMotionListener, orientationListener, accelerometerListener, magneticFieldListener, proximityListener, lightListener;
@@ -149,6 +149,9 @@ public class SensorTest extends AppCompatActivity {
 
         btn_11 = findViewById(R.id.btn_11);
         btn_11.setOnClickListener((v) -> btn_11_action());
+
+        btn_12 = findViewById(R.id.btn_12);
+        btn_12.setOnClickListener((v) -> btn_12_action());
 
         txt_x = findViewById(R.id.txt_x);
         txt_y = findViewById(R.id.txt_y);
@@ -447,5 +450,29 @@ public class SensorTest extends AppCompatActivity {
         }
 
         sensorManager.registerListener(proximityListener, proximitySensor, SensorManager.SENSOR_DELAY_NORMAL);
+    }
+
+    private void btn_12_action() {
+        lightSensor = sensorManager.getDefaultSensor(Sensor.TYPE_LIGHT);
+        lightListener = new SensorEventListener() {
+            @Override
+            public void onSensorChanged(SensorEvent sensorEvent) {
+                float lightLevel = sensorEvent.values[0];
+                txt_x.setText("조도: " + lightLevel);
+            }
+
+            @Override
+            public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+            }
+        };
+
+        if (lightSensor == null) {
+            Toast.makeText(this, "proximity sensor not supported on this device.", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(this, "proximity motion sensor supported on this device.", Toast.LENGTH_LONG).show();
+        }
+
+        sensorManager.registerListener(lightListener, lightSensor, SensorManager.SENSOR_DELAY_NORMAL);
     }
 }
