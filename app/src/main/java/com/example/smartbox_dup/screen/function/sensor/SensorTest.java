@@ -50,10 +50,10 @@ public class SensorTest extends AppCompatActivity {
     private SensorManager sensorManager;
     private Sensor sensor;
     private SensorEventListener sensorEventListener;
-    private Button btn_1, btn_2, btn_3, btn_4, btn_5, btn_6, btn_7, btn_8, btn_9, btn_10;
+    private Button btn_1, btn_2, btn_3, btn_4, btn_5, btn_6, btn_7, btn_8, btn_9, btn_10, btn_11;
     private TextView txt_x, txt_y, txt_z;
-    private Sensor accelSensor, gravitySensor, stepCounterSensor, stepDetectorSensor, significationMotionSensor, orientationSensor, accelerometerSensor, magneticFieldSensor;
-    private SensorEventListener accelSensorEventListener, gravitySensorListener, stepCounterListener, stepDetectorListener, significationMotionListener, orientationListener, accelerometerListener, magneticFieldListener;
+    private Sensor accelSensor, gravitySensor, stepCounterSensor, stepDetectorSensor, significationMotionSensor, orientationSensor, accelerometerSensor, magneticFieldSensor, proximitySensor, lightSensor;
+    private SensorEventListener accelSensorEventListener, gravitySensorListener, stepCounterListener, stepDetectorListener, significationMotionListener, orientationListener, accelerometerListener, magneticFieldListener, proximityListener, lightListener;
     private long lastTimestamp;
     private float[] lastAcceleration, currentVelocity, position;
     private float lastX, lastY, lastZ;
@@ -146,6 +146,9 @@ public class SensorTest extends AppCompatActivity {
 
         btn_10 = findViewById(R.id.btn_10);
         btn_10.setOnClickListener((v) -> btn_10_action());
+
+        btn_11 = findViewById(R.id.btn_11);
+        btn_11.setOnClickListener((v) -> btn_11_action());
 
         txt_x = findViewById(R.id.txt_x);
         txt_y = findViewById(R.id.txt_y);
@@ -420,5 +423,29 @@ public class SensorTest extends AppCompatActivity {
 
         txt_z.setText("Heading: " + Float.toString(azimuthInDegrees) + " degrees");
         // "mOrientationAngles" now has up-to-date information.
+    }
+
+    private void btn_11_action() {
+        proximitySensor = sensorManager.getDefaultSensor(Sensor.TYPE_PROXIMITY);
+        proximityListener = new SensorEventListener() {
+            @Override
+            public void onSensorChanged(SensorEvent sensorEvent) {
+                Log.i("this", String.valueOf(sensorEvent.values[0]));
+                txt_x.setText(sensorEvent.values[0]+"");
+            }
+
+            @Override
+            public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+            }
+        };
+
+        if (proximitySensor == null) {
+            Toast.makeText(this, "proximity sensor not supported on this device.", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(this, "proximity motion sensor supported on this device.", Toast.LENGTH_LONG).show();
+        }
+
+        sensorManager.registerListener(proximityListener, proximitySensor, SensorManager.SENSOR_DELAY_NORMAL);
     }
 }
