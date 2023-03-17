@@ -143,6 +143,33 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintWidth_percent="0.9"
             app:layout_constraintBottom_toTopOf="@id/txt_x"
+            app:layout_constraintVertical_bias="0"
+            />
+
+        <Button
+            android:id="@+id/btn_13"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:text="@string/function_sensor_13"
+            app:layout_constraintTop_toBottomOf="@id/btn_12"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintWidth_percent="0.9"
+            app:layout_constraintBottom_toTopOf="@id/txt_x"
+            app:layout_constraintVertical_bias="0"
+            />
+
+        <Button
+            android:id="@+id/btn_14"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:text="@string/function_sensor_14"
+            app:layout_constraintTop_toBottomOf="@id/btn_13"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintWidth_percent="0.9"
+            app:layout_constraintBottom_toTopOf="@id/txt_x"
+            app:layout_constraintVertical_bias="0"
             />
 
 

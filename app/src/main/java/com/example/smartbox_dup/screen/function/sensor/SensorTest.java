@@ -50,10 +50,10 @@ public class SensorTest extends AppCompatActivity {
     private SensorManager sensorManager;
     private Sensor sensor;
     private SensorEventListener sensorEventListener;
-    private Button btn_1, btn_2, btn_3, btn_4, btn_5, btn_6, btn_7, btn_8, btn_9, btn_10, btn_11, btn_12;
+    private Button btn_1, btn_2, btn_3, btn_4, btn_5, btn_6, btn_7, btn_8, btn_9, btn_10, btn_11, btn_12, btn_13, btn_14;
     private TextView txt_x, txt_y, txt_z;
-    private Sensor accelSensor, gravitySensor, stepCounterSensor, stepDetectorSensor, significationMotionSensor, orientationSensor, accelerometerSensor, magneticFieldSensor, proximitySensor, lightSensor;
-    private SensorEventListener accelSensorEventListener, gravitySensorListener, stepCounterListener, stepDetectorListener, significationMotionListener, orientationListener, accelerometerListener, magneticFieldListener, proximityListener, lightListener;
+    private Sensor accelSensor, gravitySensor, stepCounterSensor, stepDetectorSensor, significationMotionSensor, orientationSensor, accelerometerSensor, magneticFieldSensor, proximitySensor, lightSensor, pressureSensor, humiditySensor;
+    private SensorEventListener accelSensorEventListener, gravitySensorListener, stepCounterListener, stepDetectorListener, significationMotionListener, orientationListener, accelerometerListener, magneticFieldListener, proximityListener, lightListener, pressureListener, humidityListener;
     private long lastTimestamp;
     private float[] lastAcceleration, currentVelocity, position;
     private float lastX, lastY, lastZ;
@@ -152,6 +152,12 @@ public class SensorTest extends AppCompatActivity {
 
         btn_12 = findViewById(R.id.btn_12);
         btn_12.setOnClickListener((v) -> btn_12_action());
+
+        btn_13 = findViewById(R.id.btn_13);
+        btn_13.setOnClickListener((v) -> btn_13_action());
+
+        btn_14 = findViewById(R.id.btn_14);
+        btn_14.setOnClickListener((v) -> btn_14_action());
 
         txt_x = findViewById(R.id.txt_x);
         txt_y = findViewById(R.id.txt_y);
@@ -446,7 +452,7 @@ public class SensorTest extends AppCompatActivity {
         if (proximitySensor == null) {
             Toast.makeText(this, "proximity sensor not supported on this device.", Toast.LENGTH_LONG).show();
         } else {
-            Toast.makeText(this, "proximity motion sensor supported on this device.", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "proximity sensor supported on this device.", Toast.LENGTH_LONG).show();
         }
 
         sensorManager.registerListener(proximityListener, proximitySensor, SensorManager.SENSOR_DELAY_NORMAL);
@@ -470,9 +476,57 @@ public class SensorTest extends AppCompatActivity {
         if (lightSensor == null) {
             Toast.makeText(this, "proximity sensor not supported on this device.", Toast.LENGTH_LONG).show();
         } else {
-            Toast.makeText(this, "proximity motion sensor supported on this device.", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "proximity sensor supported on this device.", Toast.LENGTH_LONG).show();
         }
 
         sensorManager.registerListener(lightListener, lightSensor, SensorManager.SENSOR_DELAY_NORMAL);
+    }
+
+    private void btn_13_action() {
+        pressureSensor = sensorManager.getDefaultSensor(Sensor.TYPE_PRESSURE);
+        pressureListener = new SensorEventListener() {
+            @Override
+            public void onSensorChanged(SensorEvent sensorEvent) {
+                float pressureLevel = sensorEvent.values[0];
+                txt_x.setText("압력: " + pressureLevel);
+            }
+
+            @Override
+            public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+            }
+        };
+
+        if (pressureSensor == null) {
+            Toast.makeText(this, "pressure sensor not supported on this device.", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(this, "pressure sensor supported on this device.", Toast.LENGTH_LONG).show();
+        }
+
+        sensorManager.registerListener(pressureListener, pressureSensor, SensorManager.SENSOR_DELAY_NORMAL);
+    }
+
+    private void btn_14_action() {
+        humiditySensor = sensorManager.getDefaultSensor(Sensor.TYPE_RELATIVE_HUMIDITY);
+        humidityListener = new SensorEventListener() {
+            @Override
+            public void onSensorChanged(SensorEvent sensorEvent) {
+                float humidityLevel = sensorEvent.values[0];
+                txt_x.setText("습도: " + humidityLevel);
+            }
+
+            @Override
+            public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+            }
+        };
+
+        if (humiditySensor == null) {
+            Toast.makeText(this, "humidity sensor not supported on this device.", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(this, "humidity sensor supported on this device.", Toast.LENGTH_LONG).show();
+        }
+
+        sensorManager.registerListener(humidityListener, humiditySensor, SensorManager.SENSOR_DELAY_NORMAL);
     }
 }
