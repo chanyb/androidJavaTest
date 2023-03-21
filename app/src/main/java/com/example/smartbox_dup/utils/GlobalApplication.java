@@ -21,6 +21,8 @@ import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Looper;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.Display;
@@ -41,6 +43,7 @@ public class GlobalApplication extends Application {
     Display display;
     Point display_size;
     InputMethodManager imm;
+    private Handler mHandler;
 
 
     public static GlobalApplication getContext() {
@@ -315,5 +318,12 @@ public class GlobalApplication extends Application {
         ConnectivityManager connMgr = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
         return (networkInfo != null && networkInfo.isConnected());
+    }
+
+    public Handler getMainLooperHandler() {
+        if(mHandler == null) {
+            mHandler = new Handler(GlobalApplication.getContext().getMainLooper());
+        }
+        return mHandler;
     }
 }

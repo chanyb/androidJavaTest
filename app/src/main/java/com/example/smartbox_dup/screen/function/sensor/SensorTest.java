@@ -1,28 +1,25 @@
 package com.example.smartbox_dup.screen.function.sensor;
 
 import android.Manifest;
-import android.content.ContentResolver;
-import android.content.ContentUris;
-import android.content.ContentValues;
 import android.content.Context;
-import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
-import android.database.Cursor;
+import android.graphics.Color;
+import android.graphics.DashPathEffect;
+import android.graphics.drawable.Drawable;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.hardware.TriggerEventListener;
 import android.location.GnssStatus;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.PowerManager;
-import android.provider.CalendarContract;
 import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -37,12 +34,23 @@ import androidx.core.content.ContextCompat;
 import com.example.smartbox_dup.R;
 import com.example.smartbox_dup.utils.DatetimeManager;
 import com.example.smartbox_dup.utils.DeviceRotationManager;
+import com.example.smartbox_dup.utils.GlobalApplication;
+import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IFillFormatter;
+import com.github.mikephil.charting.highlight.Highlight;
+import com.github.mikephil.charting.interfaces.dataprovider.LineDataProvider;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.github.mikephil.charting.listener.ChartTouchListener;
+import com.github.mikephil.charting.listener.OnChartGestureListener;
+import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Locale;
 
 
 public class SensorTest extends AppCompatActivity {
@@ -50,10 +58,10 @@ public class SensorTest extends AppCompatActivity {
     private SensorManager sensorManager;
     private Sensor sensor;
     private SensorEventListener sensorEventListener;
-    private Button btn_1, btn_2, btn_3, btn_4, btn_5, btn_6, btn_7, btn_8, btn_9, btn_10, btn_11, btn_12, btn_13, btn_14;
+    private Button btn_1, btn_2, btn_3, btn_4, btn_5, btn_6, btn_7, btn_8, btn_9, btn_10, btn_11, btn_12, btn_13, btn_14, btn_15;
     private TextView txt_x, txt_y, txt_z;
-    private Sensor accelSensor, gravitySensor, stepCounterSensor, stepDetectorSensor, significationMotionSensor, orientationSensor, accelerometerSensor, magneticFieldSensor, proximitySensor, lightSensor, pressureSensor, humiditySensor;
-    private SensorEventListener accelSensorEventListener, gravitySensorListener, stepCounterListener, stepDetectorListener, significationMotionListener, orientationListener, accelerometerListener, magneticFieldListener, proximityListener, lightListener, pressureListener, humidityListener;
+    private Sensor rotationSensor, accelSensor, gravitySensor, stepCounterSensor, stepDetectorSensor, significationMotionSensor, orientationSensor, accelerometerSensor, magneticFieldSensor, proximitySensor, lightSensor, pressureSensor, humiditySensor, temperatureSensor;
+    private SensorEventListener rotationListener, accelSensorEventListener, gravitySensorListener, stepCounterListener, stepDetectorListener, significationMotionListener, orientationListener, accelerometerListener, magneticFieldListener, proximityListener, lightListener, pressureListener, humidityListener, temperatureListener;
     private long lastTimestamp;
     private float[] lastAcceleration, currentVelocity, position;
     private float lastX, lastY, lastZ;
@@ -68,6 +76,11 @@ public class SensorTest extends AppCompatActivity {
     private final float[] magnetometerReading = new float[3];
     private final float[] rotationMatrix = new float[9];
     private final float[] orientationAngles = new float[3];
+    private float max_noise, min_noise;
+    private ArrayList<Entry> valuesX, valuesY, valuesZ;
+
+    private LineChart xChart;
+    private OnChartGestureListener chartGestureListener;
 
     private LocationManager locationManager;
     private LocationListener locationListener = new LocationListener() {
@@ -80,6 +93,9 @@ public class SensorTest extends AppCompatActivity {
             txt_y.setText(location.getSpeed() + "");
         }
     };
+
+    public SensorTest() {
+    }
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -159,34 +175,147 @@ public class SensorTest extends AppCompatActivity {
         btn_14 = findViewById(R.id.btn_14);
         btn_14.setOnClickListener((v) -> btn_14_action());
 
+        btn_15 = findViewById(R.id.btn_15);
+        btn_15.setOnClickListener((v) -> btn_15_action());
+
+        initChart();
+
         txt_x = findViewById(R.id.txt_x);
         txt_y = findViewById(R.id.txt_y);
         txt_z = findViewById(R.id.txt_z);
     }
 
+    private void setData(LineChart lineChart) {
+        LineDataSet set1, set2, set3;
 
-    private void btn_1_action() {
-        DeviceRotationManager.getInstance().registerListener(this, new DeviceRotationManager.DeviceRotateListener() {
-            @Override
-            public void onPortrait() {
-                Log.i("this", "onPortrait");
-            }
+        xChart.setVisibility(View.VISIBLE);
 
-            @Override
-            public void onPortraitReverse() {
-                Log.i("this", "onPortraitReverse");
-            }
+        // create a dataset and give it a type
+        set1 = new LineDataSet(valuesX, "x");
+        set2 = new LineDataSet(valuesY, "y");
+        set3 = new LineDataSet(valuesZ, "z");
 
-            @Override
-            public void onLandscape() {
-                Log.i("this", "onLandscape");
-            }
+        set1.setDrawIcons(false);
+        set2.setDrawIcons(false);
+        set3.setDrawIcons(false);
 
+        // draw dashed line
+        set1.enableDashedLine(10f, 5f, 0f);
+        set2.enableDashedLine(10f, 5f, 0f);
+        set3.enableDashedLine(10f, 5f, 0f);
+
+        // black lines and points
+        set1.setColor(getColor(R.color.black));
+        set1.setCircleColor(getColor(R.color.black));
+        set2.setColor(getColor(R.color.blue));
+        set2.setCircleColor(getColor(R.color.blue));
+        set3.setColor(getColor(R.color.red));
+        set3.setCircleColor(getColor(R.color.red));
+
+        // line thickness and point size
+        set1.setLineWidth(1f);
+        set1.setCircleRadius(3f);
+        set2.setLineWidth(1f);
+        set2.setCircleRadius(3f);
+        set3.setLineWidth(1f);
+        set3.setCircleRadius(3f);
+
+        // draw points as solid circles
+        set1.setDrawCircleHole(false);
+        set2.setDrawCircleHole(false);
+        set3.setDrawCircleHole(false);
+
+        // customize legend entry
+        set1.setFormLineWidth(1f);
+        set1.setFormLineDashEffect(new DashPathEffect(new float[]{10f, 5f}, 0f));
+        set1.setFormSize(15.f);
+        set2.setFormLineWidth(1f);
+        set2.setFormLineDashEffect(new DashPathEffect(new float[]{10f, 5f}, 0f));
+        set2.setFormSize(15.f);
+        set3.setFormLineWidth(1f);
+        set3.setFormLineDashEffect(new DashPathEffect(new float[]{10f, 5f}, 0f));
+        set3.setFormSize(15.f);
+
+        // text size of values
+        set1.setValueTextSize(9f);
+        set2.setValueTextSize(9f);
+        set3.setValueTextSize(9f);
+
+
+        // draw selection line as dashed
+        set1.enableDashedHighlightLine(10f, 5f, 0f);
+        set2.enableDashedHighlightLine(10f, 5f, 0f);
+        set3.enableDashedHighlightLine(10f, 5f, 0f);
+
+        // set the filled area
+        set1.setDrawFilled(false);
+        set1.setFillFormatter(new IFillFormatter() {
             @Override
-            public void onLandscapeReverse() {
-                Log.i("this", "onLandscapeReverse");
+            public float getFillLinePosition(ILineDataSet dataSet, LineDataProvider dataProvider) {
+                return lineChart.getAxisLeft().getAxisMinimum();
             }
         });
+
+        set2.setDrawFilled(false);
+        set2.setFillFormatter(new IFillFormatter() {
+            @Override
+            public float getFillLinePosition(ILineDataSet dataSet, LineDataProvider dataProvider) {
+                return lineChart.getAxisLeft().getAxisMinimum();
+            }
+        });
+
+        set3.setDrawFilled(false);
+        set3.setFillFormatter(new IFillFormatter() {
+            @Override
+            public float getFillLinePosition(ILineDataSet dataSet, LineDataProvider dataProvider) {
+                return lineChart.getAxisLeft().getAxisMinimum();
+            }
+        });
+
+        ArrayList<ILineDataSet> dataSets = new ArrayList<>();
+        dataSets.add(set1); // add the data sets
+        dataSets.add(set2);
+        dataSets.add(set3);
+
+        // create a data object with the data sets
+        LineData data = new LineData(dataSets);
+
+        // set data
+        lineChart.setData(data);
+
+        // redraw
+        lineChart.invalidate();
+    }
+
+
+    private void btn_1_action() {
+        rotationSensor = sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR);
+
+        if (rotationSensor == null) {
+            Toast.makeText(this, "이 기기에서는 회전 벡터 센서를 사용할 수 없습니다.", Toast.LENGTH_SHORT).show();
+        }
+
+        rotationListener = new SensorEventListener() {
+            @Override
+            public void onSensorChanged(SensorEvent event) {
+                float x = event.values[0];
+                float y = event.values[1];
+                float z = event.values[2];
+
+//                txt_z.setText("x: " + x + "\ny: " + y + "\nz: " + z);
+                valuesX.add(new Entry(valuesX.size(), x));
+                valuesY.add(new Entry(valuesY.size(), y));
+                valuesZ.add(new Entry(valuesZ.size(), z));
+                setData(xChart);
+            }
+
+            @Override
+            public void onAccuracyChanged(Sensor sensor, int i) {
+
+            }
+        };
+
+        sensorManager.registerListener(rotationListener, rotationSensor, SensorManager.SENSOR_DELAY_NORMAL);
     }
 
     private void btn_2_action() {
@@ -198,6 +327,14 @@ public class SensorTest extends AppCompatActivity {
         currentSpeed_x = currentSpeed_y = currentSpeed_z = -99f;
         lastTimestamp = -1l;
         speed = 0;
+
+        max_noise = 0;
+        min_noise = 0;
+
+
+        Calendar cTuneTime = Calendar.getInstance();
+        cTuneTime.set(Calendar.SECOND, cTuneTime.get(Calendar.SECOND) + 5);
+
 
         lastAcceleration = new float[3];
         currentVelocity = new float[3];
@@ -211,35 +348,42 @@ public class SensorTest extends AppCompatActivity {
                 float y = event.values[1];
                 float z = event.values[2];
 
-                txt_x.setText("x: " + x + "\ny: " + y + "\nz: " + z);
-                if (lastTimestamp == -1l) {
-                   lastTimestamp = event.timestamp;
-                   lastX = x;
-                   lastY = y;
-                   lastZ = z;
-                   return ;
+                if (Calendar.getInstance().getTimeInMillis() < cTuneTime.getTimeInMillis()) {
+                    if (max_noise < x) max_noise = x;
+                    if (max_noise < y) max_noise = y;
+                    if (max_noise < z) max_noise = z;
+                    if (min_noise > x) min_noise = x;
+                    if (min_noise > y) min_noise = y;
+                    if (min_noise > z) min_noise = z;
+                    return ;
                 }
 
-                long timeInterval = event.timestamp - lastTimestamp;
-                if(timeInterval < 100) return;
+                if(max_noise*2 > x && x > 0) x = 0;
+                if(max_noise*2 > y && y > 0) y = 0;
+                if(max_noise*2 > z && z > 0) z = 0;
+                if(min_noise*2 > x && x < 0) x = 0;
+                if(min_noise*2 > y && y < 0) y = 0;
+                if(min_noise*2 > z && z < 0) z = 0;
 
-                float deltaX = x - lastX;
-                float deltaY = y - lastY;
-                float deltaZ = z - lastZ;
+                valuesX.add(new Entry(valuesX.size(), x));
+                valuesY.add(new Entry(valuesY.size(), y));
+                valuesZ.add(new Entry(valuesZ.size(), z));
+                setData(xChart);
 
-                lastX = x;
-                lastY = y;
-                lastZ = z;
 
-                float speedDelta = Math.abs(deltaX + deltaY + deltaZ) / timeInterval * 10000; // m/s^2를 m/s로 바꾸기 위해
-                float acceleration = (float) Math.sqrt(x * x + y * y + z * z);
-                speed = speedDelta*0.1f;
 
-                acceleration = acceleration - 0.01f;
-                if(acceleration < 0) acceleration = 0f;
+                txt_x.setText("x: " + x + "\ny: " + y + "\nz: " + z);
 
-//                txt_x.setText(String.format(Locale.getDefault(), "%.5f", acceleration));
-                lastTimestamp = event.timestamp;
+
+
+                if (lastTimestamp == -1l) {
+                    lastTimestamp = event.timestamp;
+                    lastX = x;
+                    lastY = y;
+                    lastZ = z;
+                    return ;
+                }
+
 
 
 
@@ -252,6 +396,24 @@ public class SensorTest extends AppCompatActivity {
         };
 
         sensorManager.registerListener(accelSensorEventListener, accelSensor, SensorManager.SENSOR_DELAY_NORMAL);
+    }
+
+    public float kalmanFilter(float measurement) {
+        float Q = 0.0001f; // process noise covariance
+        float R = 0.1f; // measurement noise covariance
+        float x = 0f; // estimated value
+        float P = 1f; // estimation error covariance
+
+        // prediction
+        float x_pred = x;
+        float P_pred = P + Q;
+
+        // update
+        float K = P_pred / (P_pred + R);
+        x = x_pred + K * (measurement - x_pred);
+        P = (1 - K) * P_pred;
+
+        return x;
     }
 
     private void btn_4_action() {
@@ -528,5 +690,58 @@ public class SensorTest extends AppCompatActivity {
         }
 
         sensorManager.registerListener(humidityListener, humiditySensor, SensorManager.SENSOR_DELAY_NORMAL);
+    }
+
+    private void btn_15_action() {
+        temperatureSensor = sensorManager.getDefaultSensor(Sensor.TYPE_AMBIENT_TEMPERATURE);
+        temperatureListener = new SensorEventListener() {
+            @Override
+            public void onSensorChanged(SensorEvent sensorEvent) {
+                float humidityLevel = sensorEvent.values[0];
+                txt_x.setText("습도: " + humidityLevel);
+            }
+
+            @Override
+            public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+            }
+        };
+
+        if (temperatureSensor == null) {
+            Toast.makeText(this, "temperature sensor not supported on this device.", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(this, "temperature sensor supported on this device.", Toast.LENGTH_LONG).show();
+        }
+
+        sensorManager.registerListener(temperatureListener, temperatureSensor, SensorManager.SENSOR_DELAY_NORMAL);
+    }
+
+    public void initChart() {
+        valuesX = new ArrayList<>();
+        valuesY = new ArrayList<>();
+        valuesZ = new ArrayList<>();
+
+        xChart = findViewById(R.id.lineChart_x);
+        xChart.setVisibility(View.GONE);
+        // background color
+        xChart.setBackgroundColor(Color.WHITE);
+
+        // disable description text
+        xChart.getDescription().setEnabled(false);
+
+        // enable touch gestures
+        xChart.setTouchEnabled(true);
+
+        // set listeners
+        xChart.setOnChartValueSelectedListener(new OnChartValueSelectedListener() {
+            @Override
+            public void onValueSelected(Entry e, Highlight h) {
+            }
+
+            @Override
+            public void onNothingSelected() {
+            }
+        });
+        xChart.setDrawGridBackground(false);
     }
 }
