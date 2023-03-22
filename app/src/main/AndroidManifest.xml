@@ -194,8 +194,15 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
     <uses-feature android:name="android.hardware.location.gps" />
+
+    <!-- 가속도계 센서 -->
     <uses-feature android:name="android.hardware.sensor.accelerometer" android:required="true" />
+
+    <!-- 자이로스코프 센서 -->
     <uses-feature android:name="android.hardware.sensor.gyroscope" android:required="true" />
+
+    <!-- 지자기장 센서 -->
+    <uses-feature android:name="android.hardware.sensor.magnetic_field" android:required="true" />
 
     <!-- launch another app -->
     <uses-permission android:name="android.permission.QUERY_ALL_PACKAGES" />

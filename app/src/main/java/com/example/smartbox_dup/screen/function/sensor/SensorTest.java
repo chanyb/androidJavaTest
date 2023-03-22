@@ -58,7 +58,7 @@ public class SensorTest extends AppCompatActivity {
     private SensorManager sensorManager;
     private Sensor sensor;
     private SensorEventListener sensorEventListener;
-    private Button btn_1, btn_2, btn_3, btn_4, btn_5, btn_6, btn_7, btn_8, btn_9, btn_10, btn_11, btn_12, btn_13, btn_14, btn_15, btn_16;
+    private Button btn_1, btn_2, btn_3, btn_4, btn_5, btn_6, btn_7, btn_8, btn_9, btn_10, btn_11, btn_12, btn_13, btn_14, btn_15, btn_16, btn_17, btn_18;
     private TextView txt_x, txt_y, txt_z;
     private Sensor rotationSensor, accelSensor, gravitySensor, stepCounterSensor, stepDetectorSensor, significationMotionSensor, orientationSensor, accelerometerSensor, magneticFieldSensor, proximitySensor, lightSensor, pressureSensor, humiditySensor, temperatureSensor, gyroscopeSensor, gameRotationSensor;
     private SensorEventListener rotationListener, accelSensorEventListener, gravitySensorListener, stepCounterListener, stepDetectorListener, significationMotionListener, orientationListener, accelerometerListener, magneticFieldListener, proximityListener, lightListener, pressureListener, humidityListener, temperatureListener, gyroscopeListener, gameRotationListener;
@@ -180,6 +180,12 @@ public class SensorTest extends AppCompatActivity {
 
         btn_16 = findViewById(R.id.btn_16);
         btn_16.setOnClickListener((v) -> btn_16_action());
+
+        btn_17 = findViewById(R.id.btn_17);
+        btn_17.setOnClickListener((v) -> btn_17_action());
+
+        btn_18 = findViewById(R.id.btn_18);
+        btn_18.setOnClickListener((v) -> btn_18_action());
 
         initChart();
 
@@ -620,7 +626,41 @@ public class SensorTest extends AppCompatActivity {
         float azimuthInRadians = orientationAngles[0];
         float azimuthInDegrees = (float) (Math.toDegrees(azimuthInRadians) + 360) % 360;
 
-        txt_z.setText("Heading: " + Float.toString(azimuthInDegrees) + " degrees");
+        float pitchInRadians = orientationAngles[1];
+        float pitchInDegrees = (float) (Math.toDegrees(pitchInRadians) + 360) % 360;
+
+        float rollInRadians = orientationAngles[2];
+        float rollInDegrees = (float) (Math.toDegrees(rollInRadians) + 360) % 360;
+
+        valuesX.add(new Entry(valuesX.size(), azimuthInDegrees));
+        valuesY.add(new Entry(valuesY.size(), pitchInDegrees));
+        valuesZ.add(new Entry(valuesZ.size(), rollInDegrees));
+        setData(xChart);
+        // "mOrientationAngles" now has up-to-date information.
+    }
+
+    public void updateInclinationAngles() {
+        // Update rotation matrix, which is needed to update orientation angles.
+        SensorManager.getRotationMatrix(rotationMatrix, null,
+                accelerometerReading, magnetometerReading);
+
+        // "mRotationMatrix" now has up-to-date information.
+
+        SensorManager.getInclination(rotationMatrix);
+
+        float azimuthInRadians = rotationMatrix[0];
+        float azimuthInDegrees = (float) (Math.toDegrees(azimuthInRadians));
+
+        float pitchInRadians = rotationMatrix[1];
+        float pitchInDegrees = (float) (Math.toDegrees(pitchInRadians));
+
+        float rollInRadians = rotationMatrix[2];
+        float rollInDegrees = (float) (Math.toDegrees(rollInRadians));
+
+        valuesX.add(new Entry(valuesX.size(), azimuthInDegrees));
+        valuesY.add(new Entry(valuesY.size(), pitchInDegrees));
+        valuesZ.add(new Entry(valuesZ.size(), rollInDegrees));
+        setData(xChart);
         // "mOrientationAngles" now has up-to-date information.
     }
 
@@ -772,6 +812,14 @@ public class SensorTest extends AppCompatActivity {
         }
 
         sensorManager.registerListener(gameRotationListener, gameRotationSensor, SensorManager.SENSOR_DELAY_NORMAL);
+    }
+
+    private void btn_17_action() {
+
+    }
+
+    private void btn_18_action() {
+
     }
 
     public void initChart() {
