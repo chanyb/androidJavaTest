@@ -111,6 +111,8 @@
     <string name="function_sensor_13">압력 센서 테스트_ko</string>
     <string name="function_sensor_14">습도 센서 테스트_ko</string>
     <string name="function_sensor_15">온도 센서 테스트_ko</string>
+    <string name="function_sensor_16">게임회전벡터 센서 테스트_ko</string>
+    <string name="function_sensor_17">지자기회전벡터 센서 테스트_ko</string>
     <string name="function_notification_1">foreground notification</string>
     <string name="function_notification_2">service stop</string>
     <string name="function_network_1">getFile</string>

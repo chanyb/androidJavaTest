@@ -58,10 +58,10 @@ public class SensorTest extends AppCompatActivity {
     private SensorManager sensorManager;
     private Sensor sensor;
     private SensorEventListener sensorEventListener;
-    private Button btn_1, btn_2, btn_3, btn_4, btn_5, btn_6, btn_7, btn_8, btn_9, btn_10, btn_11, btn_12, btn_13, btn_14, btn_15;
+    private Button btn_1, btn_2, btn_3, btn_4, btn_5, btn_6, btn_7, btn_8, btn_9, btn_10, btn_11, btn_12, btn_13, btn_14, btn_15, btn_16;
     private TextView txt_x, txt_y, txt_z;
-    private Sensor rotationSensor, accelSensor, gravitySensor, stepCounterSensor, stepDetectorSensor, significationMotionSensor, orientationSensor, accelerometerSensor, magneticFieldSensor, proximitySensor, lightSensor, pressureSensor, humiditySensor, temperatureSensor;
-    private SensorEventListener rotationListener, accelSensorEventListener, gravitySensorListener, stepCounterListener, stepDetectorListener, significationMotionListener, orientationListener, accelerometerListener, magneticFieldListener, proximityListener, lightListener, pressureListener, humidityListener, temperatureListener;
+    private Sensor rotationSensor, accelSensor, gravitySensor, stepCounterSensor, stepDetectorSensor, significationMotionSensor, orientationSensor, accelerometerSensor, magneticFieldSensor, proximitySensor, lightSensor, pressureSensor, humiditySensor, temperatureSensor, gyroscopeSensor, gameRotationSensor;
+    private SensorEventListener rotationListener, accelSensorEventListener, gravitySensorListener, stepCounterListener, stepDetectorListener, significationMotionListener, orientationListener, accelerometerListener, magneticFieldListener, proximityListener, lightListener, pressureListener, humidityListener, temperatureListener, gyroscopeListener, gameRotationListener;
     private long lastTimestamp;
     private float[] lastAcceleration, currentVelocity, position;
     private float lastX, lastY, lastZ;
@@ -177,6 +177,9 @@ public class SensorTest extends AppCompatActivity {
 
         btn_15 = findViewById(R.id.btn_15);
         btn_15.setOnClickListener((v) -> btn_15_action());
+
+        btn_16 = findViewById(R.id.btn_16);
+        btn_16.setOnClickListener((v) -> btn_16_action());
 
         initChart();
 
@@ -348,22 +351,22 @@ public class SensorTest extends AppCompatActivity {
                 float y = event.values[1];
                 float z = event.values[2];
 
-                if (Calendar.getInstance().getTimeInMillis() < cTuneTime.getTimeInMillis()) {
-                    if (max_noise < x) max_noise = x;
-                    if (max_noise < y) max_noise = y;
-                    if (max_noise < z) max_noise = z;
-                    if (min_noise > x) min_noise = x;
-                    if (min_noise > y) min_noise = y;
-                    if (min_noise > z) min_noise = z;
-                    return ;
-                }
-
-                if(max_noise*2 > x && x > 0) x = 0;
-                if(max_noise*2 > y && y > 0) y = 0;
-                if(max_noise*2 > z && z > 0) z = 0;
-                if(min_noise*2 > x && x < 0) x = 0;
-                if(min_noise*2 > y && y < 0) y = 0;
-                if(min_noise*2 > z && z < 0) z = 0;
+//                if (Calendar.getInstance().getTimeInMillis() < cTuneTime.getTimeInMillis()) {
+//                    if (max_noise < x) max_noise = x;
+//                    if (max_noise < y) max_noise = y;
+//                    if (max_noise < z) max_noise = z;
+//                    if (min_noise > x) min_noise = x;
+//                    if (min_noise > y) min_noise = y;
+//                    if (min_noise > z) min_noise = z;
+//                    return ;
+//                }
+//
+//                if(max_noise*2 > x && x > 0) x = 0;
+//                if(max_noise*2 > y && y > 0) y = 0;
+//                if(max_noise*2 > z && z > 0) z = 0;
+//                if(min_noise*2 > x && x < 0) x = 0;
+//                if(min_noise*2 > y && y < 0) y = 0;
+//                if(min_noise*2 > z && z < 0) z = 0;
 
                 valuesX.add(new Entry(valuesX.size(), x));
                 valuesY.add(new Entry(valuesY.size(), y));
@@ -372,7 +375,7 @@ public class SensorTest extends AppCompatActivity {
 
 
 
-                txt_x.setText("x: " + x + "\ny: " + y + "\nz: " + z);
+//                txt_x.setText("x: " + x + "\ny: " + y + "\nz: " + z);
 
 
 
@@ -418,6 +421,26 @@ public class SensorTest extends AppCompatActivity {
 
     private void btn_4_action() {
         // 자이로 센서테스트
+        gyroscopeSensor = sensorManager.getDefaultSensor(Sensor.TYPE_GYROSCOPE);
+        if (gyroscopeSensor == null) {
+            Toast.makeText(this, "이 기기에서는 자이로스코프 센서를 사용할 수 없습니다.", Toast.LENGTH_SHORT).show();
+        }
+        gyroscopeListener = new SensorEventListener() {
+            @Override
+            public void onSensorChanged(SensorEvent event) {
+                float x = event.values[0];
+                float y = event.values[1];
+                float z = event.values[2];
+
+                txt_x.setText("x: " + x + "\ny: " + y + "\nz: " + z);
+            }
+
+            @Override
+            public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+            }
+        };
+        sensorManager.registerListener(gyroscopeListener, gyroscopeSensor, SensorManager.SENSOR_DELAY_NORMAL);
     }
 
 
@@ -453,7 +476,12 @@ public class SensorTest extends AppCompatActivity {
                 float y = event.values[1];
                 float z = event.values[2];
 
-                txt_z.setText("x: " + x + "\ny: " + y + "\nz: " + z);
+                valuesX.add(new Entry(valuesX.size(), x));
+                valuesY.add(new Entry(valuesY.size(), y));
+                valuesZ.add(new Entry(valuesZ.size(), z));
+                setData(xChart);
+
+//                txt_z.setText("x: " + x + "\ny: " + y + "\nz: " + z);
             }
 
             @Override
@@ -714,6 +742,36 @@ public class SensorTest extends AppCompatActivity {
         }
 
         sensorManager.registerListener(temperatureListener, temperatureSensor, SensorManager.SENSOR_DELAY_NORMAL);
+    }
+
+    private void btn_16_action() {
+        gameRotationSensor = sensorManager.getDefaultSensor(Sensor.TYPE_GAME_ROTATION_VECTOR);
+        gameRotationListener = new SensorEventListener() {
+            @Override
+            public void onSensorChanged(SensorEvent sensorEvent) {
+                float x = sensorEvent.values[0];
+                float y = sensorEvent.values[1];
+                float z = sensorEvent.values[2];
+
+                valuesX.add(new Entry(valuesX.size(), x));
+                valuesY.add(new Entry(valuesY.size(), y));
+                valuesZ.add(new Entry(valuesZ.size(), z));
+                setData(xChart);
+            }
+
+            @Override
+            public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+            }
+        };
+
+        if (gameRotationSensor == null) {
+            Toast.makeText(this, "gameRotationSensor not supported on this device.", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(this, "gameRotationSensor supported on this device.", Toast.LENGTH_LONG).show();
+        }
+
+        sensorManager.registerListener(gameRotationListener, gameRotationSensor, SensorManager.SENSOR_DELAY_NORMAL);
     }
 
     public void initChart() {
