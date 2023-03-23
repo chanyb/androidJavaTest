@@ -58,10 +58,10 @@ public class SensorTest extends AppCompatActivity {
     private SensorManager sensorManager;
     private Sensor sensor;
     private SensorEventListener sensorEventListener;
-    private Button btn_1, btn_2, btn_3, btn_4, btn_5, btn_6, btn_7, btn_8, btn_9, btn_10, btn_11, btn_12, btn_13, btn_14, btn_15, btn_16, btn_17, btn_18;
+    private Button btn_1, btn_2, btn_3, btn_4, btn_5, btn_6, btn_7, btn_8, btn_9, btn_10, btn_11, btn_12, btn_13, btn_14, btn_15, btn_16, btn_17, btn_18, btn_19;
     private TextView txt_x, txt_y, txt_z;
-    private Sensor rotationSensor, accelSensor, gravitySensor, stepCounterSensor, stepDetectorSensor, significationMotionSensor, orientationSensor, accelerometerSensor, magneticFieldSensor, proximitySensor, lightSensor, pressureSensor, humiditySensor, temperatureSensor, gyroscopeSensor, gameRotationSensor;
-    private SensorEventListener rotationListener, accelSensorEventListener, gravitySensorListener, stepCounterListener, stepDetectorListener, significationMotionListener, orientationListener, accelerometerListener, magneticFieldListener, proximityListener, lightListener, pressureListener, humidityListener, temperatureListener, gyroscopeListener, gameRotationListener;
+    private Sensor rotationSensor, accelSensor, gravitySensor, stepCounterSensor, stepDetectorSensor, significationMotionSensor, orientationSensor, accelerometerSensor, magneticFieldSensor, proximitySensor, lightSensor, pressureSensor, humiditySensor, temperatureSensor, gyroscopeSensor, gameRotationSensor, magneticUnCalibratedSensor;
+    private SensorEventListener rotationListener, accelSensorEventListener, gravitySensorListener, stepCounterListener, stepDetectorListener, significationMotionListener, orientationListener, accelerometerListener, magneticFieldListener, proximityListener, lightListener, pressureListener, humidityListener, temperatureListener, gyroscopeListener, gameRotationListener, magneticUncalibratedListener;
     private long lastTimestamp;
     private float[] lastAcceleration, currentVelocity, position;
     private float lastX, lastY, lastZ;
@@ -186,6 +186,9 @@ public class SensorTest extends AppCompatActivity {
 
         btn_18 = findViewById(R.id.btn_18);
         btn_18.setOnClickListener((v) -> btn_18_action());
+
+        btn_19 = findViewById(R.id.btn_19);
+        btn_19.setOnClickListener((v) -> btn_19_action());
 
         initChart();
 
@@ -671,6 +674,8 @@ public class SensorTest extends AppCompatActivity {
             public void onSensorChanged(SensorEvent sensorEvent) {
                 Log.i("this", String.valueOf(sensorEvent.values[0]));
                 txt_x.setText(sensorEvent.values[0]+"");
+                valuesX.add(new Entry(valuesX.size(),sensorEvent.values[0]));
+                setData(xChart);
             }
 
             @Override
@@ -819,7 +824,65 @@ public class SensorTest extends AppCompatActivity {
     }
 
     private void btn_18_action() {
+        magneticFieldSensor = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
 
+        magneticFieldListener = new SensorEventListener() {
+            @Override
+            public void onSensorChanged(SensorEvent sensorEvent) {
+                float x = sensorEvent.values[0];
+                float y = sensorEvent.values[1];
+                float z = sensorEvent.values[2];
+
+                valuesX.add(new Entry(valuesX.size(), x));
+                valuesY.add(new Entry(valuesY.size(), y));
+                valuesZ.add(new Entry(valuesZ.size(), z));
+                setData(xChart);
+            }
+
+            @Override
+            public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+            }
+        };
+
+        if (magneticFieldSensor == null) {
+            Toast.makeText(this, "magneticFieldSensor not supported on this device.", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(this, "magneticFieldSensor supported on this device.", Toast.LENGTH_LONG).show();
+        }
+
+        sensorManager.registerListener(magneticFieldListener, magneticFieldSensor, SensorManager.SENSOR_DELAY_NORMAL);
+    }
+
+    private void btn_19_action() {
+        magneticUnCalibratedSensor = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD_UNCALIBRATED);
+
+        magneticUncalibratedListener = new SensorEventListener() {
+            @Override
+            public void onSensorChanged(SensorEvent sensorEvent) {
+                float x = sensorEvent.values[0];
+                float y = sensorEvent.values[1];
+                float z = sensorEvent.values[2];
+
+                valuesX.add(new Entry(valuesX.size(), x));
+                valuesY.add(new Entry(valuesY.size(), y));
+                valuesZ.add(new Entry(valuesZ.size(), z));
+                setData(xChart);
+            }
+
+            @Override
+            public void onAccuracyChanged(Sensor sensor, int accuracy) {
+
+            }
+        };
+
+        if (magneticUnCalibratedSensor == null) {
+            Toast.makeText(this, "magneticUnCalibratedSensor not supported on this device.", Toast.LENGTH_LONG).show();
+        } else {
+            Toast.makeText(this, "magneticUnCalibratedSensor supported on this device.", Toast.LENGTH_LONG).show();
+        }
+
+        sensorManager.registerListener(magneticUncalibratedListener, magneticUnCalibratedSensor, SensorManager.SENSOR_DELAY_NORMAL);
     }
 
     public void initChart() {

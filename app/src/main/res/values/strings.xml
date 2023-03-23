@@ -130,6 +130,7 @@
     <string name="function_sensor_16">게임회전벡터 센서 테스트</string>
     <string name="function_sensor_17">지자기회전벡터 센서 테스트</string>
     <string name="function_sensor_18">지자기장 센서 테스트</string>
+    <string name="function_sensor_19">보정되지않은 자기계 테스트</string>
 
     <string name="function_notification_1">foreground notification</string>
     <string name="function_notification_2">service stop</string>
