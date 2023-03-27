@@ -126,4 +126,5 @@
     <string name="permission_text">"알람 표시를 위해 "</string>
     <string name="vSignUp_message">가입 정보를 바르게 입력해주세요.</string>
     <string name="app_name">smartbox_dup_en</string>
+    <string name="function_sensor_20">GNSS 원시데이터_en</string>
 </resources>

@@ -126,4 +126,5 @@
     <string name="app_ing">에서 실행중입니다.</string>
     <string name="alarm_service_channel">alarm_service_channel</string>
     <string name="permission_text">"알람 표시를 위해 "</string>
+    <string name="function_sensor_20">GNSS 원시데이터_ko</string>
 </resources>

@@ -58,7 +58,7 @@ public class SensorTest extends AppCompatActivity {
     private SensorManager sensorManager;
     private Sensor sensor;
     private SensorEventListener sensorEventListener;
-    private Button btn_1, btn_2, btn_3, btn_4, btn_5, btn_6, btn_7, btn_8, btn_9, btn_10, btn_11, btn_12, btn_13, btn_14, btn_15, btn_16, btn_17, btn_18, btn_19;
+    private Button btn_1, btn_2, btn_3, btn_4, btn_5, btn_6, btn_7, btn_8, btn_9, btn_10, btn_11, btn_12, btn_13, btn_14, btn_15, btn_16, btn_17, btn_18, btn_19, btn_20;
     private TextView txt_x, txt_y, txt_z;
     private Sensor rotationSensor, accelSensor, gravitySensor, stepCounterSensor, stepDetectorSensor, significationMotionSensor, orientationSensor, accelerometerSensor, magneticFieldSensor, proximitySensor, lightSensor, pressureSensor, humiditySensor, temperatureSensor, gyroscopeSensor, gameRotationSensor, magneticUnCalibratedSensor;
     private SensorEventListener rotationListener, accelSensorEventListener, gravitySensorListener, stepCounterListener, stepDetectorListener, significationMotionListener, orientationListener, accelerometerListener, magneticFieldListener, proximityListener, lightListener, pressureListener, humidityListener, temperatureListener, gyroscopeListener, gameRotationListener, magneticUncalibratedListener;
