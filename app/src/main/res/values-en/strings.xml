@@ -120,6 +120,7 @@
     <string name="function_network_3">get file permission</string>
     <string name="function_actrstlauncher_1">실행</string>
     <string name="function_actrstlauncher2_1">종료</string>
+    <string name="function_ble_1">ble_en</string>
     <string name="function_print_on_other_app_1">권한 받기</string>
     <string name="app_ing">에서 실행중입니다.</string>
     <string name="alarm_service_channel">alarm_service_channel</string>
@@ -127,4 +128,6 @@
     <string name="vSignUp_message">가입 정보를 바르게 입력해주세요.</string>
     <string name="app_name">smartbox_dup_en</string>
     <string name="function_sensor_20">GNSS 원시데이터_en</string>
+    <string name="function_ble_2">ble_en</string>
+    <string name="function_22">ble_en</string>
 </resources>

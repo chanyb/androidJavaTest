@@ -143,6 +143,8 @@
             android:exported="false" />
         <activity android:name=".screen.function.actrstlauncher.ActivityResultLauncherTest2"
             android:exported="false" />
+        <activity android:name=".screen.function.ble.BleTest"
+            android:exported="false" />
 
         <service android:name=".screen.function.printonothers.FloatingService" android:enabled="true"/>
         <service android:name=".SampleForegroundService" />
@@ -255,6 +257,11 @@
 
     <!-- Signification motion -->
     <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <!-- bluetooth -->
+    <uses-permission android:name="android.permission.BLUETOOTH"/>
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN"/>
+    <uses-feature android:name="android.hardware.bluetooth_le" android:required="true"/>
 
     <queries>
         <package android:name="com.kakao.talk" />
