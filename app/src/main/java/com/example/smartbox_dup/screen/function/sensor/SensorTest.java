@@ -10,6 +10,9 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.location.GnssClock;
+import android.location.GnssMeasurement;
+import android.location.GnssMeasurementsEvent;
 import android.location.GnssStatus;
 import android.location.Location;
 import android.location.LocationListener;
@@ -47,10 +50,18 @@ import com.github.mikephil.charting.listener.ChartTouchListener;
 import com.github.mikephil.charting.listener.OnChartGestureListener;
 import com.github.mikephil.charting.listener.OnChartValueSelectedListener;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.SimpleDateFormat;
+import java.util.AbstractMap;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 
 public class SensorTest extends AppCompatActivity {
@@ -79,8 +90,14 @@ public class SensorTest extends AppCompatActivity {
     private float max_noise, min_noise;
     private ArrayList<Entry> valuesX, valuesY, valuesZ;
 
+    private GnssMeasurementsEvent.Callback mGnssMeasurementsListener;
+    private GnssMeasurement mLastMeasurement;
+    private GnssClock gnssClock;
+
     private LineChart xChart;
     private OnChartGestureListener chartGestureListener;
+
+    private Map<Integer, GnssMeasurement> measurementMap;
 
     private LocationManager locationManager;
     private LocationListener locationListener = new LocationListener() {
@@ -89,8 +106,17 @@ public class SensorTest extends AppCompatActivity {
             double latitude = location.getLatitude();
             double longitude = location.getLongitude();
             JSONObject obj = DatetimeManager.getInstance().getSystemDateTime();
-            txt_x.setText(String.format("%.5f / %.5f / %f", latitude,longitude, location.getAccuracy()));
+            Log.i("this", "onLocationChanged: "+String.format("%.5f / %.5f / %f", latitude, longitude, location.getAccuracy()));
+            txt_x.setText(String.format("%.5f / %.5f / %f", latitude, longitude, location.getAccuracy()));
             txt_y.setText(location.getSpeed() + "");
+
+            Log.i("this", location.getExtras().toString());
+            Bundle bundle = location.getExtras();
+            for(String key : bundle.keySet()) {
+                Log.i("this", "key: " + key + " / " + bundle.get(key).toString());
+            }
+
+
         }
     };
 
@@ -118,16 +144,51 @@ public class SensorTest extends AppCompatActivity {
             for (int i = 0; i < satelliteCount; i++) {
                 if (status.usedInFix(i)) {
                     usedInFixCount++;
+                    int svid = status.getSvid(i);
+                    int constellationType = status.getConstellationType(i);
+                    GnssMeasurement measurement = measurementMap.get(constellationType*100+svid);
+                    if(measurement == null) {
+                        Log.i("this", "measurement가 들어있지 않은데 onSatelliteStatusChanged 발생: " + (constellationType*100+svid));
+                        continue;
+                    }
+                    long receivedSvTimeNanos = measurement.getReceivedSvTimeNanos(); // GNSS위성에서 내 안드로이드 기기로 신호를 전송할 때의 Time
+                    long getTimeNanos = gnssClock.getTimeNanos();
+                    long timeDifferenceNanos = getTimeNanos - receivedSvTimeNanos;
+                    double timeOffsetNanos = measurement.getTimeOffsetNanos();
+                    double speedOfLight = 299792458;
+                    double distanceMeters = timeDifferenceNanos * speedOfLight / 1e9;
+
+                    long receivedSvTimeMillis = receivedSvTimeNanos / 1000000L; // 나노초를 밀리초로 변환
+                    long getTimeMillis = getTimeNanos / 1000000L;
+                    Date date = new Date(receivedSvTimeMillis); // 밀리초 값을 Date 객체로 변환
+                    SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss.SSS"); // 연월일시 형식 지정
+                    String formattedDate = sdf.format(date); // 연월일시 형식으로 변환
+
+                    String codeType = null;
+                    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+                        codeType = measurement.getCodeType();
+                    }
+
+
+
+
+                    try {
+                        Log.i("this", String.format("현재시간 : %s", DatetimeManager.getInstance().getSystemDateTime().get("datetime")) + " / "  + receivedSvTimeMillis + " / " + getTimeMillis + " / " + measurement.getTimeOffsetNanos() + " / " + constellationType + " / " + svid + " / " + codeType);
+                    } catch (JSONException e) {
+                        throw new RuntimeException(e);
+                    }
                 }
             }
 
             txt_z.setText(String.format("총 위성 수: %d\n사용된 위성 수: %d", satelliteCount, usedInFixCount));
+            Log.i("this", String.format("총 위성 수: %d  사용된 위성 수: %d", satelliteCount, usedInFixCount));
         }
     }
 
     private void init() {
         locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
         sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
+        measurementMap = new HashMap<>();
 
         btn_1 = findViewById(R.id.btn_1);
         btn_1.setOnClickListener((view) -> {
@@ -189,6 +250,9 @@ public class SensorTest extends AppCompatActivity {
 
         btn_19 = findViewById(R.id.btn_19);
         btn_19.setOnClickListener((v) -> btn_19_action());
+
+        btn_20 = findViewById(R.id.btn_20);
+        btn_20.setOnClickListener((v) -> btn_20_action());
 
         initChart();
 
@@ -383,9 +447,7 @@ public class SensorTest extends AppCompatActivity {
                 setData(xChart);
 
 
-
 //                txt_x.setText("x: " + x + "\ny: " + y + "\nz: " + z);
-
 
 
                 if (lastTimestamp == -1l) {
@@ -393,10 +455,8 @@ public class SensorTest extends AppCompatActivity {
                     lastX = x;
                     lastY = y;
                     lastZ = z;
-                    return ;
+                    return;
                 }
-
-
 
 
             }
@@ -673,8 +733,8 @@ public class SensorTest extends AppCompatActivity {
             @Override
             public void onSensorChanged(SensorEvent sensorEvent) {
                 Log.i("this", String.valueOf(sensorEvent.values[0]));
-                txt_x.setText(sensorEvent.values[0]+"");
-                valuesX.add(new Entry(valuesX.size(),sensorEvent.values[0]));
+                txt_x.setText(sensorEvent.values[0] + "");
+                valuesX.add(new Entry(valuesX.size(), sensorEvent.values[0]));
                 setData(xChart);
             }
 
@@ -885,6 +945,76 @@ public class SensorTest extends AppCompatActivity {
         sensorManager.registerListener(magneticUncalibratedListener, magneticUnCalibratedSensor, SensorManager.SENSOR_DELAY_NORMAL);
     }
 
+    public void btn_20_action() {
+        GnssMeasurementsEvent.Callback mGnssMeasurementsListener = null;
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            mGnssMeasurementsListener = new GnssMeasurementsEvent.Callback() {
+                @Override
+                public void onGnssMeasurementsReceived(GnssMeasurementsEvent eventArgs) {
+                    // 가장 최근에 수신한 원시 데이터 가져오기
+                    List<GnssMeasurement> measurements = new ArrayList<>(eventArgs.getMeasurements());
+                    gnssClock = eventArgs.getClock();
+
+                    for (GnssMeasurement gnssMeasurement : measurements) {
+                        try {
+
+                        } catch (Exception e) {
+                            Log.e("this", e.toString());
+                        }
+
+                        long receivedSvTimeNanos = gnssMeasurement.getReceivedSvTimeNanos(); // GNSS위성에서 내 안드로이드 기기로 신호를 전송할 때의 Time (위성시간)
+
+                        long millis = receivedSvTimeNanos / 1000000L; // 나노초를 밀리초로 변환
+                        Date date = new Date(millis); // 밀리초 값을 Date 객체로 변환
+                        SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss.SSS"); // 연월일시 형식 지정
+                        String formattedDate = sdf.format(date); // 연월일시 형식으로 변환
+
+                        int constellationType = gnssMeasurement.getConstellationType(); //
+                        int svid = gnssMeasurement.getSvid();
+                        String codeType = null;
+                        gnssMeasurement.getAccumulatedDeltaRangeMeters();
+                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.Q) {
+                            codeType = gnssMeasurement.getCodeType();
+                        }
+                        measurementMap.put(constellationType*100+svid, gnssMeasurement);
+//                        Log.i("this", "onGnssMeasurementsReceived: " + formattedDate + " / " + constellationType + " / " + svid + " / " + codeType);
+
+                    }
+
+
+                    // 원시 데이터에서 필요한 정보 가져오기
+//                    long timestamp = mLastMeasurement.getReceivedSatelliteTimeNanos();
+
+//                    double signalToNoiseRatioInDb = mLastMeasurement.getCn0DbHz();
+                    // ... 필요한 정보를 가져온 후 처리하는 코드 작성 ...
+                }
+
+                @Override
+                public void onStatusChanged(int status) {
+                    // 상태가 변경되면 호출됩니다.
+                }
+            };
+        }
+
+        // GNSS 원시 데이터 이벤트 등록
+        LocationManager locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+        if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            // TODO: Consider calling
+            //    ActivityCompat#requestPermissions
+            // here to request the missing permissions, and then overriding
+            //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
+            //                                          int[] grantResults)
+            // to handle the case where the user grants the permission. See the documentation
+            // for ActivityCompat#requestPermissions for more details.
+            Log.e("this", "checkSelfPermission, return;");
+            return;
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            locationManager.registerGnssMeasurementsCallback(mGnssMeasurementsListener);
+            locationManager.registerGnssStatusCallback(new GnssStatusCallback(), null);
+        }
+    }
+
     public void initChart() {
         valuesX = new ArrayList<>();
         valuesY = new ArrayList<>();
@@ -912,5 +1042,29 @@ public class SensorTest extends AppCompatActivity {
             }
         });
         xChart.setDrawGridBackground(false);
+    }
+
+    /**
+     * It returns long array, [0]=hours, [1]=minutes, [2]=seconds
+     * @param nanoseconds
+     * @return
+     */
+    public long[] getHMSFromNanoseconds(long nanoseconds) {
+        // 나노초를 초로 변환
+        long totalSeconds = nanoseconds / 1_000_000_000;
+
+        // 시간, 분, 초 계산
+        long hours = totalSeconds / 3600;
+        long minutes = (totalSeconds % 3600) / 60;
+        long seconds = totalSeconds % 60;
+
+
+        long[] result = new long[3];
+
+        result[0] = hours;
+        result[1] = minutes;
+        result[2] = seconds;
+
+        return result;
     }
 }
