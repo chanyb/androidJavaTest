@@ -10,7 +10,9 @@ import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.ImageDecoder;
+import android.graphics.Matrix;
 import android.graphics.drawable.BitmapDrawable;
+import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -35,6 +37,8 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners;
 import com.bumptech.glide.request.RequestOptions;
 import com.example.smartbox_dup.R;
 import com.example.smartbox_dup.sqlite.Database;
+import com.example.smartbox_dup.utils.DeviceRotationManager;
+import com.example.smartbox_dup.utils.GlobalApplication;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -48,6 +52,7 @@ public class GallaryTest extends AppCompatActivity {
     private ImageView img_photo;
     private PhotoFragment photoFragment;
     static int CODE_REQUEST_GALLARY=1;
+    Context mContext;
 
     ActivityResultLauncher<String> mGetContent = registerForActivityResult(new ActivityResultContracts.GetContent(),
             new ActivityResultCallback<Uri>() {
@@ -56,13 +61,15 @@ public class GallaryTest extends AppCompatActivity {
                     // Handle the returned Uri
                     Log.i("this", "onActivityResult - URI: "+ uri);
                     Bitmap bitmap = getBitmapFromUri(uri);
-                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
-                    byte[] byteArr = byteArrayOutputStream.toByteArray();
-                    ContentValues cv = new ContentValues();
-                    cv.put("datetime", "1");
-                    cv.put("image", byteArr);
-                    Database.getHuntInfoTable().insert("hunt_info", cv);
+//                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+//                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
+//                    byte[] byteArr = byteArrayOutputStream.toByteArray();
+//                    ContentValues cv = new ContentValues();
+//                    cv.put("datetime", "1");
+//                    cv.put("image", byteArr);
+//                    Database.getHuntInfoTable().insert("hunt_info", cv);
+                    Glide.with(mContext).load(uri).into(img_photo);
+
 
                 }
             });
@@ -93,6 +100,7 @@ public class GallaryTest extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        mContext = this;
         setContentView(R.layout.activity_function_gallary);
         init();
     }
@@ -121,7 +129,7 @@ public class GallaryTest extends AppCompatActivity {
 
         btn_3 = findViewById(R.id.btn_3);
         btn_3.setOnClickListener((view) ->{
-            getImageFromSqlite();
+            mGetMultiContent.launch("image/*");
         });
 
         btn_4 = findViewById(R.id.btn_4);
@@ -142,15 +150,45 @@ public class GallaryTest extends AppCompatActivity {
 
     public Bitmap getBitmapFromUri(Uri uri) {
         Bitmap bitmap = null;
+        ExifInterface exif = null;
+        DeviceRotationManager.ROTATE_STATE rotateState = null;
+        int orientation = -11;
+        // exif 읽기
+        try {
+            exif = new ExifInterface(uri.getPath());
+            orientation = exif.getAttributeInt(ExifInterface.TAG_ORIENTATION, ExifInterface.ORIENTATION_NORMAL);
+            switch (orientation) {
+                case ExifInterface.ORIENTATION_ROTATE_90:
+                    // exif 확인 결과 기본 사진은 90도 회전되어있지만, 내가 읽어온 비트맵은 회전되지 않은 상태이므로 90도 회전해주기 위해 아래와같이 설정.
+                    rotateState = DeviceRotationManager.ROTATE_STATE.LANDSCAPE_REVERSE;
+                    break;
+                case 180:
+                    rotateState = DeviceRotationManager.ROTATE_STATE.PORTRAIT;
+                    break;
+                case 270:
+                    rotateState = DeviceRotationManager.ROTATE_STATE.PORTRAIT_REVERSE;
+                    break;
+                case 0:
+                    rotateState = DeviceRotationManager.ROTATE_STATE.LANDSCAPE;
+                    break;
+            }
+
+        } catch (IOException e) {
+            Log.i("this", "error!!!!");
+            rotateState = DeviceRotationManager.ROTATE_STATE.PORTRAIT;
+            e.printStackTrace();
+        }
+
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
             try {
-                bitmap = ImageDecoder.decodeBitmap(ImageDecoder.createSource(getContentResolver(), uri));
+                bitmap = ImageDecoder.decodeBitmap(ImageDecoder.createSource(mContext.getContentResolver(), uri));
             } catch (IOException e) {
                 e.printStackTrace();
             }
         } else {
             try {
-                bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), uri);
+                bitmap = MediaStore.Images.Media.getBitmap(mContext.getContentResolver(), uri);
+                bitmap = rotateBitmap(rotateState, bitmap);
             } catch (IOException e) {
                 e.printStackTrace();
             }
@@ -215,4 +253,16 @@ public class GallaryTest extends AppCompatActivity {
         }
         return file;
     }
+
+    private Bitmap rotateBitmap(DeviceRotationManager.ROTATE_STATE captureRotate, Bitmap bitmap) {
+        Matrix rotateMatrix = new Matrix();
+
+        if (captureRotate == DeviceRotationManager.ROTATE_STATE.LANDSCAPE) rotateMatrix.postRotate(270);
+        else if (captureRotate == DeviceRotationManager.ROTATE_STATE.LANDSCAPE_REVERSE) rotateMatrix.postRotate(90);
+        else if (captureRotate == DeviceRotationManager.ROTATE_STATE.PORTRAIT) rotateMatrix.postRotate(0);
+        else if (captureRotate == DeviceRotationManager.ROTATE_STATE.PORTRAIT_REVERSE) rotateMatrix.postRotate(180);
+
+        return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), rotateMatrix, false);
+    }
+
 }
