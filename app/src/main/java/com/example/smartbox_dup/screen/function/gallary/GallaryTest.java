@@ -44,10 +44,11 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class GallaryTest extends AppCompatActivity {
-    private Button btn_1, btn_2, btn_3, btn_4;
+    private Button btn_1, btn_2, btn_3, btn_4, btn_5;
     private ConstraintLayout lo_images;
     private ImageView img_photo;
     private PhotoFragment photoFragment;
@@ -134,6 +135,17 @@ public class GallaryTest extends AppCompatActivity {
 
         btn_4 = findViewById(R.id.btn_4);
         btn_4.setOnClickListener((view) -> btn_4_click_event());
+
+        btn_5 = findViewById(R.id.btn_5);
+        btn_5.setOnClickListener((v) -> {
+            test(11,0);
+            test(10,45);
+            test(14,20);
+            test(9,20);
+            test(0,20);
+            test(0,59);
+            test(23,30);
+        });
 
         photoFragment = new PhotoFragment();
         img_photo = findViewById(R.id.img_photo);
@@ -263,6 +275,16 @@ public class GallaryTest extends AppCompatActivity {
         else if (captureRotate == DeviceRotationManager.ROTATE_STATE.PORTRAIT_REVERSE) rotateMatrix.postRotate(180);
 
         return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), rotateMatrix, false);
+    }
+
+    private void test(int x, int y) {
+
+        Calendar calendar = Calendar.getInstance();
+        calendar.set(Calendar.HOUR_OF_DAY, x);
+        calendar.set(Calendar.MINUTE, y);
+        calendar.add(Calendar.MINUTE, -45);
+
+        System.out.println(calendar.get(Calendar.HOUR_OF_DAY) + " " + calendar.get(Calendar.MINUTE));
     }
 
 }
