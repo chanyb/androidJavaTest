@@ -138,13 +138,7 @@ public class GallaryTest extends AppCompatActivity {
 
         btn_5 = findViewById(R.id.btn_5);
         btn_5.setOnClickListener((v) -> {
-            test(11,0);
-            test(10,45);
-            test(14,20);
-            test(9,20);
-            test(0,20);
-            test(0,59);
-            test(23,30);
+            testcase();
         });
 
         photoFragment = new PhotoFragment();
@@ -277,14 +271,17 @@ public class GallaryTest extends AppCompatActivity {
         return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), rotateMatrix, false);
     }
 
-    private void test(int x, int y) {
-
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, x);
-        calendar.set(Calendar.MINUTE, y);
-        calendar.add(Calendar.MINUTE, -45);
-
-        System.out.println(calendar.get(Calendar.HOUR_OF_DAY) + " " + calendar.get(Calendar.MINUTE));
+    private void testcase() {
     }
 
+    private void test(int x, int y, int z) {
+
+        // x sum
+        // y n
+        // z1~zn// 
+    }
+
+    private int max(int x, int y ,int z) {
+        return (x > y && x > z) ? x : (x < y && y > z) ? y : z;
+    }
 }
