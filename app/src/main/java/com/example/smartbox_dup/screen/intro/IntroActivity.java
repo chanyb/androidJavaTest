@@ -1,9 +1,11 @@
 package com.example.smartbox_dup.screen.intro;
 
 import android.app.NotificationManager;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
@@ -54,23 +56,23 @@ public class IntroActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         checkpoints();
-        if(getIntent().getStringExtra("lang") == null) {
-            Log.i("this", "lang is null");
-            set_language_code("en");
-            Handler mHandler = new Handler(Looper.getMainLooper());
-            mHandler.postDelayed(() -> {
-                runOnUiThread(() -> {
-                    set_language_code("kr");
-                    Intent intent = new Intent(this, IntroActivity.class);
-                    intent.putExtra("lang", "kr");
-                    startActivity(intent);
-                    overridePendingTransition(0, 0);
-                    finish();
-                });
-            }, 1000);
-        } else {
-            Log.i("this", "lang is not null");
-        }
+//        if(getIntent().getStringExtra("lang") == null) {
+//            Log.i("this", "lang is null");
+//            set_language_code("en");
+//            Handler mHandler = new Handler(Looper.getMainLooper());
+//            mHandler.postDelayed(() -> {
+//                runOnUiThread(() -> {
+//                    set_language_code("kr");
+//                    Intent intent = new Intent(this, IntroActivity.class);
+//                    intent.putExtra("lang", "kr");
+//                    startActivity(intent);
+//                    overridePendingTransition(0, 0);
+//                    finish();
+//                });
+//            }, 1000);
+//        } else {
+//            Log.i("this", "lang is not null");
+//        }
 
     }
 
@@ -188,8 +190,25 @@ public class IntroActivity extends AppCompatActivity {
 //            return true;
 //        });
 
+
+        // 액티비티 활성화? 를 통한 앱 아이콘 변경
+//        futureTaskRunner.nextTask(() -> {
+//            int status = getPackageManager().getComponentEnabledSetting(new ComponentName(GlobalApplication.getContext(), IntroActivity.class));
+//
+//            if(status == PackageManager.COMPONENT_ENABLED_STATE_ENABLED) {
+//                getPackageManager().setComponentEnabledSetting(new ComponentName(GlobalApplication.getContext(), IntroActivity.class), PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
+//                getPackageManager().setComponentEnabledSetting(new ComponentName(GlobalApplication.getContext(), IntroActivityAlias.class), PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
+//            }
+//            else {
+//                getPackageManager().setComponentEnabledSetting(new ComponentName(GlobalApplication.getContext(), IntroActivity.class), PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
+//                getPackageManager().setComponentEnabledSetting(new ComponentName(GlobalApplication.getContext(), IntroActivityAlias.class), PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
+//            }
+//            return true;
+//        });
+
         futureTaskRunner.nextTask(() -> {
             startActivity(new Intent(this, FunctionListActivity.class));
+
             finish();
             return true;
         });

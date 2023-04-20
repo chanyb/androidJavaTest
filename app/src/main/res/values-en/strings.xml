@@ -26,6 +26,9 @@
     <string name="vTermsCondition_text">term_condition</string>
     <string name="vBtn_naverLogin">naver_login</string>
     <string name="vBtn_kakaoLogin">kakao_login</string>
+
+    <string name="function_1">알람</string>
+    <string name="function_2">google gms location (현재 위치)</string>
     <string name="function_3">SQLite_en</string>
     <string name="function_4">Volley_en</string>
     <string name="function_5">Intent_en</string>
@@ -45,8 +48,15 @@
     <string name="function_19">notification</string>
     <string name="function_20">network commu</string>
     <string name="function_21">activity result launcher</string>
+    <string name="function_22">ble_en</string>
+    <string name="function_23">기타_en</string>
+
     <string name="function_sqlite_1">sqLite - insert</string>
     <string name="function_sqlite_2">sqLite - select</string>
+    <string name="function_sqlite_3">sqLite - update</string>
+    <string name="function_sqlite_4">sqLite - delete</string>
+    <string name="function_sqlite_5">sqLite - selectAll</string>
+
     <string name="vTermsCondition_agree_all_text">약관 전체동의</string>
     <string name="vNeed_keywordText">[필수]</string>
     <string name="vComponent_text">Components</string>
@@ -59,41 +69,48 @@
     <string name="channel_name">smartbox_dup</string>
     <string name="channel_description">this is smartbox_dup</string>
     <string name="BASE_URL">http://parseapi.back4app.com/</string>
-    <string name="function_1">알람</string>
-    <string name="function_2">google gms location (현재 위치)</string>
-    <string name="function_sqlite_3">sqLite - update</string>
-    <string name="function_sqlite_4">sqLite - delete</string>
-    <string name="function_sqlite_5">sqLite - selectAll</string>
+
     <string name="function_volley_1">volley - get</string>
-    <string name="function_intent_1">copyExtras Test</string>
     <string name="function_volley_2">t</string>
     <string name="function_volley_3">t</string>
     <string name="function_volley_4">t</string>
+
+    <string name="function_intent_1">copyExtras Test</string>
     <string name="function_intent_2">t</string>
     <string name="function_intent_3">t</string>
     <string name="function_intent_4">t</string>
+
     <string name="function_camera_1">open_camera</string>
     <string name="function_camera_2">take_picture</string>
+
     <string name="function_draw_1">draw circle</string>
+
     <string name="function_fragment_1">Show fragment A</string>
     <string name="function_fragment_2">Show fragment B</string>
+
     <string name="function_location_1">LM/requestUpdate - GPS</string>
     <string name="function_location_2">LM/requestUpdate - NETWORK</string>
     <string name="function_location_3">LM/lastKnown - GPS</string>
     <string name="function_location_4">LM/lastKnown - Network</string>
+
     <string name="function_socket_1">socket-connect</string>
     <string name="function_socket_2">socket-submit</string>
     <string name="function_socket_3">socket-disconnect</string>
+
     <string name="function_gallary_1">getPhoto-startActivityForResult-single</string>
     <string name="function_gallary_2">getPhoto-ActivityResultLauncher-single</string>
     <string name="function_gallary_3">getPhoto-ActivityResultLauncher-multi</string>
     <string name="function_gallary_4">custom view 에서 갤러리사진 보기</string>
+
     <string name="function_webview_1">webview-현재상태 옮기기</string>
+
     <string name="function_fingerprint_1">지문인식 사용하기</string>
+
     <string name="function_calendar_0">카테고리 확인</string>
     <string name="function_calendar_1">일정 가져오기</string>
     <string name="function_calendar_2">일정 등록하기</string>
     <string name="function_calendar_3">일정 삭제하기</string>
+
     <string name="function_sensor_1">회전 벡터 센서 테스트</string>
     <string name="function_sensor_2">회전 벡터 센서 테스트 종료</string>
     <string name="function_sensor_3">선형가속도 센서 테스트_en</string>
@@ -113,21 +130,29 @@
     <string name="function_sensor_17">지자기회전벡터 센서 테스트_en</string>
     <string name="function_sensor_18">지자기장 센서 테스트_en</string>
     <string name="function_sensor_19">보정되지않은 자기계 테스트_en</string>
+    <string name="function_sensor_20">GNSS 원시데이터_en</string>
+
     <string name="function_notification_1">foreground notification</string>
     <string name="function_notification_2">service stop</string>
+
     <string name="function_network_1">getFile</string>
     <string name="function_network_2">readFile</string>
     <string name="function_network_3">get file permission</string>
+
     <string name="function_actrstlauncher_1">실행</string>
     <string name="function_actrstlauncher2_1">종료</string>
+
     <string name="function_ble_1">ble_en</string>
+    <string name="function_ble_2">ble_en</string>
+
     <string name="function_print_on_other_app_1">권한 받기</string>
+
+    <string name="function_etc_1">앱 아이콘 변경_en</string>
+
     <string name="app_ing">에서 실행중입니다.</string>
     <string name="alarm_service_channel">alarm_service_channel</string>
     <string name="permission_text">"알람 표시를 위해 "</string>
     <string name="vSignUp_message">가입 정보를 바르게 입력해주세요.</string>
     <string name="app_name">smartbox_dup_en</string>
-    <string name="function_sensor_20">GNSS 원시데이터_en</string>
-    <string name="function_ble_2">ble_en</string>
-    <string name="function_22">ble_en</string>
+
 </resources>
