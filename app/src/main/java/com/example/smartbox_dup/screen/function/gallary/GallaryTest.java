@@ -40,12 +40,18 @@ import com.example.smartbox_dup.sqlite.Database;
 import com.example.smartbox_dup.utils.DeviceRotationManager;
 import com.example.smartbox_dup.utils.GlobalApplication;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.List;
+import java.util.StringTokenizer;
 
 public class GallaryTest extends AppCompatActivity {
     private Button btn_1, btn_2, btn_3, btn_4, btn_5;
@@ -271,14 +277,52 @@ public class GallaryTest extends AppCompatActivity {
         return Bitmap.createBitmap(bitmap, 0, 0, bitmap.getWidth(), bitmap.getHeight(), rotateMatrix, false);
     }
 
+    static BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+
     private void testcase() {
+        BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(System.out));
+
+        int n = 0;
+        try {
+            n = Integer.parseInt(br.readLine());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        int[] iarray = null;
+        test(n, iarray);
+
+
+        try {
+            n = Integer.parseInt(br.readLine());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            int finalN = n;
+            try {
+                bw.write(String.valueOf((Arrays.stream(iarray).filter(idx -> idx==finalN).toArray().length)));
+                bw.flush();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
     }
 
-    private void test(int x, int y, int z) {
+    private static void test(int n, int[] iarray) {
+        iarray = new int[n];
 
-        // x sum
-        // y n
-        // z1~zn// 
+
+        StringTokenizer st = null;
+        try {
+            st = new StringTokenizer(br.readLine(), " ");
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        for(int idx=0; idx<n ;idx++) {
+            iarray[idx] = Integer.parseInt(st.nextToken());
+        }
     }
 
     private int max(int x, int y ,int z) {

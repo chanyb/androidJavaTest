@@ -652,8 +652,7 @@ public class SensorTest extends AppCompatActivity {
                 }
             };
 
-            sensorManager.registerListener(accelerometerListener, accelerometerSensor,
-                    SensorManager.SENSOR_DELAY_NORMAL, SensorManager.SENSOR_DELAY_UI);
+            sensorManager.registerListener(accelerometerListener, accelerometerSensor, SensorManager.SENSOR_DELAY_GAME);
         }
         magneticFieldSensor = sensorManager.getDefaultSensor(Sensor.TYPE_MAGNETIC_FIELD);
         if (magneticFieldSensor != null) {
@@ -671,8 +670,7 @@ public class SensorTest extends AppCompatActivity {
 
                 }
             };
-            sensorManager.registerListener(magneticFieldListener, magneticFieldSensor,
-                    SensorManager.SENSOR_DELAY_NORMAL, SensorManager.SENSOR_DELAY_UI);
+            sensorManager.registerListener(magneticFieldListener, magneticFieldSensor, SensorManager.SENSOR_DELAY_GAME);
         }
 
     }
@@ -685,6 +683,13 @@ public class SensorTest extends AppCompatActivity {
         // "mRotationMatrix" now has up-to-date information.
 
         SensorManager.getOrientation(rotationMatrix, orientationAngles);
+
+        StringBuilder sb = new StringBuilder();
+        for(float val : rotationMatrix) {
+            sb.append(val);
+            sb.append(" ");
+        }
+        Log.i("this", "rotationMatrix: " + sb);
 
         float azimuthInRadians = orientationAngles[0];
         float azimuthInDegrees = (float) (Math.toDegrees(azimuthInRadians) + 360) % 360;

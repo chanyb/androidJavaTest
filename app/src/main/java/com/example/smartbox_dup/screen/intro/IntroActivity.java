@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
+import android.widget.TextView;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
@@ -19,6 +20,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.smartbox_dup.R;
 import com.example.smartbox_dup.broadcastreceiver.BroadcastManager;
 import com.example.smartbox_dup.broadcastreceiver.NetworkBroadcastReceiver;
+import com.example.smartbox_dup.layout.CustomTextView;
 import com.example.smartbox_dup.screen.function.FunctionListActivity;
 import com.example.smartbox_dup.screen.login.LoginActivity;
 import com.example.smartbox_dup.utils.ActivitySwitchManager;
@@ -35,11 +37,14 @@ import java.util.concurrent.FutureTask;
 
 public class IntroActivity extends AppCompatActivity {
     NetworkBroadcastReceiver networkBroadcastReceiver;
+    Context mContext;
+    CustomTextView txt_custom;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_intro);
+        mContext = this;
 
         Log.i("this", "Intro - onCreate");
     }
@@ -56,6 +61,7 @@ public class IntroActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         checkpoints();
+        init();
 //        if(getIntent().getStringExtra("lang") == null) {
 //            Log.i("this", "lang is null");
 //            set_language_code("en");
@@ -77,7 +83,7 @@ public class IntroActivity extends AppCompatActivity {
     }
 
     private void nextPage() {
-        Intent nextPageIntent = new Intent(this, LoginActivity.class);
+        Intent nextPageIntent = new Intent(this, FunctionListActivity.class);
         startActivity(nextPageIntent);
         finish();
     }
@@ -183,7 +189,7 @@ public class IntroActivity extends AppCompatActivity {
 //
 //            return true;
 //        });
-
+//
 //        futureTaskRunner.setCallback(res -> {
 //            startActivity(new Intent(this, FunctionListActivity.class));
 //            finish();
@@ -192,19 +198,19 @@ public class IntroActivity extends AppCompatActivity {
 
 
         // 액티비티 활성화? 를 통한 앱 아이콘 변경
-//        futureTaskRunner.nextTask(() -> {
-//            int status = getPackageManager().getComponentEnabledSetting(new ComponentName(GlobalApplication.getContext(), IntroActivity.class));
-//
+        futureTaskRunner.nextTask(() -> {
+            int status = getPackageManager().getComponentEnabledSetting(new ComponentName(getPackageName(), getPackageName()+".screen.intro.IntroActivity"));
+
 //            if(status == PackageManager.COMPONENT_ENABLED_STATE_ENABLED) {
-//                getPackageManager().setComponentEnabledSetting(new ComponentName(GlobalApplication.getContext(), IntroActivity.class), PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
-//                getPackageManager().setComponentEnabledSetting(new ComponentName(GlobalApplication.getContext(), IntroActivityAlias.class), PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
+//                getPackageManager().setComponentEnabledSetting(new ComponentName(getPackageName(), getPackageName()+".screen.intro.IntroActivity"), PackageManager.COMPONENT_ENABLED_STATE_DISABLED,PackageManager.DONT_KILL_APP);
+//                getPackageManager().setComponentEnabledSetting(new ComponentName(getPackageName(), getPackageName()+".screen.intro.IntroActivityAlias"), PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
 //            }
 //            else {
-//                getPackageManager().setComponentEnabledSetting(new ComponentName(GlobalApplication.getContext(), IntroActivity.class), PackageManager.COMPONENT_ENABLED_STATE_ENABLED, PackageManager.DONT_KILL_APP);
-//                getPackageManager().setComponentEnabledSetting(new ComponentName(GlobalApplication.getContext(), IntroActivityAlias.class), PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
+//                getPackageManager().setComponentEnabledSetting(new ComponentName(getPackageName(), getPackageName()+".screen.intro.IntroActivity"), PackageManager.COMPONENT_ENABLED_STATE_ENABLED,PackageManager.DONT_KILL_APP);
+//                getPackageManager().setComponentEnabledSetting(new ComponentName(getPackageName(), getPackageName()+".screen.intro.IntroActivityAlias"), PackageManager.COMPONENT_ENABLED_STATE_DISABLED, PackageManager.DONT_KILL_APP);
 //            }
-//            return true;
-//        });
+            return true;
+        });
 
         futureTaskRunner.nextTask(() -> {
             startActivity(new Intent(this, FunctionListActivity.class));
@@ -214,5 +220,13 @@ public class IntroActivity extends AppCompatActivity {
         });
 
         futureTaskRunner.start();
+    }
+
+    public void init() {
+        txt_custom = findViewById(R.id.txt_custom);
+        txt_custom.setOnClickListener((v) -> {
+            txt_custom.setText("clicked");
+            txt_custom.setDefaultText("clicked");
+        });
     }
 }
