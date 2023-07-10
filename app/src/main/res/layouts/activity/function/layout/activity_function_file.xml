@@ -17,8 +17,30 @@
             android:id="@+id/btn_1"
             android:layout_width="0dp"
             android:layout_height="60dp"
-            android:text="@string/function_fingerprint_1"
+            android:text="@string/function_file_1"
             app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintWidth_percent="0.9"
+            />
+
+        <Button
+            android:id="@+id/btn_2"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:text="@string/function_file_2"
+            app:layout_constraintTop_toBottomOf="@id/btn_1"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintWidth_percent="0.9"
+            />
+
+        <Button
+            android:id="@+id/btn_3"
+            android:layout_width="0dp"
+            android:layout_height="60dp"
+            android:text="@string/function_file_3"
+            app:layout_constraintTop_toBottomOf="@id/btn_2"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintWidth_percent="0.9"

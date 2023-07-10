@@ -18,6 +18,7 @@ import com.example.smartbox_dup.screen.function.calendarapp.CalendarTest;
 import com.example.smartbox_dup.screen.function.camera.CameraTest;
 import com.example.smartbox_dup.screen.function.draw.DrawTest;
 import com.example.smartbox_dup.screen.function.etc.EtcActivity;
+import com.example.smartbox_dup.screen.function.file.FileTest;
 import com.example.smartbox_dup.screen.function.fingerprint.FingerPrintTest;
 import com.example.smartbox_dup.screen.function.fragment.FragmentActivity;
 import com.example.smartbox_dup.screen.function.gallary.GallaryTest;
@@ -167,5 +168,8 @@ public class FunctionListActivity extends AppCompatActivity {
         btn_23.setOnClickListener((view) -> {
             startActivity(new Intent(this, EtcActivity.class));
         });
+
+        btn_24 = findViewById(R.id.btn_24);
+        btn_24.setOnClickListener(v -> startActivity(new Intent(this, FileTest.class)));
     }
 }

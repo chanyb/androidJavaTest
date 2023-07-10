@@ -151,7 +151,9 @@
 
     <string name="function_etc_1">앱 아이콘 변경</string>
 
-    <string name="function_file_1" translatable="false">ExternalStorage에 폴더 생성</string>
+    <string name="function_file_1" translatable="false">ExternalStorage사용</string>
+    <string name="function_file_2" translatable="false">MediaStore사용</string>
+    <string name="function_file_3" translatable="false">ExternalStorage읽기</string>
 
 
     <string name="function_print_on_other_app_1">권한 받기</string>
