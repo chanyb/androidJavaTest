@@ -21,6 +21,7 @@ import com.example.smartbox_dup.utils.GlobalApplication;
 import com.example.smartbox_dup.utils.PermissionManager;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
 import java.text.SimpleDateFormat;
@@ -28,6 +29,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.TimeZone;
 import java.util.concurrent.FutureTask;
 import java.util.concurrent.atomic.AtomicReference;
@@ -135,7 +137,7 @@ public class FileTest extends AppCompatActivity {
             String srcPath = basePath + dir;
 
             m_DateF = m_DateF + "->" + str;
-            FileName = srcPath + "test" + "_" + m_DateF1 + "s98.txt";
+            FileName = srcPath + "data" + "_" + m_DateF1 + "s1.txt";
             sFolder = srcPath;
             File desti = new File(sFolder);
             if (!desti.exists()) {
@@ -152,6 +154,47 @@ public class FileTest extends AppCompatActivity {
     }
 
     public void btn_3_action() {
+        readLog();
+    }
+
+    public void readLog() {
+        String FileName;
+        String sFolder;
+
+        TimeZone tz = TimeZone.getTimeZone("Asia/Seoul");
+        Locale currentLocale = new Locale("KOREAN", "KOREA");
+
+        SimpleDateFormat dFormat = new SimpleDateFormat("yyyyMMdd", currentLocale);
+        dFormat.setTimeZone(tz);
+
+        Date m_strTime = new Date();
+        String m_DateF1 = dFormat.format(m_strTime);
+
+        dFormat = new SimpleDateFormat("yyyyMMddHHmmss.SSS", currentLocale);
+        dFormat.setTimeZone(tz);
+
+        String m_DateF = dFormat.format(m_strTime);
+
+        String basePath = Environment.getExternalStorageDirectory().getAbsolutePath();
+        String dir = File.separator + "Download" + File.separator + "smbd" + File.separator;
+        String srcPath = basePath + dir;
+
+        FileName = srcPath + "data" + "_" + m_DateF1 + "s1.txt";
+        sFolder = srcPath;
+
+        File file = new File(FileName);
+        Scanner scanner = null;
+        try {
+            scanner = new Scanner(file);
+            while (scanner.hasNextLine()) {
+                String line = scanner.nextLine();
+                Log.i("this", line);
+            }
+            scanner.close();
+        } catch (FileNotFoundException e) {
+            Log.e("this", "FileNotFoundException - readLog", e);
+        }
+
 
     }
 }
