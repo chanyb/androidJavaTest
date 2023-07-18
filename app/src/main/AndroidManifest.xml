@@ -162,8 +162,8 @@
             android:exported="false" />
         <activity android:name=".screen.function.etc.EtcActivity"
             android:exported="false" />
-        <activity android:name=".screen.function.file.FileTest"
-            android:exported="false" />
+        <activity android:name=".screen.function.file.FileTest" android:exported="false" />
+        <activity android:name=".screen.function.ftp.FtpTest" android:exported="false" />
 
 
 

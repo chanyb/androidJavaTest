@@ -69,6 +69,7 @@
     <string name="function_22">ble</string>
     <string name="function_23">기타</string>
     <string name="function_24" translatable="false">file</string>
+    <string name="function_25" translatable="false">ftp</string>
 
     <string name="function_sqlite_1">sqLite - insert</string>
     <string name="function_sqlite_2">sqLite - select</string>
@@ -154,6 +155,8 @@
     <string name="function_file_1" translatable="false">ExternalStorage사용</string>
     <string name="function_file_2" translatable="false">MediaStore사용</string>
     <string name="function_file_3" translatable="false">ExternalStorage읽기</string>
+
+    <string name="function_ftp_1" translatable="false">ftp 업로드</string>
 
 
     <string name="function_print_on_other_app_1">권한 받기</string>

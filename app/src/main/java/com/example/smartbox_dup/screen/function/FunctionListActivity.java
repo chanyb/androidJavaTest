@@ -21,6 +21,7 @@ import com.example.smartbox_dup.screen.function.etc.EtcActivity;
 import com.example.smartbox_dup.screen.function.file.FileTest;
 import com.example.smartbox_dup.screen.function.fingerprint.FingerPrintTest;
 import com.example.smartbox_dup.screen.function.fragment.FragmentActivity;
+import com.example.smartbox_dup.screen.function.ftp.FtpTest;
 import com.example.smartbox_dup.screen.function.gallary.GallaryTest;
 import com.example.smartbox_dup.screen.function.intent.IntentTest;
 import com.example.smartbox_dup.screen.function.location.LocationTest;
@@ -171,5 +172,8 @@ public class FunctionListActivity extends AppCompatActivity {
 
         btn_24 = findViewById(R.id.btn_24);
         btn_24.setOnClickListener(v -> startActivity(new Intent(this, FileTest.class)));
+
+        btn_25 = findViewById(R.id.btn_25);
+        btn_25.setOnClickListener(v -> startActivity(new Intent(this, FtpTest.class)));
     }
 }

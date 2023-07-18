@@ -774,9 +774,9 @@ public class SensorTest extends AppCompatActivity {
         };
 
         if (lightSensor == null) {
-            Toast.makeText(this, "proximity sensor not supported on this device.", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "lightSensor sensor not supported on this device.", Toast.LENGTH_LONG).show();
         } else {
-            Toast.makeText(this, "proximity sensor supported on this device.", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "lightSensor sensor supported on this device.", Toast.LENGTH_LONG).show();
         }
 
         sensorManager.registerListener(lightListener, lightSensor, SensorManager.SENSOR_DELAY_NORMAL);
