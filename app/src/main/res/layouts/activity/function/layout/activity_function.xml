@@ -258,10 +258,10 @@
             android:id="@+id/btn_25"
             android:layout_width="0dp"
             android:layout_height="60dp"
-            android:text="@string/function_24"
-            app:layout_constraintTop_toBottomOf="@id/btn_23"
-            app:layout_constraintStart_toStartOf="@id/btn_23"
-            app:layout_constraintEnd_toEndOf="@id/btn_23"
+            android:text="@string/function_25"
+            app:layout_constraintTop_toBottomOf="@id/btn_24"
+            app:layout_constraintStart_toStartOf="@id/btn_24"
+            app:layout_constraintEnd_toEndOf="@id/btn_24"
             />
 
     </androidx.constraintlayout.widget.ConstraintLayout>

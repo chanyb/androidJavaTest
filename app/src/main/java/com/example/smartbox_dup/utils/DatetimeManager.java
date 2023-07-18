@@ -27,8 +27,11 @@ public class DatetimeManager {
     private static DatetimeManager instance = new DatetimeManager();
     private DatetimeManager() {
         datetimeFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.KOREA);
+        datetimeFormatter_kworks = new SimpleDateFormat("yyyyMMddHHmmss", Locale.KOREA);
         dateFormatter = new SimpleDateFormat("yyyy-MM-dd", Locale.KOREA);
+        dateFormatter_kworks = new SimpleDateFormat("yyyyMMdd", Locale.KOREA);
         timeFormatter = new SimpleDateFormat("HH:mm:ss", Locale.KOREA);
+        timeFormatter_kworks = new SimpleDateFormat("HHmmss", Locale.KOREA);
         yearFormatter = new SimpleDateFormat("yyyy", Locale.KOREA);
         monthFormatter = new SimpleDateFormat("MM", Locale.KOREA);
         dayFormatter = new SimpleDateFormat("dd", Locale.KOREA);
@@ -41,15 +44,18 @@ public class DatetimeManager {
         return instance;
     }
 
-    SimpleDateFormat datetimeFormatter;
-    SimpleDateFormat dateFormatter;
-    SimpleDateFormat timeFormatter;
-    SimpleDateFormat yearFormatter;
-    SimpleDateFormat monthFormatter;
-    SimpleDateFormat dayFormatter;
-    SimpleDateFormat hourFormatter;
-    SimpleDateFormat minuteFormatter;
-    SimpleDateFormat secondFormatter;
+    private SimpleDateFormat datetimeFormatter;
+    private SimpleDateFormat datetimeFormatter_kworks;
+    private SimpleDateFormat dateFormatter;
+    private SimpleDateFormat dateFormatter_kworks;
+    private SimpleDateFormat timeFormatter;
+    private SimpleDateFormat timeFormatter_kworks;
+    private SimpleDateFormat yearFormatter;
+    private SimpleDateFormat monthFormatter;
+    private SimpleDateFormat dayFormatter;
+    private SimpleDateFormat hourFormatter;
+    private SimpleDateFormat minuteFormatter;
+    private SimpleDateFormat secondFormatter;
 
     public String getDisplayName(int dayOfWeek) {
 
@@ -92,6 +98,13 @@ public class DatetimeManager {
                 obj.put("minute", String.valueOf(localTime.getMinute()));
                 obj.put("second", String.valueOf(localTime.getSecond()));
                 obj.put("dayOfWeek", localDate.getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.KOREAN));
+
+                String tmp = obj.getString("datetime");
+                tmp = tmp.replace("T","");
+                tmp = tmp.replace("-","");
+                tmp = tmp.replace(":","");
+                tmp = tmp.split("\\.")[0];
+                obj.put("datetime_kworks", tmp);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -101,6 +114,7 @@ public class DatetimeManager {
             try {
                 obj.put("timestamp", String.valueOf(calendar.getTimeInMillis()));
                 obj.put("datetime", datetimeFormatter.format(calendar.getTime()));
+                obj.put("datetime_kworks", datetimeFormatter_kworks.format(calendar.getTime()));
                 obj.put("date", dateFormatter.format(calendar.getTime()));
                 obj.put("time", timeFormatter.format(calendar.getTime()));
                 obj.put("year", yearFormatter.format(calendar.getTime()));
@@ -131,6 +145,12 @@ public class DatetimeManager {
                 obj.put("month", String.valueOf(localDate.getMonthValue()));
                 obj.put("day", String.valueOf(localDate.getDayOfMonth()));
                 obj.put("dayOfWeek", localDate.getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.KOREAN));
+
+                String tmp = obj.getString("datetime");
+                tmp = tmp.replace("T","");
+                tmp = tmp.replace("-","");
+                tmp = tmp.replace(":","");
+                obj.put("datetime_kworks", tmp);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -144,6 +164,7 @@ public class DatetimeManager {
             calendar.setTime(date);
             try {
                 obj.put("timestamp", String.valueOf(calendar.getTimeInMillis()));
+                obj.put("datetime_kworks", datetimeFormatter_kworks.format(calendar.getTime()));
                 obj.put("date", dateFormatter.format(calendar.getTime()));
                 obj.put("year", yearFormatter.format(calendar.getTime()));
                 obj.put("month", monthFormatter.format(calendar.getTime()));
@@ -186,6 +207,12 @@ public class DatetimeManager {
                 obj.put("minute", "0");
                 obj.put("second", "0");
                 obj.put("dayOfWeek", localDate.getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.KOREAN));
+
+                String tmp = obj.getString("datetime");
+                tmp = tmp.replace("T","");
+                tmp = tmp.replace("-","");
+                tmp = tmp.replace(":","");
+                obj.put("datetime_kworks", tmp);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -214,6 +241,12 @@ public class DatetimeManager {
                 obj.put("minute", String.valueOf(localDate.getMinute()));
                 obj.put("second", String.valueOf(localDate.getSecond()));
                 obj.put("dayOfWeek", localDate.getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.KOREAN));
+
+                String tmp2 = obj.getString("datetime");
+                tmp2 = tmp2.replace("T","");
+                tmp2 = tmp2.replace("-","");
+                tmp2 = tmp2.replace(":","");
+                obj.put("datetime_kworks", tmp2);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -249,6 +282,12 @@ public class DatetimeManager {
                 obj.put("minute", String.valueOf(localTime.getMinute()));
                 obj.put("second", String.valueOf(localTime.getSecond()));
                 obj.put("dayOfWeek", localDate.getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.KOREAN));
+
+                String tmp = obj.getString("datetime");
+                tmp = tmp.replace("T","");
+                tmp = tmp.replace("-","");
+                tmp = tmp.replace(":","");
+                obj.put("datetime_kworks", tmp);
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -256,6 +295,7 @@ public class DatetimeManager {
             try {
                 obj.put("timestamp", String.valueOf(calendar.getTimeInMillis()));
                 obj.put("datetime", datetimeFormatter.format(calendar.getTime()));
+                obj.put("datetime_kworks", datetimeFormatter_kworks.format(calendar.getTime()));
                 obj.put("date", dateFormatter.format(calendar.getTime()));
                 obj.put("time", timeFormatter.format(calendar.getTime()));
                 obj.put("year", yearFormatter.format(calendar.getTime()));
@@ -295,6 +335,12 @@ public class DatetimeManager {
                     obj.put("minute", String.valueOf(previousDatetime.getMinute()));
                     obj.put("second", String.valueOf(previousDatetime.getSecond()));
                     obj.put("dayOfWeek", previousDatetime.getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.KOREAN));
+
+                    String tmp = obj.getString("datetime");
+                    tmp = tmp.replace("T","");
+                    tmp = tmp.replace("-","");
+                    tmp = tmp.replace(":","");
+                    obj.put("datetime_kworks", tmp);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -305,6 +351,7 @@ public class DatetimeManager {
                 try {
                     obj.put("timestamp", String.valueOf(calendar.getTimeInMillis()));
                     obj.put("datetime", datetimeFormatter.format(calendar.getTime()));
+                    obj.put("datetime_kworks", datetimeFormatter_kworks.format(calendar.getTime()));
                     obj.put("date", dateFormatter.format(calendar.getTime()));
                     obj.put("time", timeFormatter.format(calendar.getTime()));
                     obj.put("year", yearFormatter.format(calendar.getTime()));
@@ -348,6 +395,13 @@ public class DatetimeManager {
                     obj.put("minute", String.valueOf(nextDatetime.getMinute()));
                     obj.put("second", String.valueOf(nextDatetime.getSecond()));
                     obj.put("dayOfWeek", nextDatetime.getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.KOREAN));
+
+                    String tmp = obj.getString("datetime");
+                    tmp = tmp.replace("T","");
+                    tmp = tmp.replace("-","");
+                    tmp = tmp.replace(":","");
+                    obj.put("datetime_kworks", tmp);
+
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -358,6 +412,67 @@ public class DatetimeManager {
                 try {
                     obj.put("timestamp", String.valueOf(calendar.getTimeInMillis()));
                     obj.put("datetime", datetimeFormatter.format(calendar.getTime()));
+                    obj.put("datetime_kworks", datetimeFormatter_kworks.format(calendar.getTime()));
+                    obj.put("date", dateFormatter.format(calendar.getTime()));
+                    obj.put("time", timeFormatter.format(calendar.getTime()));
+                    obj.put("year", yearFormatter.format(calendar.getTime()));
+                    obj.put("month", monthFormatter.format(calendar.getTime()));
+                    obj.put("day", dayFormatter.format(calendar.getTime()));
+                    obj.put("hour", hourFormatter.format(calendar.getTime()));
+                    obj.put("minute", minuteFormatter.format(calendar.getTime()));
+                    obj.put("second", secondFormatter.format(calendar.getTime()));
+                    obj.put("dayOfWeek", getDisplayName(calendar.get(Calendar.DAY_OF_WEEK)));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        return obj;
+    }
+
+    public JSONObject getSecondsAfterFrom(JSONObject specificDay, long seconds) {
+        JSONObject obj = new JSONObject();
+
+        try {
+            long nextDayTimestamp = (specificDay.getLong("timestamp") + 1000L*seconds);
+            LocalDateTime nextDatetime = null;
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                nextDatetime = LocalDateTime.ofInstant(Instant.ofEpochMilli(nextDayTimestamp),
+                        TimeZone.getDefault().toZoneId());
+
+                try {
+                    obj.put("timestamp", nextDayTimestamp);
+                    obj.put("datetime", nextDatetime.toString());
+                    obj.put("date", nextDatetime.toString().split("T")[0]);
+                    obj.put("time", nextDatetime.toString().split("T")[1]);
+                    obj.put("year", String.valueOf(nextDatetime.getYear()));
+                    obj.put("month", String.valueOf(nextDatetime.getMonthValue()));
+                    obj.put("day", String.valueOf(nextDatetime.getDayOfMonth()));
+                    obj.put("hour", String.valueOf(nextDatetime.getHour()));
+                    obj.put("minute", String.valueOf(nextDatetime.getMinute()));
+                    obj.put("second", String.valueOf(nextDatetime.getSecond()));
+                    obj.put("dayOfWeek", nextDatetime.getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.KOREAN));
+
+                    String tmp = obj.getString("datetime");
+                    tmp = tmp.replace("T","");
+                    tmp = tmp.replace("-","");
+                    tmp = tmp.replace(":","");
+                    obj.put("datetime_kworks", tmp);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                Date date = new Date(nextDayTimestamp);
+                Calendar calendar = Calendar.getInstance();
+                calendar.setTime(date);
+                try {
+                    obj.put("timestamp", String.valueOf(calendar.getTimeInMillis()));
+                    obj.put("datetime", datetimeFormatter.format(calendar.getTime()));
+                    obj.put("datetime_kworks", datetimeFormatter_kworks.format(calendar.getTime()));
                     obj.put("date", dateFormatter.format(calendar.getTime()));
                     obj.put("time", timeFormatter.format(calendar.getTime()));
                     obj.put("year", yearFormatter.format(calendar.getTime()));
@@ -395,6 +510,12 @@ public class DatetimeManager {
                 obj.put("hour", String.valueOf(zonedDateTime.getHour()));
                 obj.put("minute", String.valueOf(zonedDateTime.getMinute()));
                 obj.put("second", String.valueOf(zonedDateTime.getSecond()));
+
+                String tmp = obj.getString("datetime");
+                tmp = tmp.replace("T","");
+                tmp = tmp.replace("-","");
+                tmp = tmp.replace(":","");
+                obj.put("datetime_kworks", tmp);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -405,6 +526,7 @@ public class DatetimeManager {
             try {
                 obj.put("timestamp", String.valueOf(calendar.getTimeInMillis()));
                 obj.put("datetime", formatter.format(calendar.getTime()));
+                obj.put("datetime_kworks", datetimeFormatter_kworks.format(calendar.getTime()));
                 obj.put("date", dateFormatter.format(calendar.getTime()));
                 obj.put("time", timeFormatter.format(calendar.getTime()));
                 obj.put("year", yearFormatter.format(calendar.getTime()));
@@ -455,6 +577,7 @@ public class DatetimeManager {
         try {
             obj.put("timestamp", String.valueOf(calendar.getTimeInMillis()));
             obj.put("datetime", datetimeFormatter.format(calendar.getTime()));
+            obj.put("datetime_kworks", datetimeFormatter_kworks.format(calendar.getTime()));
             obj.put("date", dateFormatter.format(calendar.getTime()));
             obj.put("time", timeFormatter.format(calendar.getTime()));
             obj.put("year", yearFormatter.format(calendar.getTime()));
@@ -469,5 +592,45 @@ public class DatetimeManager {
         }
 
         return obj;
+    }
+
+    public long getDatetime_kworksInMillis(String sDatetime) {
+        Calendar calendar = Calendar.getInstance();
+        String sYear = sDatetime.substring(0,4);
+        String sMonth = sDatetime.substring(4,6);
+        String sDay = sDatetime.substring(6,8);
+        String sHour = sDatetime.substring(8,10);
+        String sMinute = sDatetime.substring(10,12);
+        String sSecond = sDatetime.substring(12,14);
+
+        calendar.set(Calendar.YEAR, Integer.parseInt(sYear));
+        calendar.set(Calendar.MONTH, Integer.parseInt(sMonth)-1);
+        calendar.set(Calendar.DATE, Integer.parseInt(sDay));
+        calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(sHour));
+        calendar.set(Calendar.MINUTE, Integer.parseInt(sMinute));
+        calendar.set(Calendar.SECOND, Integer.parseInt(sSecond));
+        calendar.set(Calendar.MILLISECOND, 0);
+        return calendar.getTimeInMillis();
+    }
+
+    public JSONObject getJSONObjectfromDatetime_kworks(String sDatetime) {
+        Calendar calendar = Calendar.getInstance();
+        String sYear = sDatetime.substring(0,4);
+        String sMonth = sDatetime.substring(4,6);
+        String sDay = sDatetime.substring(6,8);
+        String sHour = sDatetime.substring(8,10);
+        String sMinute = sDatetime.substring(10,12);
+        String sSecond = sDatetime.substring(12,14);
+
+        calendar.set(Calendar.YEAR, Integer.parseInt(sYear));
+        calendar.set(Calendar.MONTH, Integer.parseInt(sMonth)-1);
+        calendar.set(Calendar.DATE, Integer.parseInt(sDay));
+        calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(sHour));
+        calendar.set(Calendar.MINUTE, Integer.parseInt(sMinute));
+        calendar.set(Calendar.SECOND, Integer.parseInt(sSecond));
+        calendar.set(Calendar.MILLISECOND, 0);
+
+
+        return getJSONObjectFromCalendar(calendar);
     }
 }

@@ -157,6 +157,7 @@
     <string name="function_file_3" translatable="false">ExternalStorage읽기</string>
 
     <string name="function_ftp_1" translatable="false">ftp 업로드</string>
+    <string name="function_ftp_2" translatable="false">zip folder</string>
 
 
     <string name="function_print_on_other_app_1">권한 받기</string>
