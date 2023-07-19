@@ -1,10 +1,8 @@
 package com.example.smartbox_dup.utils;
 
-import android.os.Environment;
 import android.util.Log;
 
 import org.apache.commons.net.ftp.FTPClient;
-import org.json.JSONException;
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -20,20 +18,35 @@ import java.util.zip.ZipOutputStream;
 
 public class LogUpload {
 
-    public LogUpload() {}
+    String host;
+    int port;
+    String id;
+    String pw;
 
-    private void fileUpload(String localFilePath) {
+    public LogUpload(String host, int port, String id, String pw) {
+        this.host = host;
+        this.port = port;
+        this.id = id;
+        this.pw = pw;
+    }
+    public LogUpload() {
+        host = "ftp-pcms.kworks.co.kr";
+        port = 9999;
+        id = "pcms2022";
+        pw = "pcms2022!5000";
+    }
+
+    private void fileUpload(String localFilePath, String destinationFileName) {
         FTPClient ftpClient = new FTPClient();
         try {
-            ftpClient.connect("ftp-pcms.kworks.co.kr", 9999);
-            ftpClient.login("pcms2022", "pcms2022!5000");
+            ftpClient.connect(host, port);
+            ftpClient.login(id, pw);
             ftpClient.setFileType(FTPClient.BINARY_FILE_TYPE);
             ftpClient.changeWorkingDirectory("/ROOT/log_file/vcms2/");
             ftpClient.enterLocalPassiveMode();
 
             File localFile = new File(localFilePath);
-            Log.i("this", DatetimeManager.getInstance().getSystemDateTime().getString("datetime_kworks"));
-            String remoteFile = DatetimeManager.getInstance().getSystemDateTime().getString("datetime_kworks") + ".zip";
+            String remoteFile = destinationFileName + ".zip";
             InputStream inputStream = null;
             if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
                 inputStream = Files.newInputStream(localFile.toPath());
@@ -50,8 +63,6 @@ public class LogUpload {
         } catch (IOException ex) {
             Log.e("this", "LogUpload - IOException", ex);
             ex.printStackTrace();
-        } catch (JSONException e) {
-            Log.e("this", "LogUpload - JSONException", e);
         } finally {
             try {
                 if (ftpClient.isConnected()) {
@@ -65,7 +76,7 @@ public class LogUpload {
     }
 
 
-    public void zipAndUpload(String folderParentPath, String folderName) {
+    public void zipAndUpload(String folderParentPath, String folderName, String destinationFileName) {
         try {
             String srcPath = folderParentPath + File.separator + folderName;
 
@@ -92,7 +103,7 @@ public class LogUpload {
             String outZipPath = "";
 
             if (fileExist) {
-                outZipPath = folderParentPath + File.separator + "myzip" + ".zip";
+                outZipPath = folderParentPath + File.separator + "local_log_zip" + ".zip";
 
                 // zip folder
                 File sourceFile = new File(srcPath);
@@ -128,7 +139,7 @@ public class LogUpload {
                 new Thread() {
                     @Override
                     public void run() {
-                        fileUpload(finalOutZipPath);
+                        fileUpload(finalOutZipPath, destinationFileName);
                         deleteFolder(srcPath);
                     }}.start();
             }
@@ -145,6 +156,7 @@ public class LogUpload {
                 return;
             }
             File[] fileArray = sourceFile.listFiles(); // sourceFile 의 하위 파일 리스트
+            Log.i("this", "file count: " + fileArray.length);
             for (int i = 0; i < fileArray.length; i++) {
                 zipEntry(fileArray[i], sourcePath, zos); // 재귀 호출
             }
