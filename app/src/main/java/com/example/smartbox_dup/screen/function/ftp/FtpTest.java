@@ -46,6 +46,7 @@ public class FtpTest extends AppCompatActivity {
     Handler mHandler;
     Button btn_1, btn_2;
     String folderParentPath;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,16 +54,16 @@ public class FtpTest extends AppCompatActivity {
         mContext = this;
         mHandler = new Handler(Looper.getMainLooper());
         init();
-        writeLog("test2", "bbbbb");
+
     }
 
     private void init() {
         btn_1 = findViewById(R.id.btn_1);
         btn_1.setOnClickListener((v) -> {
-            Thread thread = new Thread(){
+            Thread thread = new Thread() {
                 @Override
                 public void run() {
-//                    fileUpload();
+                    
                 }
             };
             thread.start();
@@ -70,15 +71,11 @@ public class FtpTest extends AppCompatActivity {
 
         btn_2 = findViewById(R.id.btn_2);
         btn_2.setOnClickListener((v) -> {
-            folderParentPath = Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "Download";
-
             LogUpload logUpload = new LogUpload();
-            logUpload.zipAndUpload(folderParentPath, "behavior_pattern");
+            logUpload.zipAndUpload(Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator + "Download", "behavior_pattern", "test");
         });
 
     }
-
-
 
 
     public void writeLog(String fileName, String str) {
@@ -118,4 +115,15 @@ public class FtpTest extends AppCompatActivity {
         }
     }
 
+    public void makeFile(String fileName) {
+        StringBuilder sb = new StringBuilder();
+        for(int i=0; i<10000; i++) {
+            sb.append("asdfsadfdsafdsafadsfjla;kdsfjklas;dfjklasd;fjdskalfqweropqweriopqweuriopqweuriopqwruioqweruwqvuwuwnuwenuvwioprwiorvnevwqpoiqwiopnuvreqnurqwiopneviqo1438903248912-4389891-45uiopqwiopwqvriopqewioprvwriopqwvnuiopqwevuiopqwrvnuiopqwnuioqpwvnuqwpvrunioqwevrnuiopqwevnuipqwevnuipqwvrnuiop\n");
+            sb.append("asdfsadfdsafdsafadsfjla;kdsfjklas;dfjklasd;fjdskalfqweropqweriopqweuriopqweuriopqwruioqweruwqvuwuwnuwenuvwioprwiorvnevwqpoiqwiopnuvreqnurqwiopneviqo1438903248912-4389891-45uiopqwiopwqvriopqewioprvwriopqwvnuiopqwevuiopqwrvnuiopqwnuioqpwvnuqwpvrunioqwevrnuiopqwevnuipqwevnuipqwvrnuiop\n");
+            sb.append("asdfsadfdsafdsafadsfjla;kdsfjklas;dfjklasd;fjdskalfqweropqweriopqweuriopqweuriopqwruioqweruwqvuwuwnuwenuvwioprwiorvnevwqpoiqwiopnuvreqnurqwiopneviqo1438903248912-4389891-45uiopqwiopwqvriopqewioprvwriopqwvnuiopqwevuiopqwrvnuiopqwnuioqpwvnuqwpvrunioqwevrnuiopqwevnuipqwevnuipqwvrnuiop\n");
+            sb.append("asdfsadfdsafdsafadsfjla;kdsfjklas;dfjklasd;fjdskalfqweropqweriopqweuriopqweuriopqwruioqweruwqvuwuwnuwenuvwioprwiorvnevwqpoiqwiopnuvreqnurqwiopneviqo1438903248912-4389891-45uiopqwiopwqvriopqewioprvwriopqwvnuiopqwevuiopqwrvnuiopqwnuioqpwvnuqwpvrunioqwevrnuiopqwevnuipqwevnuipqwvrnuiop\n");
+            sb.append("asdfsadfdsafdsafadsfjla;kdsfjklas;dfjklasd;fjdskalfqweropqweriopqweuriopqweuriopqwruioqweruwqvuwuwnuwenuvwioprwiorvnevwqpoiqwiopnuvreqnurqwiopneviqo1438903248912-4389891-45uiopqwiopwqvriopqewioprvwriopqwvnuiopqwevuiopqwrvnuiopqwnuioqpwvnuqwpvrunioqwevrnuiopqwevnuipqwevnuipqwvrnuiop\n");
+        }
+        writeLog(fileName, sb.toString());
+    }
 }
